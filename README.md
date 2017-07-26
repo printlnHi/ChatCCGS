@@ -1,1 +1,3 @@
 # ChatCCGS
+
+All rights reserved

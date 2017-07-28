@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            canvas {
+                border: solid black 1px;
+            }
+        </style>
+        <script>
+            var canvas, context, intervalID;
+            var houses = Array(0), fence;
+            var road, car1, car2;
+            function startScene(){
+                //Start the scene(effectively draws the scene as the scene is static)
+                initaliseScene();
+                intervalID = setInterval(drawScene, 30);
+            }
+            
+            function initaliseScene(){
+                //Initalises the global varialbes
+                road = new Road(0,450,1000,150);
+                canvas = document.getElementById("canvas");
+                context = canvas.getContext("2d");
+                
+                for (var i = 0;i<6; i++){
+                    houses.push( new House(i*100 + 200, 300, 60, "#abcdef", "#fedbca"));
+                }
+                
+                fence = new Fence(160, 360, 16, "#123fed");
+                car1 = new Car(20, 550);
+                car2 = new Car(520, 475);
+                
+            }
+            
+            
+            function drawScene(){
+                context.clearRect(0,0,1000,600);
+                //Draws the current frame of the scene
+                road.drawRoad();
+                for (var i = 0; i<6; i++){
+                    houses[i].drawHouse();
+                }
+                fence.drawFence();
+                
+                car1.drawCar();
+                car2.drawCar();
+                car1.animateCar();
+                car2.animateCar();
+                
+            }
+            
+            function stopScene(){
+                //Currently doesn't noticeably do anything as one frame does not differ from the next
+                clearInterval(intervalID);
+                
+            }
+             
+            function drawSolidSquare(x, y, size, fillColour){
+                //Draws a filled in square of length size with upper left corner as x,y
+                drawSolidRect(x, y, size, size, fillColour);
+            }
+            
+            function drawSolidRect(x, y, width, height, fillColour){
+                //Draws a filled in rectangle of width*height with x,y as the upper left corner
+                context.beginPath();
+                context.width = 0;
+                context.rect(x,y, width, height);
+                context.fillStyle = fillColour;
+                context.fill();
+                context.closePath();
+            }
+            
+            function drawSolidTriangle(x, y, size, fillColour){
+                //Draws a axis-aligned, filled in, equilateral, upward facing triangle of side length size with the bottom left corner as x,y
+                var x1 = x+(Math.cos(toRadians(60))*size);
+                var y1 = y-(Math.sin(toRadians(60))*size);
+                context.moveTo(x,y);
+                context.beginPath();
+                context.width = 0;
+                context.lineTo(x1,y1);
+                context.lineTo(x+size,y);
+                context.lineTo(x,y);
+                context.fillStyle = fillColour;
+                context.fill();
+                context.closePath();
+                
+            }
+            
+            function drawSolidShape(points, colour){
+                //Draws a solid shape form the list of Point instances
+                points[points.length-1].moveTo()
+                context.beginPath();
+                for (var i = 0; i<points.length; i++){
+                    points[i].lineTo();
+                }
+                context.fillStyle = colour;
+                context.fill();
+                context.closePath();
+                
+            }
+            
+            function drawSolidArc(x, y, radius, startAngle, endAngle, antiClockwise, colour){
+                //Draws a filled in arc according to the parameters with a fill colour of colour
+                context.beginPath();
+                context.arc(x, y, radius, startAngle, endAngle, antiClockwise);
+                context.fillStyle = colour;
+                context.fill();
+                context.closePath();
+            }
+            function toRadians(angle){
+                //converts an angle, given in degrees to radian
+                return angle/180*Math.PI;
+            }
+            
+            function House(x, y, baseSize, bodyColour, roofColour){
+                //Returns an object which can repeatedely draws a house with the bottom left corner at x,y
+                this.x = x;
+                this.y = y;
+                this.baseSize = baseSize;
+                this.bodyColour = bodyColour;
+                this.roofColour = roofColour;
+                
+                this.drawHouse = function(){
+                    //Draws the actual house
+                    drawSolidSquare(this.x, this.baseSize+this.y, this.baseSize, this.bodyColour);
+                    drawSolidTriangle(this.x, this.y+this.baseSize,this.baseSize, this.roofColour);
+                    this.drawChimney();
+                }
+                
+                this.drawChimney = function(){
+                    //Slave function to draw the houses chimney
+                    var housePeakXChange = this.baseSize/2;
+                    var housePeakYChange = - Math.sin(toRadians(60))*this.baseSize;
+                    
+                    var x1 = housePeakXChange*0.3 + this.x;
+                    var x2 = housePeakXChange*0.7 + this.x;
+                    var y1 = housePeakYChange*0.3 + this.y + this.baseSize;
+                    var y2 = housePeakYChange*0.7 + this.y + this.baseSize;
+                    var y3 = housePeakYChange+this.y + this.baseSize;
+                    
+                    var points = [new Point(x1,y1), new Point(x1, y3), new Point(x2, y3), new Point(x2, y2)];
+                    
+                    drawSolidShape(points, this.bodyColour);
+                }
+            }
+            
+            
+            function Fence(x,y, numberPosts, colour){
+                //Returns an object that repeatdely draws a line of fence 
+                this.x = x;
+                this.y = y;
+                this.numberPosts = numberPosts;
+                this.colour = colour;
+                this.size = 20;
+                this.drawFence = function(){
+                    var currentX = this.x;
+                    var currentY = this.y;
+                    
+                    for (var i = 1; i<=this.numberPosts; i++){
+                        drawSolidRect(currentX,currentY+this.size, this.size, this.size*2, this.colour);
+                        drawSolidTriangle(currentX, currentY+this.size, this.size, this.colour);
+                        currentX+=this.size;
+                        if (i!=this.numberPosts){
+                            drawSolidRect(currentX,currentY+this.size*8/5, this.size, this.size*3/5, this.colour);
+                            currentX+=this.size;
+                        }
+                    }
+                
+                }
+            }
+            
+            function Point(x,y){
+                //Returns an object that represnts a 2d point that can be continuosly moved to or have a line draw too itself;
+                this.x = x;
+                this.y = y;
+                this.moveTo = function(){
+                    context.moveTo(this.x, this.y);
+                }
+                
+                this.lineTo = function(){
+                    context.lineTo(this.x, this.y);
+                }
+                
+                this.printPoint = function(){
+                    console.log(String(this.x)+","+String(this.y));
+                }
+                
+            }
+            
+            function Road(x,y,width,height){
+                //Returns an object which has a method to draw a road with x,y as the top left corner
+                this.x = x;
+                this.y = y;
+                this.width = width;
+                this.height = height;
+                
+                this.drawRoad = function(){
+                    //Actually draws the road
+                    drawSolidRect(this.x, this.y, this.width, this.height, "#2F4F4F");
+                    
+                    for (var x = (this.x+60); x+40<(this.x+width); x+=120){
+                        this.drawDash(x, this.y+0.5*height-5);
+                    }
+                }
+                
+                this.drawDash = function(x,y){
+                    drawSolidRect(x, y, 40, 10, "#dddd00");
+                }
+                
+            }
+            
+            function Car(x,y){
+                //Returns an object which has a method to draw a car with x,y as the top left corner of its body
+                this.x = x;
+                this.y = y;
+                this.width = 60;
+                this.height = 30;
+                this.drawCar = function(){
+                    //Draw the arc before the body so the body hides the arc
+                    drawSolidArc(this.x+this.width/2.0, this.y+this.height*0.3, this.width/2, toRadians(180), toRadians(0), false, "#888800");
+                    drawSolidArc(this.x+this.width*0.2, this.y+this.height, this.width*0.2, toRadians(180), toRadians(0), true, "#888800");
+                    drawSolidArc(this.x+this.width*0.8, this.y+this.height, this.width*0.2, toRadians(180), toRadians(0), true, "#888800");
+                    drawSolidRect(this.x, this.y, this.width, this.height, "#0000ff");
+                    
+                }
+                
+                this.animateCar = function(){
+                    var newx = this.x+this.width/4;
+                    if (newx>1000){
+                        newx = -500;
+                    }
+                    
+                    this.x = newx;
+                }
+                
+            }
+        </script>
+    </head>
+    <body>
+        <canvas id="canvas" height="600px" width="1000px"></canvas>
+        <br />
+        <button onclick="startScene()"> Start Scene</button>
+        <button onclick="stopScene()"> Stop Scene</button>
+    </body> 
+</html>

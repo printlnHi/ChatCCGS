@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            canvas {
+                border: solid black 1px;
+            }
+        </style>
+        <script>
+            var canvas;
+            var context;
+
+            function drawPattern()
+            {
+                canvas = document.getElementById("mycanvas");
+                context = canvas.getContext("2d");
+                drawSquare(50,50);
+
+            }
+            
+            function drawSquare(x, y){
+                context.moveTo(x,y);
+                context.beginPath();
+                context.fillStyle = "rgba(135, 0, 67, 0.3)";
+                context.rect(x,y,50,50);
+                context.fill();
+                context.closePath();
+                
+                if (x!=400){
+                    drawSquare(x+25,y+25)
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <canvas id="mycanvas" height="500px" width="500px"></canvas>
+        <br />
+        <button onclick="drawPattern()">Draw Pattern</button>
+    </body> 
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            canvas {
+                border: solid black 1px;
+                border-style: solid;
+                border-color:  black;
+                border-width: 1px;
+            }
+        </style>
+        <script>
+            var canvas, context;
+            var ball_x, ball_y;
+            var square_x, square_y;
+            var ball_dx, ball_dy;
+            var intervalId;
+
+            function  startAnimation(){
+                canvas = document.getElementById("canvas");
+                context = canvas.getContext("2d");
+                
+                ball_x = 200;
+                ball_y = 200;
+                square_x = 100;
+                square_y = 300;
+                square_dx = 1;
+                square_dy = 2;
+                ball_dx = 1;
+                ball_dy = 2;
+                
+                intervalId = setInterval(drawAnimation,15);
+                
+            }
+            
+            function modifyDirection(rateOfChange,radius,coordinate, isCentre){
+                if (! isCentre){
+                    coordinate+=radius;
+                }
+                if (radius > coordinate || 400-radius<coordinate){
+                    return rateOfChange*-1;
+                }
+                
+                return rateOfChange;
+            }
+            function drawAnimation(){
+                context.clearRect(0, 0, canvas.width, canvas.height);
+                
+                context.beginPath();
+                context.arc(ball_x,ball_y,15,0,Math.PI*2,false);
+                context.fillStyle ="green";
+                context.fill();
+                context.closePath();
+                
+                
+                context.beginPath();
+                context.rect(square_x,square_y, 40, 40);
+                context.fillStyle = "blue";
+                context.fill();
+                context.closePath();
+                
+                ball_dx = modifyDirection(ball_dx, 15, ball_x, true);
+                ball_dy = modifyDirection(ball_dy, 15, ball_y, true);
+                
+                square_dx = modifyDirection(square_dx, 20, square_x, false);
+                square_dy = modifyDirection(square_dy, 20, square_y, false);
+                
+                
+                ball_x+=ball_dx;
+                ball_y+=ball_dy;
+                
+                square_x+=square_dx;
+                square_y+=square_dy;
+            }
+            
+            function stopAnimation(){
+                clearInterval(intervalId);
+            }
+            
+            
+        </script>
+    </head>
+    <body>
+        <canvas id="canvas" height="400px" width="400px"></canvas>
+        <br />
+        <button onclick="startAnimation()"> Start Animation</button>
+        <button onclick="stopAnimation()"> Stop Animation</button>
+    </body> 
+</html>

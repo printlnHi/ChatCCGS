@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            canvas {
+                border: solid black 1px;
+            }
+        </style>
+        <script>
+            var canvas;
+            var context;
+
+            function drawPattern()
+            {
+                canvas = document.getElementById("mycanvas");
+                context = canvas.getContext("2d");
+
+            }
+        </script>
+    </head>
+    <body>
+        <canvas id="mycanvas" height="500px" width="500px"></canvas>
+        <br />
+        <button onclick="drawPattern()">Draw Pattern</button>
+    </body> 
+</html>

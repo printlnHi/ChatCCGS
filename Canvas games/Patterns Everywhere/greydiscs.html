@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            canvas {
+                border: solid black 1px;
+            }
+        </style>
+        <script>
+            var canvas;
+            var context;
+
+            
+            function drawPattern(){
+                canvas = document.getElementById("mycanvas");
+                context = canvas.getContext("2d");
+                
+                context.beginPath();
+                context.rect(0,0,600,400);
+                context.fillStyle = "#000000";
+                context.fill();
+                context.closePath();
+
+                
+            }
+            
+            function drawDisc(centre_x,centre_y){
+                drawCircle(centre_x,centre_y,25,"#505050");
+            }
+            
+            function drawCircle(centre_x,centre_y,radius,colour){
+                context.beginPath();
+                context.arc(centre_x,centre_y,radius,0, Math.PI*2, false);
+                context.fillStyle = colour;
+                context.fill();
+            }
+        </script>
+    </head>
+    <body>
+        <canvas id="mycanvas" height="400px" width="600px"></canvas>
+        <br />
+        <button onclick="drawPattern()">Draw Pattern</button>
+    </body> 
+</html>

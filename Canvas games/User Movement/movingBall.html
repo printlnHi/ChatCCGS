@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            canvas {
+                border: solid black 1px;
+            }
+        </style>
+        <script>
+            var canvas, context;
+            var ball_x, ball_y;
+            var ball2_x, ball2_y;
+            var dx, dy;
+            var dx2, dy2;
+            var moveUp, moveDown, moveLeft, moveRight;
+            var mouseDown, touchDown;
+            var intervalId;
+            function max(a,b){
+                if (a>b){
+                    return a;
+                }
+                
+                return b;
+            }
+            
+            function min(a,b){
+                if (a<b){
+                    return a;
+                }
+                return b;
+            }
+            function startGame(){
+                setupGame();
+                intervalId = setInterval(playGame, 30);
+                
+            }
+            
+            function setupGame(){
+                canvas = document.getElementById("canvas");
+                context = canvas.getContext("2d");
+                ball_x = ball_y = 200;
+                dx = dy = 5;
+                dx2 = 3;
+                dy2 = 1;
+                ball2_x = 300;
+                ball2_y = 100;
+                moveUp = moveDown = moveLeft = moveRight = mouseDown = touchDown = false;
+                
+                window.addEventListener("keydown", onKeyDown);
+                window.addEventListener("keyup", onKeyUp);
+                window.addEventListener("mousedown", onMouseDown);
+                window.addEventListener("mousemove", onMouseMove);
+                window.addEventListener("mouseup", onMouseUp);
+                window.addEventListener("touchstart", onTouchStart);
+                window.addEventListener("touchmove", onTouchMove);
+                window.addEventListener("touchend", onTouchEnd)
+                
+            }
+            
+            function playGame(){
+                context.clearRect(0, 0, 400, 400);
+                drawBall();
+                
+            }
+            
+            function drawBall(){
+                drawSolidCircle(ball_x, ball_y, 15, "red");
+                drawSolidCircle(ball2_x, ball2_y, 15, "blue");
+                if (moveLeft) {ball_x = max(ball_x-dx,15);}
+                if (moveRight) {ball_x = min(385,ball_x+dx);}
+                if (moveDown) {ball_y = min(385,dy+ball_y);}
+                if (moveUp) {ball_y = max(15,ball_y-dy);}
+                if (moveLeft) {ball2_x = max(ball2_x-dx2,15);}
+                if (moveRight) {ball2_x = min(385,ball2_x+dx2);}
+                if (moveDown) {ball2_y = min(385,dy2+ball2_y);}
+                if (moveUp) {bal2l_y = max(15,ball2_y-dy2);}
+            }
+            
+            function drawSolidCircle(x,y, radius, fillStyle){
+                //Draws a solid circle with x,y as the centre point
+                context.beginPath();
+                context.arc(x, y, radius,0 , Math.PI*2, false);
+                context.fillStyle = fillStyle;
+                context.fill();
+                context.closePath();
+            }
+            
+            function onKeyDown(event){
+                console.log("Key Pressed");
+                if (event.keyCode == 37) { moveLeft = true; } // left arrow pressed
+                if (event.keyCode == 38) { moveUp = true; } // up arrow pressed
+                if (event.keyCode == 39) { moveRight = true; } // right arrow pressed
+                if (event.keyCode == 40) { moveDown = true; } // down arrow pressed
+            }
+            
+            function onKeyUp(event){
+                console.log("Key Released");
+                if (event.keyCode == 37) { moveLeft = false; } // left arrow released
+                if (event.keyCode == 38) { moveUp = false; } // up arrow released
+                if (event.keyCode == 39) { moveRight = false; } // right arrow released
+                if (event.keyCode == 40) { moveDown = false; } // down arrow released
+                
+            }
+            
+            function onMouseDown(event){
+                x = event.pageX - canvas.offsetLeft;
+                y = event.pageY - canvas.offsetTop;
+                
+                mouseDown = 0<=x && x<=400 && 0<=y && y<=400 && x!=NaN && y!=NaN;
+            }
+            
+            function onMouseUp(event){
+                mouseDown = false;
+            }
+            
+            function onMouseMove(event){
+                if (mouseDown){
+                    ball_x = min(385,max(15,event.pageX - canvas.offsetLeft));
+                    ball_y = min(385,max(15,event.pageY - canvas.offsetTop));
+                    ball_x = min(385,max(15,event.pageX - canvas.offsetLeft));
+                    ball_y = min(385,max(15,event.pageY - canvas.offsetTop));
+                }
+                
+            }
+            
+            function onTouchStart(event){
+                touchDown = true;
+            }
+            
+            function onTouchEnd(event){
+                touchDown = false;
+            }
+            
+            function onTouchMove(event){
+                event.preventDefault();
+                if (touchDown){
+                    ball_x = min(385,max(15,event.pageX - canvas.offsetLeft));
+                    ball_y = min(385,max(15,event.pageY - canvas.offsetTop));
+                }
+            }
+            
+            function stopGame(){
+                clearInterval(intervalId);
+            }
+        </script>
+    </head>
+    <body>
+        <canvas id="canvas" height="400px" width="400px"></canvas>
+        <br />
+        <button onclick="startGame()"> Start Game</button>
+        <button onclick="stopGame()"> Stop Game</button>
+    </body> 
+</html>

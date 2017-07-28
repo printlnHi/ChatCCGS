@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            canvas {
+                border: solid black 1px;
+            }
+        </style>
+        <script>
+            function drawFlag(){
+                
+                //Flag dimensions from https://upload.wikimedia.org/wikipedia/commons/a/a0/South_Africa_flag_construction_sheet.png
+                //Flag colours from http://southafricaflag.facts.co/southafricanflagof/southafricaflag.php
+                var canvas = document.getElementById("mycanvas");
+                var context = canvas.getContext("2d");
+                
+                
+                //Draw the background
+                context.beginPath();
+                context.rect(0,0,900,600);
+                context.fillStyle = "#007C59";
+                context.closePath();
+                context.fill();
+                
+                
+                //Draw the gold triangle
+                context.moveTo(0,72);
+                context.beginPath();
+                context.lineTo(342,300);
+                context.lineTo(0,528);
+                context.lineTo(0,72);
+                context.fillStyle = "#FCB514";
+                context.closePath();
+                context.fill();
+                
+                //Draw the black triangle
+                
+                context.moveTo(0,120);
+                context.beginPath();
+                context.lineTo(270,300);
+                context.lineTo(0,480);
+                context.lineTo(0,120);
+                context.fillStyle = "#000000";
+                context.closePath();
+                context.fill();
+                
+                
+                //Draw the upper white paralleogram
+                
+                context.moveTo(108,0);
+                context.beginPath();
+                context.lineTo(2*(54+36+150),240);
+                context.lineTo(900,240);
+                context.lineTo(900,0);
+                context.lineTo(108,0);
+                context.fillStyle = "#ffffff";
+                context.closePath();
+                context.fill();
+                
+                //Draw the upper red paralleogram;
+                context.moveTo(180,0);
+                context.beginPath();
+                context.lineTo(480,200);
+                context.lineTo(900,200);
+                context.lineTo(900,0);
+                context.lineTo(180,0);
+                context.fillStyle = "#E23D28";
+                context.closePath();
+                context.fill();
+                
+                
+                //Draw the lower white paralleogram
+                
+                context.moveTo(108,600);
+                context.beginPath();
+                context.lineTo(2*(54+36+150),360);
+                context.lineTo(900,360);
+                context.lineTo(900,600);
+                context.lineTo(108,600);
+                context.fillStyle = "#ffffff";
+                context.closePath();
+                context.fill();
+                
+                //Draw the lower blue paralleogram;
+                context.moveTo(180,600);
+                context.beginPath();
+                context.lineTo(480,400);
+                context.lineTo(900,400);
+                context.lineTo(900,600);
+                context.lineTo(180,600);
+                context.fillStyle = "#0C1C8C";
+                context.closePath();
+                context.fill();
+                
+            
+                
+                
+            }
+        </script>
+    </head>
+    <body>
+        <canvas id="mycanvas" height="600px" width="900px"></canvas>
+        <br />
+        <button onclick="drawFlag()">Draw Flag</button>
+    </body> 
+</html>

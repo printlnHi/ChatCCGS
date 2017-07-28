@@ -1,0 +1,3 @@
+password = input("password:")
+f = open(password+".txt",'w')
+f.close()

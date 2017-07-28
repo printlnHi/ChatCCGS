@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+        function drawCanvas(){
+            var canvas = document.getElementById("mycanvas");
+            var context = canvas.getContext("2d");
+            context.beginPath();
+            context.moveTo(75,100);
+            context.lineTo(500,450);
+            context.lineTo(100,300);
+            context.lineTo(75,100);
+            context.stroke();
+            
+            context.lineWidth = 18;
+            context.strokeStyle = "#308014";
+            context.beginPath();
+            context.moveTo(30,10);
+            context.lineTo(30,590);
+            context.stroke();
+            
+        }
+        </script>
+    </head>
+    
+    <body>
+        <canvas id="mycanvas" height="600px" width="600px"></canvas>
+        <br />
+        <button onclick="drawCanvas()">Play Game</button>
+    </body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            canvas {
+                border: solid black 1px;
+                border-style: solid;
+                border-color:  black;
+                border-width: 1px;
+            }
+        </style>
+        <script>
+            var canvas, context;
+            var balls, squares;
+            var ball1, ball2, square1, square2;
+            var intervalId;
+            
+            function  startAnimation(){
+                initaliseAnimation();
+                intervalId = setInterval(drawAnimation, 30);
+            }
+            
+            
+            function initaliseAnimation(){
+                canvas = document.getElementById("canvas");
+                context = canvas.getContext("2d");
+                
+                ball1 = new Ball(50, 50, 1, 2, 10, "red");
+                ball2 = new Ball(100, 100, 2, -1, 15, "pink");
+                square1 = new Square(10, 390, 5, 5, 5, "purple");
+                square2 = new Square(200, 200, 3, 1, 20, "blue");
+                
+                balls = Array(0);
+                
+                for (var i = 20; i<120; i+=20){
+                    balls.push(new Ball(i+30, 100 + i, (i/20), (i/10) - 3, i%60 + 10, "orange"));
+                }
+                
+                
+                squares = Array(0);
+                
+                for (var i = 0; i<5; i++){
+                    squares.push(new Square(40 + 19*i, 400 - (40 + 19*i), i, 3-i, 11 + 6*i, "green" ) );
+                }
+            }
+            
+            function drawAnimation(){
+                context.clearRect(0, 0, 400, 400);
+                ball1.drawBall();
+                ball2.drawBall();
+                square1.drawSquare();
+                square2.drawSquare();
+                
+                ball1.moveBall();
+                ball2.moveBall();
+                square1.moveSquare();
+                square2.moveSquare();
+                
+                for (var i = 0; i<5; i++){
+                    balls[i].drawBall();
+                    balls[i].moveBall();
+                    squares[i].drawSquare();
+                    squares[i].moveSquare();
+                }
+                
+            }
+            
+            function stopAnimation(){
+                clearInterval(intervalId);
+            }
+            
+            function Ball(x, y, dx, dy, radius, colour){
+                this.x = x;
+                this.y = y;
+                this.dx = dx;
+                this.dy = dy;
+                this.radius = radius
+                this.colour = colour;
+            
+                
+                this.drawBall = function(){
+                    context.beginPath();
+                    context.arc(this.x, this.y, this.radius, 0, Math.PI*2, false);
+                    context.fillStyle = this.colour;
+                    context.fill();
+                    context.closePath();
+                }
+                
+                this.moveBall = function(){
+                    this.dx = modifyDirection(this.dx, this.radius, this.x, true);
+                    this.dy = modifyDirection(this.dy, this.radius, this.y, true);
+                    
+                    this.x += this.dx;
+                    this.y += this.dy;
+                }
+            }
+            
+            function Square(x, y, dx, dy, size, colour){
+                this.x = x; //the centre of the square
+                this.y = y; //the centre of the square
+                this.dx = dx;
+                this.dy = dy;
+                this.size = size;
+                this.colour = colour;
+                
+                this.drawSquare = function(){
+                    context.beginPath();
+                    context.rect(this.x-(this.size/2), this.y-(this.size/2), this.size, this.size);
+                    context.fillStyle = this.colour;
+                    context.fill();
+                    context.closePath();
+                }
+                
+                this.moveSquare = function(){
+                    this.dx = modifyDirection(this.dx, this.size/2, this.x, true);
+                    this.dy = modifyDirection(this.dy, this.size/2, this.y, true);
+                    
+                    this.x += this.dx;
+                    this.y += this.dy;
+                }
+            }
+            
+            function modifyDirection(rateOfChange,radius,coordinate, isCentre){
+                if (! isCentre){
+                    coordinate+=radius;
+                }
+                if (radius > coordinate || 400-radius<coordinate){
+                    return rateOfChange*-1;
+                }
+                
+                return rateOfChange;
+            }
+        
+            
+        </script>
+    </head>
+    <body>
+        <canvas id="canvas" height="400px" width="400px"></canvas>
+        <br />
+        <button onclick="startAnimation()"> Start Animation</button>
+        <button onclick="stopAnimation()"> Stop Animation</button>
+    </body> 
+</html>

@@ -1,5 +1,5 @@
 '''
-    createcsvdata1.0.py
+    createcsvdata2.0.py
     
     A program to create some test data for the ChatCCGS server.
     This is a basic level of data, with 200 students and 2 classes, each with 100 students.
@@ -9,7 +9,7 @@
     
     By N. Patrikeos on 28 Jul 17
     
-'''
+    '''
 
 from random import randint
 import csv
@@ -47,16 +47,16 @@ def createStudents():
             c_class = '10EN2'
         
         studentID = None
-        while studentID in studentIDs or studentID is None:
+        while studentID in studentIDs and studentID is None:
             studentID = randint(100, 400)
         
         studentIDs.append(studentID)
         students.append(Student(studentID, line.strip(), [c_class]))
         
         counter += 1
-
+    
     return students
-                        
+
 
 def convertDictValsToStr(d):
     # Helper function to assist with the writing of a dictionary to the .csv files
@@ -79,24 +79,24 @@ def createClasses(students):
         else:
             en2Students.append(student.ID)
 
-    return [Class('10ENE1', en1Students), Class('10EN2', en2Students)]
+return [Class('10ENE1', en1Students), Class('10EN2', en2Students)]
 
 
 def writeToCSV(students, classes):
     # Writes the data of students and classes to seperate csv files
     #### To be updated as the classes and students table may end up being seperate
-
+    
     studentWriter = csv.DictWriter(open('studentData.csv', 'w'), fieldnames=["ID", "name", "classes"])
     studentWriter.writeheader()
-
+    
     for student in students:
         studentWriter.writerow(convertDictValsToStr(student.__dict__))
 
     classWriter = csv.DictWriter(open('classData.csv', 'w'), fieldnames=["code", "students"])
     classWriter.writeheader()
 
-    for c in classes:
-        classWriter.writerow(convertDictValsToStr(c.__dict__))
+for c in classes:
+    classWriter.writerow(convertDictValsToStr(c.__dict__))
 
 if __name__ == '__main__':
     students = createStudents()

@@ -5,13 +5,16 @@
     This is a basic level of data, with 200 students and 2 classes, each with 100 students.
     No student is in more than one class.
     
+    This program is an update to 1.0, and now assigns students to 4 classes.
+    Each class has 50 students and there are 16 different classes.
+    
     Sections to be updated in later versions are commented.
     
-    By N. Patrikeos on 28 Jul 17
+    By N. Patrikeos on 29 Jul 17
     
     '''
 
-from random import randint
+from random import randint, choice
 import csv
 
 f_in = open('names.txt').readlines()
@@ -26,35 +29,42 @@ class Student(object):
 
 class Class(object):
     # Base object model for a class
+    ### to be updated to have class subject as well...
     
     def __init__(self, code, students):
         self.code = code
         self.students = students
 
+
 def createStudents():
-    # Creates the array of students based off the names in names.txt
-    ##### TO BE UPDATED
+    # Creates the array of students
     
-    counter = 0
-    c_class = '10ENE1'
-    
+    counter1 = 0
+    counter2 = 0
+    class_bases = [["10EN1", "10EN2", "10EN3", "10EN4"], ["10MS1", "10MS2", "10MS3", "10MS4"],
+                   ["10GY1", "10CE2", "10HY3", "10GP1"], ["10CH1", "10BY2", "10PH3", "10APH4"]]
+
     students = []
     studentIDs = []
     
     for line in f_in:
         
-        if counter > 100:
-            c_class = '10EN2'
-        
         studentID = None
-        while studentID in studentIDs and studentID is None:
+        studentClasses = class_bases[counter1]
+        
+        while studentID in studentIDs or studentID is None:
             studentID = randint(100, 400)
         
         studentIDs.append(studentID)
-        students.append(Student(studentID, line.strip(), [c_class]))
+
+        students.append(Student(studentID, line.strip(), studentClasses))
         
-        counter += 1
-    
+        counter2 += 1
+        
+        if counter2 == 50:
+            counter1 += 1
+            counter2 = 0
+
     return students
 
 
@@ -67,19 +77,30 @@ def convertDictValsToStr(d):
     return d
 
 def createClasses(students):
-    # Creates the array of classes
-    # TO BE UPDATED
-    
-    en1Students = []
-    en2Students = []
-    
-    for student in students:
-        if student.classes[0] == '10ENE1':
-            en1Students.append(student.ID)
-        else:
-            en2Students.append(student.ID)
+    classes = []
 
-return [Class('10ENE1', en1Students), Class('10EN2', en2Students)]
+    for student in students:
+        for c in student.classes:
+            i = isinClasses(c, classes)
+            if i is not None:
+                classes[i].students.append(student.ID)
+            else:
+                classes.append(Class(c, [student.ID]))
+
+    return classes
+
+def isinClasses(c, classes):
+    # Checks if a given class code is existing in a given classes, if so returns the index
+    
+    i = 0
+    
+    for cl in classes:
+        if cl.code == c:
+            return i
+        i += 1
+
+    return None
+
 
 
 def writeToCSV(students, classes):
@@ -95,10 +116,11 @@ def writeToCSV(students, classes):
     classWriter = csv.DictWriter(open('classData.csv', 'w'), fieldnames=["code", "students"])
     classWriter.writeheader()
 
-for c in classes:
-    classWriter.writerow(convertDictValsToStr(c.__dict__))
+    for c in classes:
+        classWriter.writerow(convertDictValsToStr(c.__dict__))
 
 if __name__ == '__main__':
+
     students = createStudents()
     classes = createClasses(students)
     writeToCSV(students, classes)

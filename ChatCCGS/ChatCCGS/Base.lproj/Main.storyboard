@@ -31,7 +31,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Settings" id="OfT-de-jLx"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="SettingsIcon" id="OfT-de-jLx"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="250-Gh-GYO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -113,4 +113,7 @@
             <point key="canvasLocation" x="-1595" y="-152"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="SettingsIcon" width="25" height="25"/>
+    </resources>
 </document>

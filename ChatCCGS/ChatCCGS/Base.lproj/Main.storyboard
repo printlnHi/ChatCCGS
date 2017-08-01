@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C68" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="ipad9_7" orientation="landscape">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -18,14 +19,32 @@
                         <viewControllerLayoutGuide type="bottom" id="sx2-gC-SFM"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="wjl-qk-kz4">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                        <rect key="frame" x="0.0" y="0.0" width="703" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KMd-yR-Gcb">
-                                <rect key="frame" x="0.0" y="0.0" width="1024" height="44"/>
+                                <rect key="frame" x="0.0" y="0.0" width="703" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
-                                    <navigationItem title="Settings" id="ElN-0n-oDC"/>
+                                    <navigationItem title="Settings" id="ElN-0n-oDC">
+                                        <leftBarButtonItems>
+                                            <barButtonItem title="Settings" id="vRo-S7-KFv">
+                                                <connections>
+                                                    <segue destination="QVN-NP-KB2" kind="showDetail" id="Sak-HH-oqp"/>
+                                                </connections>
+                                            </barButtonItem>
+                                            <barButtonItem title="Recents" id="kfp-y9-kHZ">
+                                                <connections>
+                                                    <segue destination="BYZ-38-t0r" kind="showDetail" id="2Yj-uH-EL7"/>
+                                                </connections>
+                                            </barButtonItem>
+                                            <barButtonItem title="Contacts" id="dbN-bh-epU">
+                                                <connections>
+                                                    <segue destination="4Te-ZT-Vwy" kind="showDetail" id="iaK-TS-Pll"/>
+                                                </connections>
+                                            </barButtonItem>
+                                        </leftBarButtonItems>
+                                    </navigationItem>
                                 </items>
                             </navigationBar>
                         </subviews>
@@ -34,7 +53,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="250-Gh-GYO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="25" y="-667"/>
+            <point key="canvasLocation" x="90" y="-658"/>
         </scene>
         <!--Recents View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -45,14 +64,32 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                        <rect key="frame" x="0.0" y="0.0" width="703" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9lu-tf-kbn">
-                                <rect key="frame" x="0.0" y="0.0" width="1024" height="44"/>
+                                <rect key="frame" x="0.0" y="0.0" width="703" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
-                                    <navigationItem title="Recents" id="b22-28-Pun"/>
+                                    <navigationItem title="Recents" id="b22-28-Pun">
+                                        <leftBarButtonItems>
+                                            <barButtonItem title="Settings" id="TtF-u1-AOX">
+                                                <connections>
+                                                    <segue destination="QVN-NP-KB2" kind="showDetail" action="showViewController:sender:" id="4fQ-a6-v0m"/>
+                                                </connections>
+                                            </barButtonItem>
+                                            <barButtonItem title="Recents" id="Z3i-Kl-cCl">
+                                                <connections>
+                                                    <segue destination="BYZ-38-t0r" kind="showDetail" id="EnV-o0-Jc7"/>
+                                                </connections>
+                                            </barButtonItem>
+                                            <barButtonItem title="Contacts" id="QhA-ME-VLJ">
+                                                <connections>
+                                                    <segue destination="4Te-ZT-Vwy" kind="showDetail" id="SP3-dG-I6l"/>
+                                                </connections>
+                                            </barButtonItem>
+                                        </leftBarButtonItems>
+                                    </navigationItem>
                                 </items>
                             </navigationBar>
                         </subviews>
@@ -71,14 +108,32 @@
                         <viewControllerLayoutGuide type="bottom" id="jRc-ab-KpG"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="tpA-j8-G5N">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                        <rect key="frame" x="0.0" y="0.0" width="703" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SVj-Vf-Kj1">
-                                <rect key="frame" x="0.0" y="0.0" width="1024" height="44"/>
+                                <rect key="frame" x="0.0" y="0.0" width="703" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
-                                    <navigationItem title="Contacts" id="red-1C-Vx9"/>
+                                    <navigationItem title="Contacts" id="red-1C-Vx9">
+                                        <leftBarButtonItems>
+                                            <barButtonItem title="Settings" id="Xto-a0-WF9">
+                                                <connections>
+                                                    <segue destination="QVN-NP-KB2" kind="showDetail" id="t8G-Y0-rfM"/>
+                                                </connections>
+                                            </barButtonItem>
+                                            <barButtonItem title="Recents" id="4vD-XP-eS6">
+                                                <connections>
+                                                    <segue destination="BYZ-38-t0r" kind="showDetail" id="Isb-pS-IK9"/>
+                                                </connections>
+                                            </barButtonItem>
+                                            <barButtonItem title="Contacts" id="JkT-bf-QIi">
+                                                <connections>
+                                                    <segue destination="4Te-ZT-Vwy" kind="showDetail" id="zAl-ic-enY"/>
+                                                </connections>
+                                            </barButtonItem>
+                                        </leftBarButtonItems>
+                                    </navigationItem>
                                 </items>
                             </navigationBar>
                         </subviews>
@@ -90,4 +145,9 @@
             <point key="canvasLocation" x="25" y="731"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="t8G-Y0-rfM"/>
+        <segue reference="SP3-dG-I6l"/>
+        <segue reference="Isb-pS-IK9"/>
+    </inferredMetricsTieBreakers>
 </document>

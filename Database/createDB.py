@@ -15,8 +15,8 @@ def Create(filename):
                                 DROP TABLE IF EXISTS Archived;
                                 DROP TABLE IF EXISTS Students;
                                 DROP TABLE IF EXISTS Blocks;
-                                DROP TABLE IF EXISTS StudentList;
-                                DROP TABLE IF EXISTS Classes;""")
+                                DROP TABLE IF EXISTS Classes;
+                                DROP TABLE IF EXISTS Enrolments""")
             
             print("Declaring tables")
             cur.executescript("""CREATE TABLE Students(ID INT, password TEXT, name TEXT, PRIMARY KEY(ID));
@@ -34,7 +34,7 @@ def Create(filename):
 
                                 CREATE TABLE Classes(ID TEXT, PRIMARY KEY(ID));
 
-                                CREATE TABLE Enrolments(studentID INT, classID TEXT, ID INT, PRIMARY KEY(ID), FOREIGN KEY (classID)
+                                CREATE TABLE Enrolments(ID INT, studentID INT, classID TEXT, PRIMARY KEY(ID), FOREIGN KEY (classID)
                                 REFERENCES Classes(ID), FOREIGN KEY (studentID) REFERENCES Students(ID));""")
 
             print("Tables declared. Committing")

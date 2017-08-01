@@ -14,6 +14,7 @@
 		83DFEED11F301847006AEE78 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83DFEECF1F301847006AEE78 /* LaunchScreen.storyboard */; };
 		83DFEEDC1F301847006AEE78 /* ChatCCGSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DFEEDB1F301847006AEE78 /* ChatCCGSTests.swift */; };
 		83DFEEE71F301848006AEE78 /* ChatCCGSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DFEEE61F301848006AEE78 /* ChatCCGSUITests.swift */; };
+		83E781521F301D7000F2A0F0 /* RecentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E781511F301D7000F2A0F0 /* RecentsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		83DFEEE21F301848006AEE78 /* ChatCCGSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChatCCGSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		83DFEEE61F301848006AEE78 /* ChatCCGSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCCGSUITests.swift; sourceTree = "<group>"; };
 		83DFEEE81F301848006AEE78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		83E781511F301D7000F2A0F0 /* RecentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +101,7 @@
 			children = (
 				83DFEEC61F301847006AEE78 /* AppDelegate.swift */,
 				83DFEEC81F301847006AEE78 /* ViewController.swift */,
+				83E781511F301D7000F2A0F0 /* RecentsViewController.swift */,
 				83DFEECA1F301847006AEE78 /* Main.storyboard */,
 				83DFEECD1F301847006AEE78 /* Assets.xcassets */,
 				83DFEECF1F301847006AEE78 /* LaunchScreen.storyboard */,
@@ -259,6 +262,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83E781521F301D7000F2A0F0 /* RecentsViewController.swift in Sources */,
 				83DFEEC91F301847006AEE78 /* ViewController.swift in Sources */,
 				83DFEEC71F301847006AEE78 /* AppDelegate.swift in Sources */,
 			);
@@ -417,6 +421,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = NPA.ChatCCGS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
 		};
@@ -429,6 +434,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = NPA.ChatCCGS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;
 		};
@@ -505,6 +511,7 @@
 				83DFEEED1F301848006AEE78 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		83DFEEEE1F301848006AEE78 /* Build configuration list for PBXNativeTarget "ChatCCGSTests" */ = {
 			isa = XCConfigurationList;
@@ -513,6 +520,7 @@
 				83DFEEF01F301848006AEE78 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		83DFEEF11F301848006AEE78 /* Build configuration list for PBXNativeTarget "ChatCCGSUITests" */ = {
 			isa = XCConfigurationList;
@@ -521,6 +529,7 @@
 				83DFEEF31F301848006AEE78 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

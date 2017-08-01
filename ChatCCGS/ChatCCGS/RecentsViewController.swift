@@ -8,8 +8,22 @@
 
 import UIKit
 
-class RecentsViewController: ViewController {
+class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDataSource {
 
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
+        print("used value from unfished function")
+        return 18
+    }
+    
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        print("used value from unfished function")
+        
+        let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ConversationCell")
+        cell.textLabel?.text = "Conversation Number \(indexPath.row)"
+        
+        return cell
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 

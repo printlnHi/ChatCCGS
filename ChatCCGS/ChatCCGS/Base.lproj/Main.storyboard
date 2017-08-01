@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="FG1-hC-PEZ">
     <device id="ipad9_7" orientation="landscape">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
-        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Settings View Controller-->
+        <!--Settings-->
         <scene sceneID="5kX-0l-1O3">
             <objects>
                 <viewController id="QVN-NP-KB2" customClass="SettingsViewController" customModule="ChatCCGS" customModuleProvider="target" sceneMemberID="viewController">
@@ -19,135 +18,99 @@
                         <viewControllerLayoutGuide type="bottom" id="sx2-gC-SFM"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="wjl-qk-kz4">
-                        <rect key="frame" x="0.0" y="0.0" width="703" height="768"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KMd-yR-Gcb">
-                                <rect key="frame" x="0.0" y="0.0" width="703" height="44"/>
+                                <rect key="frame" x="0.0" y="20" width="1024" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
-                                    <navigationItem title="Settings" id="ElN-0n-oDC">
-                                        <leftBarButtonItems>
-                                            <barButtonItem title="Settings" id="vRo-S7-KFv">
-                                                <connections>
-                                                    <segue destination="QVN-NP-KB2" kind="showDetail" id="Sak-HH-oqp"/>
-                                                </connections>
-                                            </barButtonItem>
-                                            <barButtonItem title="Recents" id="kfp-y9-kHZ">
-                                                <connections>
-                                                    <segue destination="BYZ-38-t0r" kind="showDetail" id="2Yj-uH-EL7"/>
-                                                </connections>
-                                            </barButtonItem>
-                                            <barButtonItem title="Contacts" id="dbN-bh-epU">
-                                                <connections>
-                                                    <segue destination="4Te-ZT-Vwy" kind="showDetail" id="iaK-TS-Pll"/>
-                                                </connections>
-                                            </barButtonItem>
-                                        </leftBarButtonItems>
-                                    </navigationItem>
+                                    <navigationItem title="Settings" id="ElN-0n-oDC"/>
                                 </items>
                             </navigationBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Settings" id="OfT-de-jLx"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="250-Gh-GYO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="90" y="-658"/>
-        </scene>
-        <!--Recents View Controller-->
-        <scene sceneID="tne-QT-ifu">
-            <objects>
-                <viewController id="BYZ-38-t0r" customClass="RecentsViewController" customModule="ChatCCGS" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
-                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="703" height="768"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9lu-tf-kbn">
-                                <rect key="frame" x="0.0" y="0.0" width="703" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <items>
-                                    <navigationItem title="Recents" id="b22-28-Pun">
-                                        <leftBarButtonItems>
-                                            <barButtonItem title="Settings" id="TtF-u1-AOX">
-                                                <connections>
-                                                    <segue destination="QVN-NP-KB2" kind="showDetail" action="showViewController:sender:" id="4fQ-a6-v0m"/>
-                                                </connections>
-                                            </barButtonItem>
-                                            <barButtonItem title="Recents" id="Z3i-Kl-cCl">
-                                                <connections>
-                                                    <segue destination="BYZ-38-t0r" kind="showDetail" id="EnV-o0-Jc7"/>
-                                                </connections>
-                                            </barButtonItem>
-                                            <barButtonItem title="Contacts" id="QhA-ME-VLJ">
-                                                <connections>
-                                                    <segue destination="4Te-ZT-Vwy" kind="showDetail" id="SP3-dG-I6l"/>
-                                                </connections>
-                                            </barButtonItem>
-                                        </leftBarButtonItems>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
-                        </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-            </objects>
+            <point key="canvasLocation" x="-866" y="627"/>
         </scene>
         <!--Contacts View Controller-->
-        <scene sceneID="puh-xS-BCZ">
+        <scene sceneID="vA4-Qf-JHC">
             <objects>
-                <viewController id="4Te-ZT-Vwy" customClass="ContactsViewController" customModule="ChatCCGS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Qxl-jR-C0b" customClass="ContactsViewController" customModule="ChatCCGS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Lf8-Dy-PKb"/>
-                        <viewControllerLayoutGuide type="bottom" id="jRc-ab-KpG"/>
+                        <viewControllerLayoutGuide type="top" id="Vc1-Ya-wig"/>
+                        <viewControllerLayoutGuide type="bottom" id="RR8-ff-6gk"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="tpA-j8-G5N">
-                        <rect key="frame" x="0.0" y="0.0" width="703" height="768"/>
+                    <view key="view" contentMode="scaleToFill" id="mcn-mc-rq2">
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SVj-Vf-Kj1">
-                                <rect key="frame" x="0.0" y="0.0" width="703" height="44"/>
+                                <rect key="frame" x="0.0" y="20" width="1024" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
-                                    <navigationItem title="Contacts" id="red-1C-Vx9">
-                                        <leftBarButtonItems>
-                                            <barButtonItem title="Settings" id="Xto-a0-WF9">
-                                                <connections>
-                                                    <segue destination="QVN-NP-KB2" kind="showDetail" id="t8G-Y0-rfM"/>
-                                                </connections>
-                                            </barButtonItem>
-                                            <barButtonItem title="Recents" id="4vD-XP-eS6">
-                                                <connections>
-                                                    <segue destination="BYZ-38-t0r" kind="showDetail" id="Isb-pS-IK9"/>
-                                                </connections>
-                                            </barButtonItem>
-                                            <barButtonItem title="Contacts" id="JkT-bf-QIi">
-                                                <connections>
-                                                    <segue destination="4Te-ZT-Vwy" kind="showDetail" id="zAl-ic-enY"/>
-                                                </connections>
-                                            </barButtonItem>
-                                        </leftBarButtonItems>
-                                    </navigationItem>
+                                    <navigationItem title="Contacts" id="red-1C-Vx9"/>
                                 </items>
                             </navigationBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <tabBarItem key="tabBarItem" systemItem="contacts" id="Pbw-hJ-edT"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="mf9-Qb-L3p" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="g1Y-HG-zBy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="25" y="731"/>
+            <point key="canvasLocation" x="-866" y="-152"/>
+        </scene>
+        <!--Recents View Controller-->
+        <scene sceneID="nDr-a1-dZp">
+            <objects>
+                <viewController id="N8L-65-yqp" customClass="RecentsViewController" customModule="ChatCCGS" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="k1Q-sZ-QxV"/>
+                        <viewControllerLayoutGuide type="bottom" id="8Bl-T9-4kP"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="BPi-l5-6EN">
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9lu-tf-kbn">
+                                <rect key="frame" x="0.0" y="20" width="1024" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem title="Recents" id="b22-28-Pun"/>
+                                </items>
+                            </navigationBar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" systemItem="recents" id="LGy-Jg-v8Z"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Mjm-B6-xtI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-866" y="-809"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="4ZU-xK-jkZ">
+            <objects>
+                <tabBarController id="FG1-hC-PEZ" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="PEs-mZ-I2s">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="N8L-65-yqp" kind="relationship" relationship="viewControllers" id="Jey-et-CJH"/>
+                        <segue destination="Qxl-jR-C0b" kind="relationship" relationship="viewControllers" id="Fa2-zj-0Sg"/>
+                        <segue destination="QVN-NP-KB2" kind="relationship" relationship="viewControllers" id="UPf-9E-7nq"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JsZ-JM-afR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1595" y="-152"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="t8G-Y0-rfM"/>
-        <segue reference="SP3-dG-I6l"/>
-        <segue reference="Isb-pS-IK9"/>
-    </inferredMetricsTieBreakers>
 </document>

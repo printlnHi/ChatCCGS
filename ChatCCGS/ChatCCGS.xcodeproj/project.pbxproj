@@ -15,6 +15,8 @@
 		83DFEEDC1F301847006AEE78 /* ChatCCGSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DFEEDB1F301847006AEE78 /* ChatCCGSTests.swift */; };
 		83DFEEE71F301848006AEE78 /* ChatCCGSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DFEEE61F301848006AEE78 /* ChatCCGSUITests.swift */; };
 		83E781521F301D7000F2A0F0 /* RecentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E781511F301D7000F2A0F0 /* RecentsViewController.swift */; };
+		83E781541F301E7A00F2A0F0 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E781531F301E7A00F2A0F0 /* SettingsViewController.swift */; };
+		83E781561F301E8D00F2A0F0 /* ContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E781551F301E8D00F2A0F0 /* ContactsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +51,8 @@
 		83DFEEE61F301848006AEE78 /* ChatCCGSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCCGSUITests.swift; sourceTree = "<group>"; };
 		83DFEEE81F301848006AEE78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		83E781511F301D7000F2A0F0 /* RecentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentsViewController.swift; sourceTree = "<group>"; };
+		83E781531F301E7A00F2A0F0 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		83E781551F301E8D00F2A0F0 /* ContactsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +105,8 @@
 			children = (
 				83DFEEC61F301847006AEE78 /* AppDelegate.swift */,
 				83DFEEC81F301847006AEE78 /* ViewController.swift */,
+				83E781531F301E7A00F2A0F0 /* SettingsViewController.swift */,
+				83E781551F301E8D00F2A0F0 /* ContactsViewController.swift */,
 				83E781511F301D7000F2A0F0 /* RecentsViewController.swift */,
 				83DFEECA1F301847006AEE78 /* Main.storyboard */,
 				83DFEECD1F301847006AEE78 /* Assets.xcassets */,
@@ -265,6 +271,8 @@
 				83E781521F301D7000F2A0F0 /* RecentsViewController.swift in Sources */,
 				83DFEEC91F301847006AEE78 /* ViewController.swift in Sources */,
 				83DFEEC71F301847006AEE78 /* AppDelegate.swift in Sources */,
+				83E781541F301E7A00F2A0F0 /* SettingsViewController.swift in Sources */,
+				83E781561F301E8D00F2A0F0 /* ContactsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

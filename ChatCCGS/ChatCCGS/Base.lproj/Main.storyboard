@@ -81,7 +81,13 @@
                                 <rect key="frame" x="0.0" y="20" width="1024" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
-                                    <navigationItem title="Recents" id="b22-28-Pun"/>
+                                    <navigationItem title="Recents" id="b22-28-Pun">
+                                        <barButtonItem key="rightBarButtonItem" image="PlusIcon" id="jfW-hY-fFT">
+                                            <connections>
+                                                <segue destination="6tT-cP-C4F" kind="presentation" id="7Ms-LV-NC4"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
                                 </items>
                             </navigationBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="olg-XL-ndt">
@@ -106,11 +112,40 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" systemItem="recents" id="LGy-Jg-v8Z"/>
+                    <tabBarItem key="tabBarItem" systemItem="recents" id="nhv-Nh-FaJ"/>
+                    <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mjm-B6-xtI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-866.015625" y="-809.375"/>
+        </scene>
+        <!--New Chat View Controller-->
+        <scene sceneID="ED2-SB-8xc">
+            <objects>
+                <viewController id="6tT-cP-C4F" customClass="NewChatViewController" customModule="ChatCCGS" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="87s-Ig-kcj"/>
+                        <viewControllerLayoutGuide type="bottom" id="k6u-Ob-Wrw"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="9Ch-4V-maa">
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KcQ-GT-EDl">
+                                <rect key="frame" x="0.0" y="20" width="1024" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem title="New Chat" id="u7f-bv-2JJ"/>
+                                </items>
+                            </navigationBar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="53q-x4-aeM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-43" y="-809"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="4ZU-xK-jkZ">
@@ -133,6 +168,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="PlusIcon" width="22" height="22"/>
         <image name="SettingsIcon" width="25" height="25"/>
     </resources>
 </document>

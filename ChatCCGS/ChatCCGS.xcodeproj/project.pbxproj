@@ -17,6 +17,7 @@
 		83E781521F301D7000F2A0F0 /* RecentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E781511F301D7000F2A0F0 /* RecentsViewController.swift */; };
 		83E781541F301E7A00F2A0F0 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E781531F301E7A00F2A0F0 /* SettingsViewController.swift */; };
 		83E781561F301E8D00F2A0F0 /* ContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E781551F301E8D00F2A0F0 /* ContactsViewController.swift */; };
+		C95239A61F30C21900417282 /* NewChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95239A51F30C21900417282 /* NewChatViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		83E781511F301D7000F2A0F0 /* RecentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentsViewController.swift; sourceTree = "<group>"; };
 		83E781531F301E7A00F2A0F0 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		83E781551F301E8D00F2A0F0 /* ContactsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsViewController.swift; sourceTree = "<group>"; };
+		C95239A51F30C21900417282 /* NewChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewChatViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +109,7 @@
 				83DFEEC81F301847006AEE78 /* ViewController.swift */,
 				83E781531F301E7A00F2A0F0 /* SettingsViewController.swift */,
 				83E781551F301E8D00F2A0F0 /* ContactsViewController.swift */,
+				C95239A51F30C21900417282 /* NewChatViewController.swift */,
 				83E781511F301D7000F2A0F0 /* RecentsViewController.swift */,
 				83DFEECA1F301847006AEE78 /* Main.storyboard */,
 				83DFEECD1F301847006AEE78 /* Assets.xcassets */,
@@ -269,6 +272,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				83E781521F301D7000F2A0F0 /* RecentsViewController.swift in Sources */,
+				C95239A61F30C21900417282 /* NewChatViewController.swift in Sources */,
 				83DFEEC91F301847006AEE78 /* ViewController.swift in Sources */,
 				83DFEEC71F301847006AEE78 /* AppDelegate.swift in Sources */,
 				83E781541F301E7A00F2A0F0 /* SettingsViewController.swift in Sources */,

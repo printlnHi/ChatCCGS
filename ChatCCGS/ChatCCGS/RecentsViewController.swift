@@ -24,6 +24,7 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
         return cell
     }
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -35,7 +36,6 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
         // Dispose of any resources that can be recreated.
     }
     
-
     /*
     // MARK: - Navigation
 

@@ -8,6 +8,54 @@
 
 import UIKit
 
+class Chat {
+    func getMessages() {}
+    func sendMessage() {}
+    func muteChat() {}
+    func deleteMessage() {}
+    func hideChat() {}
+}
+
+class IndividualChat : Chat {
+    var person1: String = ""
+    var person2: String = ""
+}
+
+class GroupChat : Chat {
+    var name: String = ""
+    var members = [Student]()
+}
+
+class CustomGroupChat : GroupChat {
+    func leaveChat() {}
+    func addMember() {}
+}
+
+class Message {
+    var dateStamp: NSDate? = nil
+    var author = ""
+    var recipient = ""
+    var group = ""
+}
+
+class TextMessage : Message {
+    var message = ""
+}
+
+class ImageMessage : Message {
+    var image: UIImage? = nil
+    func getUIImage() {}
+}
+
+class FileMessage: Message {
+    func getDownloadLink() {}
+}
+
+class Student {
+    var ID: Int? = nil
+    var name = ""
+}
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 

@@ -87,4 +87,4 @@ def Main(manual):
         AddDataFromCSVsToDB("test.db","Data/studentData.csv","Data/enrolmentData.csv","Data/classData.csv")
 
 if __name__ == "__main__":
-    Main(False)
+    Main(False) if input("Would you like to automatically input parameters? (Y/N) ") == "Y" else Main(True)

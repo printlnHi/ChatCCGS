@@ -9,6 +9,8 @@
 import UIKit
 
 class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDataSource {
+    @IBOutlet weak var GroupSegmentedControl: UISegmentedControl!
+    @IBOutlet weak var TableView: UITableView!
 
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
         print("used value from unfished function")
@@ -19,7 +21,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         print("used value from unfished function")
         
         let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ContactCell")
-        cell.textLabel?.text = "Contact Number\(indexPath.row)"
+        cell.textLabel?.text = "\((GroupSegmentedControl.selectedSegmentIndex==0 ? "Individual" : "Group")) Number \(indexPath.row)"
         
         return cell
     }
@@ -36,6 +38,9 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func GroupSegmentChanged(_ sender: Any) {
+        TableView.reloadData()
+    }
 
     /*
     // MARK: - Navigation

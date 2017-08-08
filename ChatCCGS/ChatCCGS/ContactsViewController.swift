@@ -20,7 +20,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         print("used value from unfished function")
         
-        let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ContactCell")
+        let cell = RecentsTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ContactCell")
         cell.textLabel?.text = "\((GroupSegmentedControl.selectedSegmentIndex==0 ? "Individual" : "Group")) Number \(indexPath.row)"
         
         return cell

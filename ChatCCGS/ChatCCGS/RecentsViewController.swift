@@ -58,6 +58,10 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
         }
     }
     
+    @IBAction func login() {
+        
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()

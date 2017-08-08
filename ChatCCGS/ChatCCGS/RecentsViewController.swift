@@ -8,6 +8,7 @@
 
 import UIKit
 import Alamofire
+import Foundation
 
 class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDataSource {
 
@@ -50,7 +51,7 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
         let user = "ccgs"
         let password = "1910"
         
-        Alamofire.request("http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/cgitest.py")
+        Alamofire.request("http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/cgitest2.py?user=1019913")
             .authenticate(user: user, password: password)
             .responseString { response in
                 debugPrint(response.result.value!)

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		83A47EA51F39533B00E4067D /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A47EA41F39533B00E4067D /* TableViewCell.swift */; };
 		83DFEEC71F301847006AEE78 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DFEEC61F301847006AEE78 /* AppDelegate.swift */; };
 		83DFEEC91F301847006AEE78 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DFEEC81F301847006AEE78 /* ViewController.swift */; };
 		83DFEECC1F301847006AEE78 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83DFEECA1F301847006AEE78 /* Main.storyboard */; };
@@ -39,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		83A47EA41F39533B00E4067D /* TableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		83DFEEC31F301847006AEE78 /* ChatCCGS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatCCGS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		83DFEEC61F301847006AEE78 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		83DFEEC81F301847006AEE78 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 				83E781551F301E8D00F2A0F0 /* ContactsViewController.swift */,
 				C95239A51F30C21900417282 /* NewChatViewController.swift */,
 				83E781511F301D7000F2A0F0 /* RecentsViewController.swift */,
+				83A47EA41F39533B00E4067D /* TableViewCell.swift */,
 				83DFEECA1F301847006AEE78 /* Main.storyboard */,
 				83DFEECD1F301847006AEE78 /* Assets.xcassets */,
 				83DFEECF1F301847006AEE78 /* LaunchScreen.storyboard */,
@@ -357,6 +360,7 @@
 				83DFEEC91F301847006AEE78 /* ViewController.swift in Sources */,
 				83DFEEC71F301847006AEE78 /* AppDelegate.swift in Sources */,
 				83E781541F301E7A00F2A0F0 /* SettingsViewController.swift in Sources */,
+				83A47EA51F39533B00E4067D /* TableViewCell.swift in Sources */,
 				83E781561F301E8D00F2A0F0 /* ContactsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

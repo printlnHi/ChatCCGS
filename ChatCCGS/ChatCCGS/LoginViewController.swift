@@ -43,9 +43,23 @@ class LoginViewController: ViewController {
         let tartarusUser = "ccgs"
         let tartarusPassword = "1910"
         
-        Alamofire.request("http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/loginValidate.py?user=" + username + "&password=" + password)
+        Alamofire.request("http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/validate.py?username=" + username + "&password=" + password)
             .authenticate(user: tartarusUser, password: tartarusPassword)
             .responseString { response in
+                switch response {
+                    case "100 Continue": break
+                        // Yay!
+                    case "400 Bad Request": break
+                        // Oh no
+                    case "401 Unauthorized": break
+                        // tell the user
+                case "Unprocessable Entity": break
+                        // tell the user
+                case "Internal Server Error": break
+                        // not happy
+                    
+                }
+                
                 debugPrint(response.result.value!)
         }
     }

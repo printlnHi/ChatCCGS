@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class LoginViewController: ViewController {
 
@@ -35,5 +36,17 @@ class LoginViewController: ViewController {
     */
 
     @IBAction func login(_ sender: Any) {
+        print("Login function called!")
+        let username = usernameField.text!
+        let password = passwordField.text!
+        
+        let tartarusUser = "ccgs"
+        let tartarusPassword = "1910"
+        
+        Alamofire.request("http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/loginValidate.py?user=" + username + "&password=" + password)
+            .authenticate(user: tartarusUser, password: tartarusPassword)
+            .responseString { response in
+                debugPrint(response.result.value!)
+        }
     }
 }

@@ -31,3 +31,17 @@ func request() {
             debugPrint(response.result.value!)
     }
 }
+
+@IBAction func login() {
+    let username = usernameField.text!
+    let password = passwordField.text!
+    
+    let tartarusUser = "ccgs"
+    let tartarusPassword = "1910"
+    
+    Alamofire.request("http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/cgitest2.py?user=1019913&password=" + password)
+        .authenticate(user: tartarusUser, password: tartarusPassword)
+        .responseString { response in
+            debugPrint(response.result.value!)
+    }
+}

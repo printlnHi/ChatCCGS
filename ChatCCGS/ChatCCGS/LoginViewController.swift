@@ -49,8 +49,13 @@ class LoginViewController: ViewController {
                 switch response.result.value! {
                     case "100 Continue\n": print("Yay!")
                         // Yay!
-                    //var newView: RecentsViewController = self.storyboard?.instantiateViewController(withIdentifier: "RecentsViewController") as! RecentsViewController
-                      //  self.navigationController?.pushViewController(newView, animated: true)
+                    /*
+                    var newView: RecentsViewController = self.storyboard?.instantiateViewController(withIdentifier: "recentsScene") as! RecentsViewController
+                    print(newView)
+                      self.navigationController?.pushViewController(newView, animated: true)*/
+                    
+                    self.performSegue(withIdentifier: "loggingIn", sender: nil)
+                    
                     case "400 Bad Request\n": break
                         // Oh no
                     case "401 Unauthorized\n": break

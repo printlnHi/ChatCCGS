@@ -86,7 +86,7 @@
         <!--Recents-->
         <scene sceneID="nDr-a1-dZp">
             <objects>
-                <viewController title="Recents" id="N8L-65-yqp" customClass="RecentsViewController" customModule="ChatCCGS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="recentsScene" title="Recents" id="N8L-65-yqp" customClass="RecentsViewController" customModule="ChatCCGS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="k1Q-sZ-QxV"/>
                         <viewControllerLayoutGuide type="bottom" id="8Bl-T9-4kP"/>
@@ -104,7 +104,7 @@
                                         <rect key="frame" x="0.0" y="28" width="1024" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Dje-uV-k0n" id="fqF-1m-eAj">
-                                            <rect key="frame" x="0.0" y="0.0" width="1024" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="1024" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -206,11 +206,12 @@
                     <connections>
                         <outlet property="PasswordField" destination="obv-fa-OBN" id="VPT-99-6q2"/>
                         <outlet property="UsernameField" destination="LGr-Ny-zKD" id="rxA-gb-Q8M"/>
+                        <segue destination="FG1-hC-PEZ" kind="presentation" identifier="loggingIn" id="W3C-bi-FDS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="j23-vS-jOy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2453.3203125" y="-139.0625"/>
+            <point key="canvasLocation" x="-1547" y="-892"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="4ZU-xK-jkZ">
@@ -229,7 +230,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JsZ-JM-afR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1595" y="-152"/>
+            <point key="canvasLocation" x="-1547" y="-152"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="dia-ry-PL7">

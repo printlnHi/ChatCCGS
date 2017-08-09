@@ -19,22 +19,22 @@ def Create(filename):
                                 DROP TABLE IF EXISTS Enrolments""")
             
             print("Declaring tables")
-            cur.executescript("""CREATE TABLE Students(ID INT, password TEXT, name TEXT, PRIMARY KEY(ID));
+            cur.executescript("""CREATE TABLE Students(ID INTEGER PRIMARY KEY AUTOINCREMENT, password TEXT, name TEXT);
 
-                                CREATE TABLE Archived(ID INT, content TEXT, datestamp TEXT,
-                                authorID INT, recipientID INT, PRIMARY KEY (ID), FOREIGN KEY(authorID)
+                                CREATE TABLE Archived(ID INTEGER PRIMARY KEY AUTOINCREMENT, content TEXT, datestamp TEXT,
+                                authorID INT, recipientID INT, FOREIGN KEY(authorID)
                                 REFERENCES Students(ID), FOREIGN KEY (recipientID) REFERENCES Students(ID));
                                 
-                                CREATE TABLE Messages(ID INT, content TEXT, datestamp TEXT,
-                                authorID INT, recipientID INT, PRIMARY KEY (ID), FOREIGN KEY(authorID)
+                                CREATE TABLE Messages(ID INTEGER PRIMARY KEY AUTOINCREMENT, content TEXT, datestamp TEXT,
+                                authorID INT, recipientID INT, FOREIGN KEY(authorID)
                                 REFERENCES Students(ID), FOREIGN KEY (recipientID) REFERENCES Students(ID));
 
-                                CREATE TABLE Blocks(blockID INT, blockerID INT, blockedID INT, PRIMARY KEY(blockID),
+                                CREATE TABLE Blocks(blockID INTEGER PRIMARY KEY AUTOINCREMENT, blockerID INT, blockedID INT,
                                 FOREIGN KEY (blockerID) REFERENCES Students(ID), FOREIGN KEY (blockedID) REFERENCES Students(ID));
 
                                 CREATE TABLE Classes(ID TEXT, PRIMARY KEY(ID));
 
-                                CREATE TABLE Enrolments(ID INT, studentID INT, classID TEXT, PRIMARY KEY(ID), FOREIGN KEY (classID)
+                                CREATE TABLE Enrolments(ID INTEGER PRIMARY KEY AUTOINCREMENT, studentID INT, classID TEXT, FOREIGN KEY (classID)
                                 REFERENCES Classes(ID), FOREIGN KEY (studentID) REFERENCES Students(ID));""")
 
             print("Tables declared. Committing")

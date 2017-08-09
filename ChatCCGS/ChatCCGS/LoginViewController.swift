@@ -48,18 +48,20 @@ class LoginViewController: ViewController {
             .responseString { response in
                 switch response.result.value! {
                     case "100 Continue\n": print("Yay!")
-                        // Yay!
-                    /*
-                    var newView: RecentsViewController = self.storyboard?.instantiateViewController(withIdentifier: "recentsScene") as! RecentsViewController
-                    print(newView)
-                      self.navigationController?.pushViewController(newView, animated: true)*/
                     
-                    self.performSegue(withIdentifier: "loggingIn", sender: nil)
+                        self.performSegue(withIdentifier: "loggingIn", sender: nil)
                     
-                    case "400 Bad Request\n": break
-                        // Oh no
-                    case "401 Unauthorized\n": break
-                        // tell the user
+                    case "400 Bad Request\n":
+                        break
+                    case "401 Unauthorized\n":
+                        let alert = UIAlertController(title:"Authentication Failed", message: "Your username or password was incorrect.", preferredStyle:.alert)
+                        let action = UIAlertAction(title:"OK", style:.default, handler:nil)
+                        
+                        self.passwordField.text! = ""
+                        
+                        alert.addAction(action)
+                        self.present(alert, animated: true, completion: nil)
+                    
                 case "Unprocessable Entity\n": break
                         // tell the user
                 case "Internal Server Error\n": break

@@ -43,21 +43,21 @@ class LoginViewController: ViewController {
         let tartarusUser = "ccgs"
         let tartarusPassword = "1910"
         
-        Alamofire.request("http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/validate.py?username=" + username + "&password=" + password)
+        Alamofire.request("http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/validate.py?username=" + username + "&password=" + password)
             .authenticate(user: tartarusUser, password: tartarusPassword)
             .responseString { response in
-                switch String(describing: response) {
-                    case "100 Continue":
+                switch response.result.value! {
+                    case "100 Continue\n": print("Yay!")
                         // Yay!
-                    var newView: RecentsViewController = self.storyboard?.instantiateViewController(withIdentifier: "RecentsViewController") as! RecentsViewController
-                        self.navigationController?.pushViewController(newView, animated: true)
-                    case "400 Bad Request": break
+                    //var newView: RecentsViewController = self.storyboard?.instantiateViewController(withIdentifier: "RecentsViewController") as! RecentsViewController
+                      //  self.navigationController?.pushViewController(newView, animated: true)
+                    case "400 Bad Request\n": break
                         // Oh no
-                    case "401 Unauthorized": break
+                    case "401 Unauthorized\n": break
                         // tell the user
-                case "Unprocessable Entity": break
+                case "Unprocessable Entity\n": break
                         // tell the user
-                case "Internal Server Error": break
+                case "Internal Server Error\n": break
                         // not happy
                 default: break
                     

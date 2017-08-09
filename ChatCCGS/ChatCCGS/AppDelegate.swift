@@ -8,6 +8,8 @@
 
 import UIKit
 import Alamofire
+import Realm
+import RealmSwift
 
 class Chat {
     func getMessages() {}

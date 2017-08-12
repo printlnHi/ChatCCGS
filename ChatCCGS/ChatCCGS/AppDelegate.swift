@@ -11,7 +11,7 @@ import Alamofire
 import Realm
 import RealmSwift
 
-class Chat {
+class Chat : Object {
     func getMessages() {}
     func sendMessage() {}
     func muteChat() {}

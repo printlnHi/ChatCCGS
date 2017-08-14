@@ -24,6 +24,8 @@ class TableViewCell: UITableViewCell {
 }
 
 class RecentsTableViewCell: TableViewCell {
+    @IBOutlet weak var GroupName: UILabel!
+    @IBOutlet weak var Preview: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

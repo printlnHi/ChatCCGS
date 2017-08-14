@@ -13,20 +13,19 @@ import RealmSwift
 
 class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDataSource {
     
-    //let recentChats = getRecentChats()
 
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
         print("used value from unfished function")
-        return 18
+        return getRecentChats().count
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         print("used value from unfished function")
         
-        print(getRecentChats())
+        let chat = getRecentChats()[indexPath.row]
         
-        let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ConversationCell")
-        cell.textLabel?.text = "Conversation Number \(indexPath.row)"
+        let cell = RecentsTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ConversationCell")
+        cell.chatName = chat.getName()
         
         return cell
     }

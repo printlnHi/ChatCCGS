@@ -17,16 +17,23 @@ class Chat : Object {
     func muteChat() {}
     func deleteMessage() {}
     func hideChat() {}
+    func getName() -> String{}
 }
 
 class IndividualChat : Chat {
     var person1: String = ""
     var person2: String = ""
+    func getName() -> String{
+        return person2
+    }
 }
 
 class GroupChat : Chat {
     var name: String = ""
     var members = [Student]()
+    func getName() -> String{
+        return name
+    }
 }
 
 class CustomGroupChat : GroupChat {

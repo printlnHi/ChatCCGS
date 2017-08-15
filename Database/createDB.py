@@ -22,11 +22,11 @@ def Create(filename):
             cur.executescript("""CREATE TABLE Students(ID INTEGER PRIMARY KEY AUTOINCREMENT, password TEXT, name TEXT);
 
                                 CREATE TABLE Archived(ID INTEGER PRIMARY KEY AUTOINCREMENT, content TEXT, datestamp TEXT,
-                                authorID INT, recipientID INT, FOREIGN KEY(authorID)
+                                authorID INT, recipientID INT, groupID TEXT, customGroup INT, FOREIGN KEY(authorID)
                                 REFERENCES Students(ID), FOREIGN KEY (recipientID) REFERENCES Students(ID));
                                 
                                 CREATE TABLE Messages(ID INTEGER PRIMARY KEY AUTOINCREMENT, content TEXT, datestamp TEXT,
-                                authorID INT, recipientID INT, FOREIGN KEY(authorID)
+                                authorID INT, recipientID INT, groupID TEXT, customGroup INT, FOREIGN KEY(authorID)
                                 REFERENCES Students(ID), FOREIGN KEY (recipientID) REFERENCES Students(ID));
 
                                 CREATE TABLE Blocks(blockID INTEGER PRIMARY KEY AUTOINCREMENT, blockerID INT, blockedID INT,

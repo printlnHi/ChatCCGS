@@ -28,7 +28,7 @@ def AddDataFromCSVsToDB(filename, studentCSV, enrolmentCSV, classCSV):
 
         print("Inserting data")
 
-        cur.executemany("INSERT INTO Students(ID, name) VALUES(?,?);",records)
+        cur.executemany("INSERT INTO Students(ID, name, password) VALUES(?,?,?);",records)
 
         #Enrolment CSV
 

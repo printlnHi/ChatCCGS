@@ -22,10 +22,11 @@ f_in = open('names.txt').readlines()
 class Student(object):
     # Base object model for a student
     
-    def __init__(self, ID, name, classes):
+    def __init__(self, ID, name, password, classes):
         self.ID = ID
         self.name = name
         self.classes = classes
+        self.password = password
 
 class Class(object):
     # Base object model for a class
@@ -57,7 +58,7 @@ def createStudents():
         
         studentIDs.append(studentID)
 
-        students.append(Student(studentID, line.strip(), studentClasses))
+        students.append(Student(studentID, line.strip(), 'password123', studentClasses))
         
         counter2 += 1
         
@@ -107,7 +108,7 @@ def writeToCSV(students, classes):
     # Writes the data of students and classes to seperate csv files
     #### To be updated as the classes and students table may end up being seperate
     
-    studentWriter = csv.DictWriter(open('studentData.csv', 'w'), fieldnames=["ID", "name", "classes"])
+    studentWriter = csv.DictWriter(open('studentData.csv', 'w'), fieldnames=["ID", "name", "password", "classes"])
     studentWriter.writeheader()
     
     for student in students:
@@ -123,4 +124,6 @@ if __name__ == '__main__':
 
     students = createStudents()
     classes = createClasses(students)
+    print(students)
+    print(classes)
     writeToCSV(students, classes)

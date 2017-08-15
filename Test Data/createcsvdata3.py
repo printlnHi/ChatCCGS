@@ -41,12 +41,12 @@ def writeToCSV2(students, classes, enrolments):
     fclasses = []
     
     for student in students:
-        fstudents.append({'ID':str(student.ID), 'name':student.name})
+        fstudents.append({'ID':str(student.ID), 'name':student.name, 'password':student.password})
     
     for c in classes:
         fclasses.append({'ID':c.code})
         
-    studentWriter = csv.DictWriter(open('studentData.csv', 'w'), fieldnames=["ID", "name"])
+    studentWriter = csv.DictWriter(open('studentData.csv', 'w'), fieldnames=["ID", "name", "password"])
     studentWriter.writeheader()
 
     for student in fstudents:

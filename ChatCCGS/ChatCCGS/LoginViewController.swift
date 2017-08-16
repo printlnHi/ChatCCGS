@@ -9,6 +9,7 @@
 import UIKit
 import Alamofire
 import RealmSwift
+import Realm
 
 class LoginViewController: ViewController {
 
@@ -44,6 +45,8 @@ class LoginViewController: ViewController {
         let tartarusUser = "ccgs"
         let tartarusPassword = "1910"
         
+        let realm = try! Realm()
+        
         Alamofire.request("http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/validate.py?username=" + username + "&password=" + password)
             .authenticate(user: tartarusUser, password: tartarusPassword)
             .responseString { response in
@@ -51,8 +54,12 @@ class LoginViewController: ViewController {
                     case "100 Continue\n":
                         print("Yay!")
                         
-                        let realm = try! Realm()
                         
+                        /*
+                        try! realm.write {
+                            realm.deleteAll()
+                        }
+                        print("ok")
                         let student = realm.objects(Student.self).first
                         
                         // let c_student = Student(ID: username)
@@ -60,7 +67,7 @@ class LoginViewController: ViewController {
                         try! realm.write {
                             student!.ID = username
                         }
-                    
+                        */
                         self.performSegue(withIdentifier: "loggingIn", sender: nil)
                     
                     case "400 Bad Request\n":

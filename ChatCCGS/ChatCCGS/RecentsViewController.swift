@@ -25,14 +25,14 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
         let chat = getRecentChats()[indexPath.row]
         
         let cell = RecentsTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ConversationCell")
-        cell.chatName = chat.getName()
+        //cell.chatName = chat.getName()
         
         
         return cell
     }
     
     public func tableView(_: UITableView, didSelectRowAt: IndexPath){
-        let selectedChat = getRecentsChats()[didSelectRowAt.row];
+        //let selectedChat = getRecentsChats()[didSelectRowAt.row];
     }
     
     func getRecentChats() -> [Chat] {

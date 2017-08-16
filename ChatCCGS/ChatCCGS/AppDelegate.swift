@@ -17,13 +17,13 @@ class Chat : Object {
     func muteChat() {}
     func deleteMessage() {}
     func hideChat() {}
-    func getName() -> String{}
+    func getName() -> String{ return ""}
 }
 
 class IndividualChat : Chat {
     var person1: String = ""
     var person2: String = ""
-    func getName() -> String{
+    override func getName() -> String{
         return person2
     }
 }
@@ -31,7 +31,7 @@ class IndividualChat : Chat {
 class GroupChat : Chat {
     var name: String = ""
     var members = [Student]()
-    func getName() -> String{
+    override func getName() -> String{
         return name
     }
 }
@@ -61,9 +61,8 @@ class FileMessage: Message {
     func getDownloadLink() {}
 }
 
-class Student {
-    var ID: Int? = nil
-    var name = ""
+class Student : Object {
+    var ID: String = ""
 }
 
 

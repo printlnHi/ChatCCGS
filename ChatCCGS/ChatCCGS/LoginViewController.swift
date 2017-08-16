@@ -8,6 +8,7 @@
 
 import UIKit
 import Alamofire
+import RealmSwift
 
 class LoginViewController: ViewController {
 
@@ -47,7 +48,18 @@ class LoginViewController: ViewController {
             .authenticate(user: tartarusUser, password: tartarusPassword)
             .responseString { response in
                 switch response.result.value! {
-                    case "100 Continue\n": print("Yay!")
+                    case "100 Continue\n":
+                        print("Yay!")
+                        
+                        let realm = try! Realm()
+                        
+                        let student = realm.objects(Student.self).first
+                        
+                        // let c_student = Student(ID: username)
+                        
+                        try! realm.write {
+                            student!.ID = username
+                        }
                     
                         self.performSegue(withIdentifier: "loggingIn", sender: nil)
                     

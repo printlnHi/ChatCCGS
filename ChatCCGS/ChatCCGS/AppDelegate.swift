@@ -8,8 +8,8 @@
 
 import UIKit
 import Alamofire
-import Realm
 import RealmSwift
+import Realm
 
 class Chat : Object {
     func getMessages() {}
@@ -29,8 +29,8 @@ class IndividualChat : Chat {
 }
 
 class GroupChat : Chat {
-    var name: String = ""
-    var members = [Student]()
+    dynamic var name: String = ""
+    var members = List<Student>()
     override func getName() -> String{
         return name
     }
@@ -62,7 +62,16 @@ class FileMessage: Message {
 }
 
 class Student : Object {
-    var ID: String = ""
+    dynamic var ID: String = ""
+    //var name: String = ""
+}
+
+class StudentList : Object {
+    var studentList = List<Student>()
+}
+
+class ClassChatList : Object {
+    var classChatList = List<GroupChat>()
 }
 
 

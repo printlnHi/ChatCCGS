@@ -8,8 +8,8 @@
 
 import UIKit
 
-class NewChatViewController: ViewController {
-
+class NewChatViewController: ViewController, UITableViewDelegate, UITableViewDataSource {
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -20,8 +20,36 @@ class NewChatViewController: ViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 
+    func createNewGroupChat() {
+        
+    }
+    
+    /*func getIndividualContacts() -> [Student] {
+    }*/
+    
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
+        print("used value from unfished function")
+        return 0//getIndividualContacts().count
+    }
+    
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        print("used value from unfished function")
+        
+        //let chat = getIndividualContacts()[indexPath.row]
+        
+        let cell = RecentsTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ConversationCell")
+        //cell.chatName = chat.getName()
+        
+        
+        return cell
+    }
+    
+    public func tableView(_: UITableView, didSelectRowAt: IndexPath){
+        //let selectedChat = getRecentsChats()[didSelectRowAt.row];
+    }
+
+    
     /*
     // MARK: - Navigation
 

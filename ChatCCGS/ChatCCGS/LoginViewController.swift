@@ -9,7 +9,7 @@
 import UIKit
 import Alamofire
 import RealmSwift
-import Realm
+//import Realm
 
 class LoginViewController: ViewController {
 
@@ -17,8 +17,10 @@ class LoginViewController: ViewController {
     @IBOutlet weak var passwordField: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
+        let realm = try! Realm()
+        self.retrieveAllStudents()
+        print(realm.objects(StudentList.self).first)
     }
 
     override func didReceiveMemoryWarning() {
@@ -54,20 +56,25 @@ class LoginViewController: ViewController {
                     case "100 Continue\n":
                         print("Yay!")
                         
+                        self.retrieveClassesForStudent(studentID: username)
                         
-                        /*
+                        let realm = try! Realm()
+                        
+                        let myStudent = Student()
+                        myStudent.ID = username
+                        
+                        let s = realm.objects(Student.self).first
                         try! realm.write {
-                            realm.deleteAll()
+                            realm.delete(s!)
                         }
-                        print("ok")
+                        try! realm.write {
+                            realm.add(myStudent)
+                        }
+                        
                         let student = realm.objects(Student.self).first
+                        print(student)
                         
-                        // let c_student = Student(ID: username)
                         
-                        try! realm.write {
-                            student!.ID = username
-                        }
-                        */
                         self.performSegue(withIdentifier: "loggingIn", sender: nil)
                     
                     case "400 Bad Request\n":
@@ -91,5 +98,75 @@ class LoginViewController: ViewController {
                 
                 debugPrint(response.result.value!)
         }
+    }
+    
+    func retrieveAllStudents() {
+        
+        let tartarusUser = "ccgs"
+        let tartarusPassword = "1910"
+        let students = List<Student>()
+        
+        Alamofire.request("http://tartarus.ccgs.wa.edu.au/~1019912/ChatCCGSServerStuff/getStudents.py")
+            .authenticate(user: tartarusUser, password: tartarusPassword)
+            .responseString { response in
+                //print(response.result.value)
+                let data = response.result.value?.components(separatedBy: "\n")
+                //print(data)
+                //print(json)
+                for s in data! {
+                    if s == "" {
+                        continue
+                    }
+                    let newStudent = Student()
+                    newStudent.ID = String(s)
+                    students.append(newStudent)
+                }
+                
+                let realm = try! Realm()
+                
+                var studentList = StudentList()
+                studentList.studentList = students
+                
+                try! realm.write {
+                    // realm.add(students)
+                    realm.add(studentList)
+                }
+                
+        }
+        
+        
+    }
+    
+    func retrieveClassesForStudent(studentID: String) {
+        
+        let tartarusUser = "ccgs"
+        let tartarusPassword = "1910"
+        
+        Alamofire.request("http://tartarus.ccgs.wa.edu.au/~1019912/ChatCCGSServerStuff/getClassesForStudent.py?username=" + studentID)
+            .authenticate(user: tartarusUser, password: tartarusPassword)
+            .responseString { response in
+                print("{}{}{}{}{}")
+                debugPrint(response.result.value)
+                var classes = List<GroupChat>()
+                
+                for i in (response.result.value?.components(separatedBy: "\n"))! {
+                    var chat = GroupChat()
+                    chat.name = i
+                    classes.append(chat)
+                }
+                
+                print(classes)
+                
+                var chatList = ClassChatList()
+                chatList.classChatList = classes
+                
+                let realm = try! Realm()
+                
+                try! realm.write {
+                    realm.add(chatList)
+                }
+                
+        }
+
     }
 }

@@ -13,67 +13,65 @@ import RealmSwift
 class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var GroupSegmentedControl: UISegmentedControl!
     @IBOutlet weak var TableView: UITableView!
-
+    
+    //var pupils = [Student]()
+    
+    
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
         print("used value from unfished function")
-        return 18
+        var rows = 0
+        if (self.GroupSegmentedControl.selectedSegmentIndex==0) {
+            rows = 200
+        } else {
+            rows = 4
+        }
+        
+        return rows
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("used value from unfished function")
+        print("used value from unfished function!")
+        
+        let pupils = getAllStudents()
+        let chats = getClassesForStudent()
         
         let cell = RecentsTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ContactCell")
-        cell.textLabel?.text = "\((GroupSegmentedControl.selectedSegmentIndex==0 ? "Individual" : "Group")) Number \(indexPath.row)"
-        
-        return cell
+        cell.textLabel?.text = "\((self.GroupSegmentedControl.selectedSegmentIndex==0 ? "<Name> (\(pupils[indexPath.row].ID))" : "\(chats[indexPath.row].name)")) "
+            return cell
     }
     
-    func getEnrolmentsForStudent() {
-        
-        let tartarusUser = "ccgs"
-        let tartarusPassword = "1910"
-        
-        let realm = try! Realm()
-        
-        let student = realm.objects(Student.self).first
-        print(student)
-        print(student!.ID)
-        /*
-        Alamofire.request("http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/validate.py?username=" + username + "&password=" + password)
-            .authenticate(user: tartarusUser, password: tartarusPassword)
-            .responseString { response in
-                switch response.result.value! {
-                case "100 Continue\n": print("Yay!")
-                
-                self.performSegue(withIdentifier: "loggingIn", sender: nil)
-                    
-                case "400 Bad Request\n":
-                    break
-                case "401 Unauthorized\n":
-                    let alert = UIAlertController(title:"Authentication Failed", message: "Your username or password was incorrect.", preferredStyle:.alert)
-                    let action = UIAlertAction(title:"OK", style:.default, handler:nil)
-                    
-                    self.passwordField.text! = ""
-                    
-                    alert.addAction(action)
-                    self.present(alert, animated: true, completion: nil)
-                    
-                case "Unprocessable Entity\n": break
-                // tell the user
-                case "Internal Server Error\n": break
-                // not happy
-                default: break
-                    
-                }
-                
-                debugPrint(response.result.value!)
-        }*/
-    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        // retrieveAllStudents()
+        getAllStudents()
         // Do any additional setup after loading the view.
+        
+    }
+    
+    
+    func getAllStudents() -> List<Student> {
+        let realm = try! Realm()
+        // print(realm.objects(List<Student>))
+        //var pupils = [Student]()
+        
+        /*for y in (realm.objects(StudentList.self).first?.studentList)! {
+            pupils.append(y)
+        }*/
+        var pupils = (realm.objects(StudentList.self).first?.studentList)!
+        
+        return pupils
+        
+        
+    }
+    
+    func getClassesForStudent() -> List<GroupChat> {
+        let realm = try! Realm()
+        
+        let chats = (realm.objects(ClassChatList.self).first?.classChatList)!
+        
+        return chats
     }
 
     override func didReceiveMemoryWarning() {

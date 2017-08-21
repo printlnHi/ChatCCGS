@@ -21,7 +21,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         print("used value from unfished function")
         var rows = 0
         if (self.GroupSegmentedControl.selectedSegmentIndex==0) {
-            rows = 200
+            rows = 199
         } else {
             rows = 4
         }

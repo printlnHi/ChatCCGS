@@ -77,6 +77,7 @@
                     <connections>
                         <outlet property="GroupSegmentedControl" destination="xNJ-fn-HLB" id="n0p-U5-g4U"/>
                         <outlet property="TableView" destination="5l5-Xw-pM1" id="X2w-su-DzT"/>
+                        <segue destination="umK-g2-pYg" kind="presentation" identifier="getInfo" id="lj9-gg-cop"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="g1Y-HG-zBy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -201,10 +202,10 @@
             </objects>
             <point key="canvasLocation" x="509.76562499999994" y="-809.375"/>
         </scene>
-        <!--Contact Info View Controller-->
+        <!--Contact Information-->
         <scene sceneID="chO-Ap-lia">
             <objects>
-                <viewController id="umK-g2-pYg" customClass="ContactInfoViewController" sceneMemberID="viewController">
+                <viewController id="umK-g2-pYg" customClass="ContactInfoViewController" customModule="ChatCCGS" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="g9b-6N-00P"/>
                         <viewControllerLayoutGuide type="bottom" id="T4L-dI-sUS"/>
@@ -212,12 +213,58 @@
                     <view key="view" contentMode="scaleToFill" id="B96-UM-Nfl">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Student Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="raU-Ap-0AW">
+                                <rect key="frame" x="491" y="114" width="262" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Student ID" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cFS-ZQ-WuQ">
+                                <rect key="frame" x="525" y="171" width="228" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qbz-IH-WOf">
+                                <rect key="frame" x="20" y="28" width="48" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="&lt; Back"/>
+                                <connections>
+                                    <segue destination="Qxl-jR-C0b" kind="presentation" id="DDl-9L-3c2"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q4R-yI-5KV">
+                                <rect key="frame" x="501" y="280" width="95" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Student Email"/>
+                                <connections>
+                                    <action selector="sendEmailWithSender:" destination="umK-g2-pYg" eventType="touchUpInside" id="YT6-c6-MG5"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Contact Information" id="g4L-Cn-63E">
+                        <barButtonItem key="leftBarButtonItem" style="plain" id="vmD-Cm-I8P">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="9d6-6M-KOR">
+                                <rect key="frame" x="20" y="7" width="227" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="&lt; Back"/>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="studentEmailBtn" destination="Q4R-yI-5KV" id="cVW-sF-ANj"/>
+                        <outlet property="studentIDlbl" destination="cFS-ZQ-WuQ" id="Ray-E2-Q67"/>
+                        <outlet property="studentNamelbl" destination="raU-Ap-0AW" id="g4x-Fz-l9S"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Blu-Mj-hQI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="539" y="-139"/>
+            <point key="canvasLocation" x="654.4921875" y="-152.34375"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="xJr-wl-2Iv">
@@ -363,5 +410,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Lmj-Ff-C0d"/>
+        <segue reference="DDl-9L-3c2"/>
     </inferredMetricsTieBreakers>
 </document>

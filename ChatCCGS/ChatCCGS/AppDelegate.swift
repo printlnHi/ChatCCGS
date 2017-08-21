@@ -63,7 +63,7 @@ class FileMessage: Message {
 
 class Student : Object {
     dynamic var ID: String = ""
-    //var name: String = ""
+    dynamic var name: String = ""
 }
 
 class StudentList : Object {

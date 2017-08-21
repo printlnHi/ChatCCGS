@@ -15,7 +15,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var TableView: UITableView!
     
     //var pupils = [Student]()
-    
+    var studentPos: Int? = 0
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
         print("used value from unfished function")
@@ -33,14 +33,39 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         print("used value from unfished function!")
         
         let pupils = getAllStudents()
+        print(pupils)
         let chats = getClassesForStudent()
         
         let cell = RecentsTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ContactCell")
-        cell.textLabel?.text = "\((self.GroupSegmentedControl.selectedSegmentIndex==0 ? "<Name> (\(pupils[indexPath.row].ID))" : "\(chats[indexPath.row].name)")) "
-            return cell
+        
+        cell.tag = indexPath.row
+        cell.textLabel?.text = "\((self.GroupSegmentedControl.selectedSegmentIndex==0 ? "\(pupils[indexPath.row].name) (\(pupils[indexPath.row].ID))" : "\(chats[indexPath.row].name)")) "
+        
+        cell.target(forAction: #selector(ContactsViewController.getInfoOnContact(sender:)), withSender: self)
+        return cell
     }
     
+    public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let getInfoAction = UITableViewRowAction(style: .default, title: "Info") { (action, index) in
+            //let student = getAllStudents()[indexPath.row]
+            self.studentPos = indexPath.row
+            self.performSegue(withIdentifier: "getInfo", sender: nil)
+            
+        }
+        
+        getInfoAction.backgroundColor = UIColor.blue
+        
+        return[getInfoAction]
+    }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destViewContrller: ContactInfoViewController = segue.destination as! ContactInfoViewController
+        destViewContrller.user = String(describing: studentPos!)
+    }
+    
+    func getInfoOnContact(sender: UITableViewCell) {
+        print(sender.tag)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

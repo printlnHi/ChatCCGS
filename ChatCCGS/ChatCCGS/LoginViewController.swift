@@ -17,6 +17,10 @@ class LoginViewController: ViewController {
     @IBOutlet weak var passwordField: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        usernameField.text = "123"
+        passwordField.text = "password123"
+        
         // Do any additional setup after loading the view.
         let realm = try! Realm()
         self.retrieveAllStudents()
@@ -111,19 +115,27 @@ class LoginViewController: ViewController {
             .responseString { response in
                 //print(response.result.value)
                 let data = response.result.value?.components(separatedBy: "\n")
+                print("{}{}{}{}{}{}===={}{}")
                 //print(data)
                 //print(json)
                 for s in data! {
                     if s == "" {
                         continue
                     }
+                    let cpts = s.components(separatedBy: ":")
+                    print(cpts)
                     let newStudent = Student()
-                    newStudent.ID = String(s)
+                    newStudent.ID = cpts[0]
+                    newStudent.name = cpts[1]
                     students.append(newStudent)
                 }
-                
+                print(students)
                 let realm = try! Realm()
                 
+                try! realm.write {
+                    realm.deleteAll()
+                }
+        
                 var studentList = StudentList()
                 studentList.studentList = students
                 

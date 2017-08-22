@@ -15,6 +15,9 @@ class LoginViewController: ViewController {
 
     @IBOutlet weak var usernameField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
+    
+    var studentLoggingIn: Student? = nil
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -24,7 +27,7 @@ class LoginViewController: ViewController {
         // Do any additional setup after loading the view.
         let realm = try! Realm()
         self.retrieveAllStudents()
-        print(realm.objects(StudentList.self).first)
+        //print(realm.objects(StudentList.self).first)
     }
 
     override func didReceiveMemoryWarning() {
@@ -64,9 +67,11 @@ class LoginViewController: ViewController {
                         
                         let realm = try! Realm()
                         
+                        
+                        
                         let myStudent = Student()
                         myStudent.ID = username
-                        
+                        /*
                         let s = realm.objects(Student.self).first
                         try! realm.write {
                             realm.delete(s!)
@@ -76,7 +81,9 @@ class LoginViewController: ViewController {
                         }
                         
                         let student = realm.objects(Student.self).first
-                        print(student)
+                        print(student)*/
+                        
+                        self.studentLoggingIn = myStudent
                         
                         
                         self.performSegue(withIdentifier: "loggingIn", sender: nil)
@@ -104,6 +111,14 @@ class LoginViewController: ViewController {
         }
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destTabController: UITabBarController = segue.destination as! UITabBarController
+        let destController: ContactsViewController = destTabController.viewControllers![1].childViewControllers[0] as! ContactsViewController
+        print("studnet lgging in")
+        print(studentLoggingIn)
+        destController.currentStudent = studentLoggingIn!
+    }
+    
     func retrieveAllStudents() {
         
         let tartarusUser = "ccgs"
@@ -129,7 +144,7 @@ class LoginViewController: ViewController {
                     newStudent.name = cpts[1]
                     students.append(newStudent)
                 }
-                print(students)
+                //print(students)
                 let realm = try! Realm()
                 
                 try! realm.write {

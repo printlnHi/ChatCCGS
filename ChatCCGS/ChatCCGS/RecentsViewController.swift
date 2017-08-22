@@ -53,9 +53,7 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        let realm = try! Realm()
-        let student = realm.objects(Student.self).first
-        print(student)
+        print("Recents!")
     }
 
     override func didReceiveMemoryWarning() {

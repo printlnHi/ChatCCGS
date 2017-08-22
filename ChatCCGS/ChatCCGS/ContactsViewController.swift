@@ -16,6 +16,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     
     //var pupils = [Student]()
     var studentPos: Int? = 0
+    var currentStudent: Student = Student()
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
         print("used value from unfished function")
@@ -33,7 +34,6 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         print("used value from unfished function!")
         
         let pupils = getAllStudents()
-        print(pupils)
         let chats = getClassesForStudent()
         
         let cell = RecentsTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ContactCell")
@@ -41,7 +41,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         cell.tag = indexPath.row
         cell.textLabel?.text = "\((self.GroupSegmentedControl.selectedSegmentIndex==0 ? "\(pupils[indexPath.row].name) (\(pupils[indexPath.row].ID))" : "\(chats[indexPath.row].name)")) "
         
-        cell.target(forAction: #selector(ContactsViewController.getInfoOnContact(sender:)), withSender: self)
+        //cell.target(forAction: #selector(ContactsViewController.getInfoOnContact(sender:)), withSender: self)
         return cell
     }
     
@@ -55,7 +55,24 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         
         getInfoAction.backgroundColor = UIColor.blue
         
-        return[getInfoAction]
+        let addToRecentsAction = UITableViewRowAction(style: .default, title: "Add to Recents") { (action, index) in
+            let realm = try! Realm()
+            let newChat = IndividualChat()
+            print("MAKING A NEW CHAT")
+            newChat.person1 = self.getAllStudents()[indexPath.row]
+            newChat.person2 = self.currentStudent
+            print(newChat)
+            try! realm.write {
+                realm.add(newChat)
+            }
+            
+            print(realm.objects(IndividualChat.self))
+            
+        }
+        
+        addToRecentsAction.backgroundColor = UIColor.green
+        
+        return[getInfoAction, addToRecentsAction]
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -70,7 +87,9 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     override func viewDidLoad() {
         super.viewDidLoad()
         // retrieveAllStudents()
-        getAllStudents()
+        //getAllStudents()
+        print("and now...")
+        print(currentStudent)
         // Do any additional setup after loading the view.
         
     }

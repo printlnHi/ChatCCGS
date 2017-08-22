@@ -21,10 +21,10 @@ class Chat : Object {
 }
 
 class IndividualChat : Chat {
-    var person1: String = ""
-    var person2: String = ""
+    var person1: Student? = Student()
+    var person2: Student? = Student()
     override func getName() -> String{
-        return person2
+        return person2!.name
     }
 }
 
@@ -72,6 +72,10 @@ class StudentList : Object {
 
 class ClassChatList : Object {
     var classChatList = List<GroupChat>()
+}
+
+class IndividualChatList : Object {
+    //var
 }
 
 

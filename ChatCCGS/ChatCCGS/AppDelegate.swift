@@ -21,8 +21,8 @@ class Chat : Object {
 }
 
 class IndividualChat : Chat {
-    var person1: Student? = Student()
-    var person2: Student? = Student()
+    dynamic var person1: Student? = Student()
+    dynamic var person2: Student? = Student()
     override func getName() -> String{
         return person2!.name
     }

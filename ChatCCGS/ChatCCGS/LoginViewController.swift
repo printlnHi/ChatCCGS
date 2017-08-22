@@ -113,10 +113,19 @@ class LoginViewController: ViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destTabController: UITabBarController = segue.destination as! UITabBarController
-        let destController: ContactsViewController = destTabController.viewControllers![1].childViewControllers[0] as! ContactsViewController
+        
+        
+        let destController1: ContactsViewController = destTabController.viewControllers![1].childViewControllers[0] as! ContactsViewController
         print("studnet lgging in")
         print(studentLoggingIn)
-        destController.currentStudent = studentLoggingIn!
+        destController1.currentStudent = studentLoggingIn!
+        
+        let destController2: RecentsViewController = destTabController.viewControllers![0].childViewControllers[0] as! RecentsViewController
+        destController2.currentStudent = studentLoggingIn!
+        
+        let destController3: SettingsViewController = destTabController.viewControllers![2].childViewControllers[0] as! SettingsViewController
+        destController3.currentStudent = studentLoggingIn!
+        
     }
     
     func retrieveAllStudents() {

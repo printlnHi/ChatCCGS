@@ -24,15 +24,28 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     var filteredPupils: List<Student> = List()
     var filteredChats: List<GroupChat> = List()
     
-    var displaySize = 199; //Todo: Make this redundant
     var shouldFilterResult =  false;
     
+    public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        print("search button clicked")
+        let enteredText = searchBar.text
+        let escapedText = "%"+enteredText!.replacingOccurrences(of: " ", with: "%20")+"%"
+        print(filteredChats.count)
+        print("escaped text is ",escapedText)
+        //TODO: Perform query, set relevant filtered list to results
+        self.view.endEditing(true)
+        
+    }
+    
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        return displaySize;
+        if (GroupSegmentedControl.selectedSegmentIndex==0){
+            return filteredPupils.count
+        } else{
+            return filteredChats.count
+        }
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("used value from unfished function!")
         
         
         let cell = RecentsTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ContactCell")
@@ -124,12 +137,6 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     }
     
     @IBAction func GroupSegmentChanged(_ sender: Any) {
-        if (GroupSegmentedControl.selectedSegmentIndex==0){
-            //TODO: Make this accurate
-            displaySize = 199
-        } else{
-            displaySize = 4
-        }
         TableView.reloadData()
     }
 

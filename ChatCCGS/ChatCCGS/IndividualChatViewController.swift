@@ -23,6 +23,15 @@ class IndividualChatViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
+        return chat.getMessages().count
+    }
+    
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        return UITableViewCell()
+        
+    }
 
     /*
     // MARK: - Navigation

@@ -14,6 +14,7 @@ import RealmSwift
 class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDataSource {
     
     var currentStudent: Student = Student()
+    var chatSelected: IndividualChat = IndividualChat()
     
     @IBOutlet weak var tableView: UITableView!
 
@@ -23,7 +24,9 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("Hi there")
+        chatSelected = getRecentChats()[indexPath.row]
+        print("segueing")
+        self.performSegue(withIdentifier: "selectDM", sender: nil)
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -70,9 +73,18 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("Haoory")
+        
+        
         tableView.reloadData()
     }
     
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "selectDM" {
+            let dest: IndividualChatViewController = segue.destination as! IndividualChatViewController
+            dest.chat = chatSelected
+        }
+    }
     /*
     // MARK: - Navigation
 

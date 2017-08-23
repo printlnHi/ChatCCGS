@@ -12,6 +12,7 @@ import RealmSwift
 import Realm
 
 class Chat : Object {
+    
     func getMessages() {}
     func sendMessage() {}
     func muteChat() {}

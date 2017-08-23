@@ -16,7 +16,7 @@ class ContactInfoViewController: UIViewController {
     
     @IBOutlet weak var studentNamelbl: UILabel!
     @IBOutlet weak var studentIDlbl: UILabel!
-    @IBOutlet weak var studentEmailBtn: UIButton!
+    
     
     override func viewDidLoad() {
         print(user)
@@ -27,15 +27,9 @@ class ContactInfoViewController: UIViewController {
         
         studentNamelbl.text = student.name
         studentIDlbl.text = student.ID
-        studentEmailBtn.setTitle(student.ID + "@student.ccgs.wa.edu.au", for: .normal)
+        
 
         // Do any additional setup after loading the view.
-    }
-    
-    @IBAction func sendEmail(sender: UIButton) {
-        if let url = URL(string: "mailto:\(sender.title(for: .normal))") {
-            UIApplication.shared.open(url)
-        }
     }
     
     override func didReceiveMemoryWarning() {

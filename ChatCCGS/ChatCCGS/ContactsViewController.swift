@@ -10,38 +10,36 @@ import UIKit
 import Alamofire
 import RealmSwift
 
-class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDataSource {
+class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     @IBOutlet weak var GroupSegmentedControl: UISegmentedControl!
     @IBOutlet weak var TableView: UITableView!
+    @IBOutlet weak var SearchBar: UISearchBar!
     
     //var pupils = [Student]()
     var studentPos: Int? = 0
     var currentStudent: Student = Student()
     
+    var pupils: List<Student> = List()
+    var chats: List<GroupChat> = List()
+    var filteredPupils: List<Student> = List()
+    var filteredChats: List<GroupChat> = List()
+    
+    var displaySize = 199; //Todo: Make this redundant
+    var shouldFilterResult =  false;
+    
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        print("used value from unfished function")
-        var rows = 0
-        if (self.GroupSegmentedControl.selectedSegmentIndex==0) {
-            rows = 199
-        } else {
-            rows = 4
-        }
-        
-        return rows
+        return displaySize;
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         print("used value from unfished function!")
         
-        let pupils = getAllStudents()
-        let chats = getClassesForStudent()
         
         let cell = RecentsTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ContactCell")
         
         cell.tag = indexPath.row
-        cell.textLabel?.text = "\((self.GroupSegmentedControl.selectedSegmentIndex==0 ? "\(pupils[indexPath.row].name) (\(pupils[indexPath.row].ID))" : "\(chats[indexPath.row].name)")) "
-        
-        //cell.target(forAction: #selector(ContactsViewController.getInfoOnContact(sender:)), withSender: self)
+        cell.textLabel?.text = "\((self.GroupSegmentedControl.selectedSegmentIndex==0 ? "\(filteredPupils[indexPath.row].name) (\(filteredPupils[indexPath.row].ID))" : "\(filteredChats[indexPath.row].name)")) "
+                //cell.target(forAction: #selector(ContactsViewController.getInfoOnContact(sender:)), withSender: self)
         return cell
     }
     
@@ -59,7 +57,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
             let realm = try! Realm()
             let newChat = IndividualChat()
             print("MAKING A NEW CHAT")
-            newChat.person1 = self.getAllStudents()[indexPath.row]
+            newChat.person1 = self.pupils[indexPath.row]
             newChat.person2 = self.currentStudent
             print(newChat)
             try! realm.write {
@@ -91,11 +89,16 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         print("and now...")
         print(currentStudent)
         // Do any additional setup after loading the view.
+        updatedStudents()
+        filteredPupils = pupils
+        
+        updatedClassesForStudent()
+        filteredChats = chats
         
     }
     
     
-    func getAllStudents() -> List<Student> {
+    func updatedStudents(){
         let realm = try! Realm()
         // print(realm.objects(List<Student>))
         //var pupils = [Student]()
@@ -103,19 +106,16 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         /*for y in (realm.objects(StudentList.self).first?.studentList)! {
             pupils.append(y)
         }*/
-        var pupils = (realm.objects(StudentList.self).first?.studentList)!
-        
-        return pupils
+        pupils = (realm.objects(StudentList.self).first?.studentList)!
         
         
     }
     
-    func getClassesForStudent() -> List<GroupChat> {
+    func updatedClassesForStudent(){
         let realm = try! Realm()
         
-        let chats = (realm.objects(ClassChatList.self).first?.classChatList)!
-        
-        return chats
+        chats = (realm.objects(ClassChatList.self).first?.classChatList)!
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -124,6 +124,12 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     }
     
     @IBAction func GroupSegmentChanged(_ sender: Any) {
+        if (GroupSegmentedControl.selectedSegmentIndex==0){
+            //TODO: Make this accurate
+            displaySize = 199
+        } else{
+            displaySize = 4
+        }
         TableView.reloadData()
     }
 

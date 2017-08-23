@@ -29,10 +29,12 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         print("search button clicked")
         let enteredText = searchBar.text
-        let escapedText = "%"+enteredText!.replacingOccurrences(of: " ", with: "%20")+"%"
-        print(filteredChats.count)
+        let escapedText = escapeStringForQuery(queryString: enteredText)
         print("escaped text is ",escapedText)
         //TODO: Perform query, set relevant filtered list to results
+        //MAKE Sure that
+        //DELETE FROM HERE:
+        //:TO HERE
         self.view.endEditing(true)
         
     }

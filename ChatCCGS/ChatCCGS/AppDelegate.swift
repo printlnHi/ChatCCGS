@@ -15,11 +15,9 @@ class Chat : Object {
     
     func getMessages() -> [Message] {
         
-        let tartarusUser = "ccgs"
-        let tartarusPassword = "1910"
         
         /*Alamofire.request("http://tartarus.ccgs.wa.edu.au/~1019912/ChatCCGSServerStuff/getClassesForStudent.py?username=" + studentID)
-            .authenticate(user: tartarusUser, password: tartarusPassword)
+            .authenticate(user: QueryHelper.tartarusPassword, password: QueryHelper.tartarusPassword)
             .responseString { response in
                 
             

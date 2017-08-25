@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import RealmSwift
+import Realm
+import Alamofire
 
 class IndividualChatViewController: UIViewController {
     
@@ -14,7 +17,7 @@ class IndividualChatViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        print(getAllMessages())
         // Do any additional setup after loading the view.
     }
 
@@ -25,12 +28,32 @@ class IndividualChatViewController: UIViewController {
     
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        return chat.getMessages().count
+        return getAllMessages().count
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
         
+        let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "messageCell")
+        var messages = getAllMessages()
+        
+        return cell
+        
+    }
+    
+    func getAllMessages() -> [Message] {
+        let realm = try! Realm()
+        
+        let results = realm.objects(Message.self)
+        
+        var messages = [Message]()
+        for r in results {
+            if r.author == chat.person1?.ID {
+                messages.append(r)
+            }
+        }
+        
+        
+        return messages
     }
 
     /*

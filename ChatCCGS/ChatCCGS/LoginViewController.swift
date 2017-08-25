@@ -217,6 +217,8 @@ class LoginViewController: ViewController {
                 
                 debugPrint(response.result.value)
                 
+                let realm = try! Realm()
+                
                 var data = response.result.value?.components(separatedBy: "\n")
                 var counter = (data?.count)! - 2
                 print(data)
@@ -231,9 +233,17 @@ class LoginViewController: ViewController {
                     c_mutable.remove(at: c.index(before: c.endIndex))
                     c_mutable.remove(at: c.startIndex)
                     var components = c_mutable.components(separatedBy: ",")
-                    print(c_mutable)
+                    //print(c_mutable)
+                    print(components)
+                    var m = Message()
+                    m.content = components[1]
+                    m.dateStamp = components[2]
+                    m.author = components[3]
+                    m.recipient = components[4]
                     
-                    
+                    try! realm.write {
+                        realm.add(m)
+                    }
                     
                     print(counter)
                     counter -= 1
@@ -241,6 +251,8 @@ class LoginViewController: ViewController {
                 
                 print(data)
                 
+                
+                print(realm.objects(Message.self))
         }
         
         return []

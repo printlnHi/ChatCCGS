@@ -31,6 +31,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         let enteredText = searchBar.text
         let escapedText = escapeStringForQuery(queryString: enteredText!)
 
+
         if (GroupSegmentedControl.selectedSegmentIndex==0){
             let alamofireRequestString = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/studentQuery.py?username=123&password=password123&query=%\(escapedText)%"
             print("request string is",alamofireRequestString)
@@ -43,6 +44,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         } else{
             
         }
+        
         self.view.endEditing(true)
         
     }

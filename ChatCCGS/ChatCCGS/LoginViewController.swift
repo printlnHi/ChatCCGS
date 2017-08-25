@@ -59,9 +59,11 @@ class LoginViewController: ViewController {
             .responseString { response in
                 switch response.result.value! {
                     case "100 Continue\n":
+                        RequestHelper.userUsername = username
+                        RequestHelper.userPassword = password
                         print("Yay!")
                         
-                        self.retrieveClassesForStudent(studentID: username)
+                        self.retrieveClassesForStudent()
                         
                         let realm = try! Realm()
                         
@@ -170,11 +172,11 @@ class LoginViewController: ViewController {
         
     }
     
-    func retrieveClassesForStudent(studentID: String) {
+    func retrieveClassesForStudent() {
         
 
         
-        Alamofire.request("http://tartarus.ccgs.wa.edu.au/~1019912/ChatCCGSServerStuff/getClassesForStudent.py?username=" + studentID)
+        Alamofire.request("http://tartarus.ccgs.wa.edu.au/~1019912/ChatCCGSServerStuff/getClassesForStudent.py?username=\(RequestHelper.userUsername)")
             .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
             .responseString { response in
                 print("{}{}{}{}{}")

@@ -33,14 +33,13 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
 
 
         if (GroupSegmentedControl.selectedSegmentIndex==0){
-            let alamofireRequestString = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/studentQuery.py?username=123&password=password123&query=%\(escapedText)%"
+            let alamofireRequestString = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/studentQuery.py?username=\(RequestHelper.userUsername)&password=\(RequestHelper.userPassword)&query=%\(escapedText)%"
             print("request string is",alamofireRequestString)
             
             Alamofire.request(alamofireRequestString).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString{ response in
                 print("response: ",response.result.value)
             }
             
-            //TODO: Make it use their password and username
         } else{
             
         }

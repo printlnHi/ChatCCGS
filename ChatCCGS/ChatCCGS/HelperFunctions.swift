@@ -8,7 +8,7 @@
 
 import Foundation
 
-class QueryHelper{
+class RequestHelper{
     static func escapeStringForQuery(queryString s: String) -> String{
         return s.replacingOccurrences(of: " ", with: "%20")
     }

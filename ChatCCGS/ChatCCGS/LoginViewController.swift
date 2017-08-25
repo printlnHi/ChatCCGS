@@ -55,7 +55,7 @@ class LoginViewController: ViewController {
         let realm = try! Realm()
         
         Alamofire.request("http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/validate.py?username=" + username + "&password=" + password)
-            .authenticate(user: QueryHelper.tartarusUsername, password: QueryHelper.tartarusPassword)
+            .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
             .responseString { response in
                 switch response.result.value! {
                     case "100 Continue\n":
@@ -132,7 +132,7 @@ class LoginViewController: ViewController {
         let students = List<Student>()
         
         Alamofire.request("http://tartarus.ccgs.wa.edu.au/~1019912/ChatCCGSServerStuff/getStudents.py")
-            .authenticate(user: QueryHelper.tartarusUsername, password: QueryHelper.tartarusPassword)
+            .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
             .responseString { response in
                 //print(response.result.value)
                 let data = response.result.value?.components(separatedBy: "\n")
@@ -175,7 +175,7 @@ class LoginViewController: ViewController {
 
         
         Alamofire.request("http://tartarus.ccgs.wa.edu.au/~1019912/ChatCCGSServerStuff/getClassesForStudent.py?username=" + studentID)
-            .authenticate(user: QueryHelper.tartarusUsername, password: QueryHelper.tartarusPassword)
+            .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
             .responseString { response in
                 print("{}{}{}{}{}")
                 debugPrint(response.result.value)
@@ -205,7 +205,7 @@ class LoginViewController: ViewController {
         
         
         Alamofire.request("http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/pullMessage.py?username=" + studentID + "&password=" + password)
-            .authenticate(user: QueryHelper.tartarusUsername, password: QueryHelper.tartarusPassword)
+            .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
             .responseString { response in
                 
                 debugPrint(response.result.value)

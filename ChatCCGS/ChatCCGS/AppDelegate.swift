@@ -17,7 +17,7 @@ class Chat : Object {
         
         
         /*Alamofire.request("http://tartarus.ccgs.wa.edu.au/~1019912/ChatCCGSServerStuff/getClassesForStudent.py?username=" + studentID)
-            .authenticate(user: QueryHelper.tartarusPassword, password: QueryHelper.tartarusPassword)
+            .authenticate(user: RequestHelper.tartarusPassword, password: RequestHelper.tartarusPassword)
             .responseString { response in
                 
             

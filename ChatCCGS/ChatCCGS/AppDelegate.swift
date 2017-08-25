@@ -56,21 +56,23 @@ class CustomGroupChat : GroupChat {
     func addMember() {}
 }
 
-class Message {
-    var dateStamp: NSDate? = nil
+class Message : Object {
+    var dateStamp = ""
     var author = ""
     var recipient = ""
     var group = ""
+    var content = ""
 }
 
 class TextMessage : Message {
     var message = ""
 }
 
+/*
 class ImageMessage : Message {
     var image: UIImage? = nil
     func getUIImage() {}
-}
+}*/
 
 class FileMessage: Message {
     func getDownloadLink() {}

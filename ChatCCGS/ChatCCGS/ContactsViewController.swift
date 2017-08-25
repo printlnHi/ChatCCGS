@@ -29,12 +29,20 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         print("search button clicked")
         let enteredText = searchBar.text
-        let escapedText = escapeStringForQuery(queryString: enteredText)
-        print("escaped text is ",escapedText)
-        //TODO: Perform query, set relevant filtered list to results
-        //MAKE Sure that
-        //DELETE FROM HERE:
-        //:TO HERE
+        let escapedText = escapeStringForQuery(queryString: enteredText!)
+
+        if (GroupSegmentedControl.selectedSegmentIndex==0){
+            let alamofireRequestString = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/studentQuery.py?username=123&password=password123&query=%\(escapedText)%"
+            print("request string is",alamofireRequestString)
+            
+            Alamofire.request(alamofireRequestString).authenticate(user: "ccgs", password: "1910").responseString{ response in
+                print("response: ",response.result.value)
+            }
+            
+            //TODO: Make it use their password and username
+        } else{
+            
+        }
         self.view.endEditing(true)
         
     }

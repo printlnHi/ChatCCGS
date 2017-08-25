@@ -19,7 +19,6 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
     @IBOutlet weak var tableView: UITableView!
 
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        print("used value from unfished function")
         return getRecentChats().count
     }
     
@@ -30,13 +29,12 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("used value from unfished function!!!!")
         
         let chat = getRecentChats()[indexPath.row]
         
         let cell = RecentsTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ConversationCell")
         //cell.chatName = chat.getName()
-        print(chat.person1)
+        //print(chat.person1)
         cell.textLabel?.text = chat.person1?.name
         
         
@@ -47,14 +45,14 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
     func getRecentChats() -> [IndividualChat] {
         let realm = try! Realm()
         let results = realm.objects(IndividualChat.self)
-        print(results)
+        //print(results)
         
         var chats = [IndividualChat]()
         for r in results {
             chats.append(r)
         }
         
-        print(chats)
+        //print(chats)
         return chats
     }
     
@@ -62,7 +60,7 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        print("Recents!")
+        print("In recents view controller")
     }
 
     override func didReceiveMemoryWarning() {
@@ -72,7 +70,6 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("Haoory")
         
         
         tableView.reloadData()

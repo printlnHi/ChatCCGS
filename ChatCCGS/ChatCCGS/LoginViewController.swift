@@ -108,7 +108,7 @@ class LoginViewController: ViewController {
                     
                 }
                 
-                debugPrint(response.result.value!)
+                //debugPrint(response.result.value!)
         }
     }
     
@@ -117,8 +117,8 @@ class LoginViewController: ViewController {
         
         
         let destController1: ContactsViewController = destTabController.viewControllers![1].childViewControllers[0] as! ContactsViewController
-        print("studnet lgging in")
-        print(studentLoggingIn)
+        print("studnet logging in")
+        //print(studentLoggingIn)
         destController1.currentStudent = studentLoggingIn!
         
         let destController2: RecentsViewController = destTabController.viewControllers![0].childViewControllers[0] as! RecentsViewController
@@ -138,7 +138,6 @@ class LoginViewController: ViewController {
             .responseString { response in
                 //print(response.result.value)
                 let data = response.result.value?.components(separatedBy: "\n")
-                print("{}{}{}{}{}{}===={}{}")
                 //print(data)
                 //print(json)
                 for s in data! {
@@ -146,7 +145,7 @@ class LoginViewController: ViewController {
                         continue
                     }
                     let cpts = s.components(separatedBy: ":")
-                    print(cpts)
+                    //print(cpts)
                     let newStudent = Student()
                     newStudent.ID = cpts[0]
                     newStudent.name = cpts[1]
@@ -180,7 +179,7 @@ class LoginViewController: ViewController {
             .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
             .responseString { response in
                 print("{}{}{}{}{}")
-                debugPrint(response.result.value)
+                //debugPrint(response.result.value)
                 var classes = List<GroupChat>()
                 
                 for i in (response.result.value?.components(separatedBy: "\n"))! {

@@ -19,8 +19,6 @@ class ContactInfoViewController: UIViewController {
     
     
     override func viewDidLoad() {
-        print(user)
-        print(user == "")
         super.viewDidLoad()
         
         let student = getAllStudents()[Int(user)!]

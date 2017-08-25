@@ -27,7 +27,6 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     var shouldFilterResult =  false;
     
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        print("search button clicked")
         let enteredText = searchBar.text
         let escapedText = RequestHelper.escapeStringForQuery(queryString: enteredText!)
 
@@ -88,7 +87,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                 realm.add(newChat)
             }
             
-            print(realm.objects(IndividualChat.self))
+            //print(realm.objects(IndividualChat.self))
             
         }
         
@@ -110,8 +109,8 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         super.viewDidLoad()
         // retrieveAllStudents()
         //getAllStudents()
-        print("and now...")
-        print(currentStudent)
+        //print("and now...")
+        //print(currentStudent)
         // Do any additional setup after loading the view.
         updatedStudents()
         filteredPupils = pupils

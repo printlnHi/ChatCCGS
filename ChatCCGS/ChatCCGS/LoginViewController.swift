@@ -85,6 +85,7 @@ class LoginViewController: ViewController {
                         
                         self.studentLoggingIn = myStudent
                         
+                        self.pullAllMessages(studentID: username, password: password)
                         
                         self.performSegue(withIdentifier: "loggingIn", sender: nil)
                     
@@ -203,6 +204,46 @@ class LoginViewController: ViewController {
                 }
                 
         }
-
     }
+    
+    func pullAllMessages(studentID: String, password: String) -> [Message] {
+        
+        let tartarusUser = "ccgs"
+        let tartarusPassword = "1910"
+        
+        Alamofire.request("http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/pullMessage.py?username=" + studentID + "&password=" + password)
+            .authenticate(user: tartarusUser, password: tartarusPassword)
+            .responseString { response in
+                
+                debugPrint(response.result.value)
+                
+                var data = response.result.value?.components(separatedBy: "\n")
+                var counter = (data?.count)! - 2
+                print(data)
+                for c in data! {
+                    if counter == 0 {
+                        print("Breaking")
+                        break
+                    }
+                    
+                    
+                    var c_mutable = c
+                    c_mutable.remove(at: c.index(before: c.endIndex))
+                    c_mutable.remove(at: c.startIndex)
+                    var components = c_mutable.components(separatedBy: ",")
+                    print(c_mutable)
+                    
+                    
+                    
+                    print(counter)
+                    counter -= 1
+                }
+                
+                print(data)
+                
+        }
+        
+        return []
+    }
+
 }

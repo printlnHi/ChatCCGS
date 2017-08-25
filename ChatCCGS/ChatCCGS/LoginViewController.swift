@@ -51,13 +51,11 @@ class LoginViewController: ViewController {
         let username = usernameField.text!
         let password = passwordField.text!
         
-        let tartarusUser = "ccgs"
-        let tartarusPassword = "1910"
         
         let realm = try! Realm()
         
         Alamofire.request("http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/validate.py?username=" + username + "&password=" + password)
-            .authenticate(user: tartarusUser, password: tartarusPassword)
+            .authenticate(user: QueryHelper.tartarusUsername, password: QueryHelper.tartarusPassword)
             .responseString { response in
                 switch response.result.value! {
                     case "100 Continue\n":
@@ -131,12 +129,10 @@ class LoginViewController: ViewController {
     
     func retrieveAllStudents() {
         
-        let tartarusUser = "ccgs"
-        let tartarusPassword = "1910"
         let students = List<Student>()
         
         Alamofire.request("http://tartarus.ccgs.wa.edu.au/~1019912/ChatCCGSServerStuff/getStudents.py")
-            .authenticate(user: tartarusUser, password: tartarusPassword)
+            .authenticate(user: QueryHelper.tartarusUsername, password: QueryHelper.tartarusPassword)
             .responseString { response in
                 //print(response.result.value)
                 let data = response.result.value?.components(separatedBy: "\n")
@@ -176,11 +172,10 @@ class LoginViewController: ViewController {
     
     func retrieveClassesForStudent(studentID: String) {
         
-        let tartarusUser = "ccgs"
-        let tartarusPassword = "1910"
+
         
         Alamofire.request("http://tartarus.ccgs.wa.edu.au/~1019912/ChatCCGSServerStuff/getClassesForStudent.py?username=" + studentID)
-            .authenticate(user: tartarusUser, password: tartarusPassword)
+            .authenticate(user: QueryHelper.tartarusUsername, password: QueryHelper.tartarusPassword)
             .responseString { response in
                 print("{}{}{}{}{}")
                 debugPrint(response.result.value)
@@ -208,11 +203,9 @@ class LoginViewController: ViewController {
     
     func pullAllMessages(studentID: String, password: String) -> [Message] {
         
-        let tartarusUser = "ccgs"
-        let tartarusPassword = "1910"
         
         Alamofire.request("http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/pullMessage.py?username=" + studentID + "&password=" + password)
-            .authenticate(user: tartarusUser, password: tartarusPassword)
+            .authenticate(user: QueryHelper.tartarusUsername, password: QueryHelper.tartarusPassword)
             .responseString { response in
                 
                 debugPrint(response.result.value)

@@ -155,7 +155,9 @@ class LoginViewController: ViewController {
                 let realm = try! Realm()
                 
                 try! realm.write {
-                    realm.deleteAll()
+                    realm.delete(realm.objects(StudentList.self))
+                    realm.delete(realm.objects(ClassChatList.self))
+                    realm.delete(realm.objects(Message.self))
                 }
         
                 var studentList = StudentList()

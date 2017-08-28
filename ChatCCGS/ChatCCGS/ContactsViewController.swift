@@ -36,7 +36,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
             print("request string is",alamofireRequestString)
             
             Alamofire.request(alamofireRequestString).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString{ response in
-                print("response: ",response.result.value)
+                debugPrint("response: " + (response.result.value)!)
             }
             
         } else{

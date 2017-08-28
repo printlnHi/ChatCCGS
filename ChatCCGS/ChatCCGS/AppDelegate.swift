@@ -55,11 +55,11 @@ class CustomGroupChat : GroupChat {
 }
 
 class Message : Object {
-    var dateStamp = ""
-    var author = ""
-    var recipient = ""
-    var group = ""
-    var content = ""
+    dynamic var dateStamp = ""
+    dynamic var author = ""
+    dynamic var recipient = ""
+    dynamic var group = ""
+    dynamic var content = ""
 }
 
 class TextMessage : Message {

@@ -12,7 +12,6 @@ class SettingsViewController: ViewController {
     
     var currentStudent: Student = Student()
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 

@@ -61,6 +61,8 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         print("In recents view controller")
+        
+        
     }
 
     override func didReceiveMemoryWarning() {

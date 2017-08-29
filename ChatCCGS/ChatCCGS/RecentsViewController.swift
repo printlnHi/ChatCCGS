@@ -42,6 +42,20 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
     }
     
     
+    /*public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let removeFromRecentsAction = UITableViewRowAction(style: .default, title: "Info") { (action, index) in
+            
+            let realm = try! Realm()
+            let results = realm.objects(IndividualChat.self)
+            try! realm.write {
+                realm.delete(ch)
+            }
+        }
+        
+        //getInfoAction.backgroundColor = UIColor.blue
+        return[getInfoAction, addToRecentsAction]
+    }*/
+    
     func getRecentChats() -> [IndividualChat] {
         let realm = try! Realm()
         let results = realm.objects(IndividualChat.self)
@@ -62,7 +76,7 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
         // Do any additional setup after loading the view.
         print("In recents view controller")
         
-        
+        print(retrieveArchivedMessages())
     }
 
     override func didReceiveMemoryWarning() {
@@ -84,6 +98,57 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
             dest.chat = chatSelected
         }
     }
+    
+    func retrieveArchivedMessages() {
+        
+        //var request = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/archiveQuery.py?username="
+        //request += (chatSelected.person2?.ID)! + "&password="
+        //request += "password123&"
+        // Finish based on modified archive file
+        let request = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/archiveQuery.py?username=123&password=password123&author=124&from=2017-05-01%2000:00:00&to=2018-05-01%2000:00:00"
+        Alamofire.request(request).authenticate(user: "ccgs", password: "1910").responseString { response in
+            print("*******")
+            debugPrint(response.result.value)
+            let realm = try! Realm()
+            
+            var data = response.result.value?.components(separatedBy: "\n")
+            var counter = (data?.count)! - 2
+            print(data)
+            for c in data! {
+                if counter == 0 {
+                    print("Breaking")
+                    break
+                }
+                
+                
+                var c_mutable = c
+                c_mutable.remove(at: c.index(before: c.endIndex))
+                c_mutable.remove(at: c.startIndex)
+                var components = c_mutable.components(separatedBy: ",")
+                //print(c_mutable)
+                print(components)
+                var m = Message()
+                m.content = components[1]
+                m.dateStamp = components[2]
+                m.author = components[3]
+                m.recipient = components[4]
+                
+                try! realm.write {
+                    realm.add(m)
+                }
+                
+                print(counter)
+                counter -= 1
+            }
+            
+            print(data)
+            
+            
+            print(realm.objects(Message.self))
+        }
+    }
+    
+    
     /*
     // MARK: - Navigation
 

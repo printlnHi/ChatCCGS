@@ -21,8 +21,10 @@ class IndividualChatViewController: UIViewController, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         print("Messages")
-        print(getAllMessages())
+        print(getAllUnreadMessages())
         // Do any additional setup after loading the view.
+        let realm = try! Realm()
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -30,24 +32,10 @@ class IndividualChatViewController: UIViewController, UITableViewDataSource {
         // Dispose of any resources that can be recreated.
     }
     
-    /*
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        print(getAllMessages().count)
-        return getAllMessages().count
-    }
-    
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("CALLED!")
-        let cell = RecentsTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "individualChatCell")
-        var messages = getAllMessages()
-        cell.textLabel?.text = messages[indexPath.row].content
-        
-        return cell
-        
-    }
-    */
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
+        print("=======")
+        print(getAllMessages())
         return getAllMessages().count
     }
     
@@ -55,33 +43,35 @@ class IndividualChatViewController: UIViewController, UITableViewDataSource {
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let message = getAllMessages()[indexPath.row]
-        
+        print("CALLED")
         let cell = TableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "individualChatCell")
         //cell.chatName = chat.getName()
         //print(chat.person1)
-        cell.textLabel?.text = message.content
+        cell.textLabel?.text = "At " + message.dateStamp + ", " + message.author + " wrote: " + message.content
         
         
         return cell
     }
 
     
-    func getAllMessages() -> [Message] {
+    func getAllUnreadMessages() -> [Message] {
         let realm = try! Realm()
         
         let results = realm.objects(Message.self)
+        // print(results)
+        print(";;;;;")
         
         var messages = [Message]()
         for r in results {
             // print(" " + r.author)
             // print((chat.person1?.ID)!)
-            if r.author == " " + (chat.person1?.ID)! {
+            if r.author == " " + (chat.person1?.ID)! || r.author ==  " " + (chat.person2?.ID)! ||  r.author == (chat.person2?.ID)! {
                 messages.append(r)
             }
         }
         
-        
-        return messages
+        print(messages)
+        return messages.reversed()
     }
     
     @IBAction func pushMessage() {
@@ -109,12 +99,41 @@ class IndividualChatViewController: UIViewController, UITableViewDataSource {
         request += dateTime
         print(request)
         
+        var message = Message()
+        message.author = author!
+        message.dateStamp = dateTime.replacingOccurrences(of: "%20", with: " ", options: .literal, range: nil) + "'"
+        message.content = "'" + content.replacingOccurrences(of: "%20", with: " ", options: .literal, range: nil) + "'"
+        message.recipient = recipient!
+        
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.add(message)
+        }
+        print("&&&&&&&")
+        //try! realm.commitWrite()
+        //tableView.reloadData()
+        print(realm.objects(Message.self))
+        
         Alamofire.request(request)
             .authenticate(user: "ccgs", password: "1910")
             .responseString { response in
                 debugPrint(response)
+                self.tableView.reloadData()
+                // self.loadView()
+                //self.viewDidLoad()
         }
         
+        
+    }
+    
+    func getArchivedConversation() -> [Message] {
+        return [Message]()
+    }
+    
+    func getAllMessages() -> [Message] {
+        
+        return getArchivedConversation() + getAllUnreadMessages()
     }
 
     /*

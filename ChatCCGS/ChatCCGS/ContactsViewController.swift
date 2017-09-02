@@ -27,16 +27,26 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     var shouldFilterResult =  false;
     
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        let enteredText = searchBar.text
-        let escapedText = RequestHelper.escapeStringForQuery(queryString: enteredText!)
+        var enteredText = searchBar.text
+        if enteredText == nil{
+            enteredText = ""
+        }
+        let escapedEnteredText = RequestHelper.escapeStringForSQL(queryString: enteredText!)
+        let queryText = "%\(escapedEnteredText)%"
+        let escapedQueryText = RequestHelper.escapeStringForUrl(queryString: queryText)
 
 
         if (GroupSegmentedControl.selectedSegmentIndex==0){
-            let alamofireRequestString = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/studentQuery.py?username=\(RequestHelper.userUsername)&password=\(RequestHelper.userPassword)&query=%\(escapedText)%"
+            let alamofireRequestString = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/studentQuery.py?username=\(RequestHelper.userUsername)&password=\(RequestHelper.userPassword)&query=\(escapedQueryText)"
             print("request string is",alamofireRequestString)
             
-            Alamofire.request(alamofireRequestString).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString{ response in
-                debugPrint("response: " + (response.result.value)!)
+            Alamofire.request(alamofireRequestString)
+                .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
+                .responseString { response in
+                print("response string",response) //This evalues to NILx
+                    switch "400 Bad Request\n":
+                        fallthrough
+                    switch "401 Unauthorized"
             }
             
         } else{

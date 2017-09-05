@@ -43,10 +43,11 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
             Alamofire.request(alamofireRequestString)
                 .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
                 .responseString { response in
-                print("response string",response) //This evalues to NILx
-                    switch "400 Bad Request\n":
-                        fallthrough
-                    switch "401 Unauthorized"
+                print("response string",response)
+                    if (response.characters.count>="SUCCESS".characters.count && response.index(response.startIndex, offseBy: 7)){
+                        
+                    }
+                
             }
             
         } else{

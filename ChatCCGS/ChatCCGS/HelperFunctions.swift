@@ -24,3 +24,4 @@ class RequestHelper{
     static let tartarusPassword = "1910"
     static var userUsername = "USERNAME NOT SET"
     static var userPassword = "PASSWORD NOT SET"
+}

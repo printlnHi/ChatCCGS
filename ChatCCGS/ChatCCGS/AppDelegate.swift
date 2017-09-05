@@ -13,19 +13,7 @@ import Realm
 
 class Chat : Object {
     
-    func getMessages() -> [Message] {
-        
-        
-        /*Alamofire.request("http://tartarus.ccgs.wa.edu.au/~1019912/ChatCCGSServerStuff/getClassesForStudent.py?username=" + studentID)
-            .authenticate(user: RequestHelper.tartarusPassword, password: RequestHelper.tartarusPassword)
-            .responseString { response in
-                
-            
-        }*/
-        
-        return []
-    }
-    
+    func getMessages() {}
     func sendMessage() {}
     func muteChat() {}
     func deleteMessage() {}
@@ -87,10 +75,6 @@ class StudentList : Object {
 
 class ClassChatList : Object {
     var classChatList = List<GroupChat>()
-}
-
-class IndividualChatList : Object {
-    //var
 }
 
 

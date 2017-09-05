@@ -9,7 +9,6 @@
 import UIKit
 import Alamofire
 import RealmSwift
-//import Realm
 
 class LoginViewController: ViewController {
 
@@ -21,13 +20,13 @@ class LoginViewController: ViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        // ### Code for testing
         usernameField.text = "123"
         passwordField.text = "password123"
         
         // Do any additional setup after loading the view.
-        let realm = try! Realm()
         self.retrieveAllStudents()
-        //print(realm.objects(StudentList.self).first)
     }
 
     override func didReceiveMemoryWarning() {
@@ -48,16 +47,17 @@ class LoginViewController: ViewController {
 
     @IBAction func login(_ sender: Any) {
         print("Login function called!")
+        
         let username = usernameField.text!
         let password = passwordField.text!
+        let request = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/validate.py?username=" + username + "&password=" + password
         
-        
-        let realm = try! Realm()
-        
-        Alamofire.request("http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/validate.py?username=" + username + "&password=" + password)
+        Alamofire.request(request)
             .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
             .responseString { response in
+                
                 switch response.result.value! {
+                    
                     case "100 Continue\n":
                         RequestHelper.userUsername = username
                         RequestHelper.userPassword = password
@@ -65,32 +65,16 @@ class LoginViewController: ViewController {
                         
                         self.retrieveClassesForStudent()
                         
-                        let realm = try! Realm()
-                        
-                        
-                        
                         let myStudent = Student()
                         myStudent.ID = username
-                        /*
-                        let s = realm.objects(Student.self).first
-                        try! realm.write {
-                            realm.delete(s!)
-                        }
-                        try! realm.write {
-                            realm.add(myStudent)
-                        }
-                        
-                        let student = realm.objects(Student.self).first
-                        print(student)*/
                         
                         self.studentLoggingIn = myStudent
-                        
                         self.pullAllMessages(studentID: username, password: password)
-                        
                         self.performSegue(withIdentifier: "loggingIn", sender: nil)
                     
                     case "400 Bad Request\n":
                         break
+                    
                     case "401 Unauthorized\n":
                         let alert = UIAlertController(title:"Authentication Failed", message: "Your username or password was incorrect.", preferredStyle:.alert)
                         let action = UIAlertAction(title:"OK", style:.default, handler:nil)
@@ -100,15 +84,16 @@ class LoginViewController: ViewController {
                         alert.addAction(action)
                         self.present(alert, animated: true, completion: nil)
                     
-                case "Unprocessable Entity\n": break
+                    case "Unprocessable Entity\n":
+                        break
                         // tell the user
-                case "Internal Server Error\n": break
+                    case "Internal Server Error\n":
+                        break
                         // not happy
-                default: break
+                    default: break
                     
                 }
                 
-                //debugPrint(response.result.value!)
         }
     }
     
@@ -117,8 +102,7 @@ class LoginViewController: ViewController {
         
         
         let destController1: ContactsViewController = destTabController.viewControllers![1].childViewControllers[0] as! ContactsViewController
-        print("studnet logging in")
-        //print(studentLoggingIn)
+        
         destController1.currentStudent = studentLoggingIn!
         
         let destController2: RecentsViewController = destTabController.viewControllers![0].childViewControllers[0] as! RecentsViewController
@@ -126,6 +110,8 @@ class LoginViewController: ViewController {
         
         let destController3: SettingsViewController = destTabController.viewControllers![2].childViewControllers[0] as! SettingsViewController
         destController3.currentStudent = studentLoggingIn!
+        
+        print("Student Logging In")
         
     }
     
@@ -136,22 +122,23 @@ class LoginViewController: ViewController {
         Alamofire.request("http://tartarus.ccgs.wa.edu.au/~1019912/ChatCCGSServerStuff/getStudents.py")
             .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
             .responseString { response in
-                //print(response.result.value)
+                
                 let data = response.result.value?.components(separatedBy: "\n")
-                //print(data)
-                //print(json)
+                
                 for s in data! {
+                    
                     if s == "" {
                         continue
                     }
+                    
                     let cpts = s.components(separatedBy: ":")
-                    //print(cpts)
+                    
                     let newStudent = Student()
                     newStudent.ID = cpts[0]
                     newStudent.name = cpts[1]
                     students.append(newStudent)
                 }
-                //print(students)
+                
                 let realm = try! Realm()
                 
                 try! realm.write {
@@ -160,11 +147,10 @@ class LoginViewController: ViewController {
                     realm.delete(realm.objects(Message.self))
                 }
         
-                var studentList = StudentList()
+                let studentList = StudentList()
                 studentList.studentList = students
                 
                 try! realm.write {
-                    // realm.add(students)
                     realm.add(studentList)
                 }
                 
@@ -174,25 +160,21 @@ class LoginViewController: ViewController {
     }
     
     func retrieveClassesForStudent() {
+        let request = "http://tartarus.ccgs.wa.edu.au/~1019912/ChatCCGSServerStuff/getClassesForStudent.py?username=\(RequestHelper.userUsername)"
         
-
-        
-        Alamofire.request("http://tartarus.ccgs.wa.edu.au/~1019912/ChatCCGSServerStuff/getClassesForStudent.py?username=\(RequestHelper.userUsername)")
+        Alamofire.request(request)
             .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
             .responseString { response in
-                print("{}{}{}{}{}")
-                //debugPrint(response.result.value)
-                var classes = List<GroupChat>()
+                
+                let classes = List<GroupChat>()
                 
                 for i in (response.result.value?.components(separatedBy: "\n"))! {
-                    var chat = GroupChat()
+                    let chat = GroupChat()
                     chat.name = i
                     classes.append(chat)
                 }
                 
-                print(classes)
-                
-                var chatList = ClassChatList()
+                let chatList = ClassChatList()
                 chatList.classChatList = classes
                 
                 let realm = try! Realm()
@@ -204,34 +186,32 @@ class LoginViewController: ViewController {
         }
     }
     
-    func pullAllMessages(studentID: String, password: String) -> [Message] {
+    func pullAllMessages(studentID: String, password: String) {
         
         
         Alamofire.request("http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/pullMessage.py?username=" + studentID + "&password=" + password)
             .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
             .responseString { response in
                 
-                debugPrint(response.result.value)
+                debugPrint(response.result.value!)
                 
                 let realm = try! Realm()
                 
-                var data = response.result.value?.components(separatedBy: "\n")
+                let data = response.result.value?.components(separatedBy: "\n")
                 var counter = (data?.count)! - 2
-                print(data)
+                
                 for c in data! {
+                    
                     if counter == 0 {
-                        print("Breaking")
                         break
                     }
-                    
                     
                     var c_mutable = c
                     c_mutable.remove(at: c.index(before: c.endIndex))
                     c_mutable.remove(at: c.startIndex)
                     var components = c_mutable.components(separatedBy: ",")
-                    //print(c_mutable)
-                    print(components)
-                    var m = Message()
+                    
+                    let m = Message()
                     m.content = components[1]
                     m.dateStamp = components[2]
                     m.author = components[3]
@@ -241,17 +221,15 @@ class LoginViewController: ViewController {
                         realm.add(m)
                     }
                     
-                    print(counter)
                     counter -= 1
                 }
                 
-                print(data)
+                print(data!)
                 
                 
                 print(realm.objects(Message.self))
         }
         
-        return []
     }
 
 }

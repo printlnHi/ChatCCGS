@@ -15,9 +15,10 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var TableView: UITableView!
     @IBOutlet weak var SearchBar: UISearchBar!
     
-    //var pupils = [Student]()
+    
     var studentPos: Int? = 0
     var currentStudent: Student = Student()
+    var classPos: Int? = 0
     
     var pupils: List<Student> = List()
     var chats: List<GroupChat> = List()
@@ -43,16 +44,9 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
             Alamofire.request(alamofireRequestString)
                 .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
                 .responseString { response in
-                print("response string",response)
-                    if (response.characters.count>="SUCCESS".characters.count && response.index(response.startIndex, offseBy: 7)){
-                        
-                    }
-                
             }
             
-        } else{
-            
-        }
+        } else {}
         
         self.view.endEditing(true)
         
@@ -68,48 +62,63 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        
         let cell = RecentsTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ContactCell")
         
         cell.tag = indexPath.row
         cell.textLabel?.text = "\((self.GroupSegmentedControl.selectedSegmentIndex==0 ? "\(filteredPupils[indexPath.row].name) (\(filteredPupils[indexPath.row].ID))" : "\(filteredChats[indexPath.row].name)")) "
-                //cell.target(forAction: #selector(ContactsViewController.getInfoOnContact(sender:)), withSender: self)
+        
         return cell
     }
     
     public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let getInfoAction = UITableViewRowAction(style: .default, title: "Info") { (action, index) in
-            //let student = getAllStudents()[indexPath.row]
-            self.studentPos = indexPath.row
-            self.performSegue(withIdentifier: "getInfo", sender: nil)
+        if (GroupSegmentedControl.selectedSegmentIndex == 0) {
             
-        }
-        
-        getInfoAction.backgroundColor = UIColor.blue
-        
-        let addToRecentsAction = UITableViewRowAction(style: .default, title: "Add to Recents") { (action, index) in
-            let realm = try! Realm()
-            let newChat = IndividualChat()
-            print("MAKING A NEW CHAT")
-            newChat.person1 = self.pupils[indexPath.row]
-            newChat.person2 = self.currentStudent
-            print(newChat)
-            try! realm.write {
-                realm.add(newChat)
+            let getInfoAction = UITableViewRowAction(style: .default, title: "Info") { (action, index) in
+                
+                self.studentPos = indexPath.row
+                self.performSegue(withIdentifier: "getInfo", sender: nil)
+                
             }
             
-            //print(realm.objects(IndividualChat.self))
+            getInfoAction.backgroundColor = UIColor.blue
             
+            let addToRecentsAction = UITableViewRowAction(style: .default, title: "Add to Recents") { (action, index) in
+                
+                let realm = try! Realm()
+                let newChat = IndividualChat()
+                print("MAKING A NEW CHAT")
+                newChat.person1 = self.pupils[indexPath.row]
+                newChat.person2 = self.currentStudent
+                print(newChat)
+                try! realm.write {
+                    realm.add(newChat)
+                }
+                
+            }
+            
+            addToRecentsAction.backgroundColor = UIColor.green
+            
+            return[getInfoAction, addToRecentsAction]
+            
+        } else {
+            let getInfoAction = UITableViewRowAction(style: .default, title: "Info") { (action, index) in
+                self.classPos = indexPath.row
+                self.performSegue(withIdentifier: "getClassChatInfo", sender: nil)
+            }
+            getInfoAction.backgroundColor = UIColor.blue
+            
+            return [getInfoAction]
         }
-        
-        addToRecentsAction.backgroundColor = UIColor.green
-        
-        return[getInfoAction, addToRecentsAction]
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let destViewContrller: ContactInfoViewController = segue.destination as! ContactInfoViewController
-        destViewContrller.user = String(describing: studentPos!)
+        if segue.identifier! == "getInfo" {
+            let destViewContrller: ContactInfoViewController = segue.destination as! ContactInfoViewController
+            destViewContrller.user = String(describing: studentPos!)
+        } else {
+            let destViewController: GroupChatInfoViewController = segue.destination as! GroupChatInfoViewController
+            destViewController.pos = String(describing: classPos!)
+        }
     }
     
     func getInfoOnContact(sender: UITableViewCell) {
@@ -118,10 +127,6 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // retrieveAllStudents()
-        //getAllStudents()
-        //print("and now...")
-        //print(currentStudent)
         // Do any additional setup after loading the view.
         updatedStudents()
         filteredPupils = pupils
@@ -134,12 +139,6 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     
     func updatedStudents(){
         let realm = try! Realm()
-        // print(realm.objects(List<Student>))
-        //var pupils = [Student]()
-        
-        /*for y in (realm.objects(StudentList.self).first?.studentList)! {
-            pupils.append(y)
-        }*/
         pupils = (realm.objects(StudentList.self).first?.studentList)!
         
         

@@ -16,7 +16,9 @@ def Create(filename):
                                 DROP TABLE IF EXISTS Students;
                                 DROP TABLE IF EXISTS Blocks;
                                 DROP TABLE IF EXISTS Classes;
-                                DROP TABLE IF EXISTS Enrolments""")
+                                DROP TABLE IF EXISTS Enrolments;
+                                DROP TABLE IF EXISTS CustomGroups;
+                                DROP TABLE IF EXISTS CustomEnrolments;""")
             
             print("Declaring tables")
             cur.executescript("""CREATE TABLE Students(ID INTEGER PRIMARY KEY AUTOINCREMENT, password TEXT, name TEXT);
@@ -35,7 +37,12 @@ def Create(filename):
                                 CREATE TABLE Classes(ID TEXT, PRIMARY KEY(ID));
 
                                 CREATE TABLE Enrolments(ID INTEGER PRIMARY KEY AUTOINCREMENT, studentID INT, classID TEXT, FOREIGN KEY (classID)
-                                REFERENCES Classes(ID), FOREIGN KEY (studentID) REFERENCES Students(ID));""")
+                                REFERENCES Classes(ID), FOREIGN KEY (studentID) REFERENCES Students(ID));
+
+                                CREATE TABLE CustomGroups(ID INTEGER PRIMARY KEY AUTOINCREMENT, creatorID INT, FOREIGN KEY (creatorID) REFERENCES Students(ID));
+
+                                CREATE TABLE CustomEnrolments(ID INTEGER PRIMARY KEY AUTOINCREMENT, studentID INT, classID INT,
+                                FOREIGN KEY (studentID) REFERENCES Students(ID), FOREIGN KEY (classID) REFERENCES CustomGroups(ID));""")
 
             print("Tables declared. Committing")
 

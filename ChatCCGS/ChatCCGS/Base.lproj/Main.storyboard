@@ -87,6 +87,7 @@
                         <outlet property="SearchBar" destination="GnR-tu-zTq" id="i0y-Vg-tPm"/>
                         <outlet property="TableView" destination="5l5-Xw-pM1" id="X2w-su-DzT"/>
                         <segue destination="umK-g2-pYg" kind="presentation" identifier="getInfo" id="lj9-gg-cop"/>
+                        <segue destination="YXi-tB-TSZ" kind="presentation" identifier="getClassChatInfo" id="09F-DH-xyt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="g1Y-HG-zBy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -328,7 +329,45 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Blu-Mj-hQI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="654.4921875" y="-152.34375"/>
+            <point key="canvasLocation" x="510" y="-152"/>
+        </scene>
+        <!--Group Chat Info View Controller-->
+        <scene sceneID="vTX-tw-7Pz">
+            <objects>
+                <viewController id="YXi-tB-TSZ" customClass="GroupChatInfoViewController" customModule="ChatCCGS" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="DMR-PD-7U3"/>
+                        <viewControllerLayoutGuide type="bottom" id="pdr-NP-r8n"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="RRY-5C-IR7">
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Class Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mu8-X6-K2L">
+                                <rect key="frame" x="436" y="127" width="262" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Students in the class" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M0Z-4q-lRx">
+                                <rect key="frame" x="381" y="199" width="508" height="218"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="classNamelbl" destination="mu8-X6-K2L" id="8nl-v9-ElA"/>
+                        <outlet property="classStudentslbl" destination="M0Z-4q-lRx" id="VfQ-uZ-RXU"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MsZ-6r-dWQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1204.6875" y="-153.125"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="xJr-wl-2Iv">

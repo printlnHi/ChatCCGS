@@ -1,8 +1,8 @@
 //
-//  ContactInfoViewController.swift
+//  GroupChatInfoViewController.swift
 //  ChatCCGS
 //
-//  Created by Nick Patrikeos on 20/8/17.
+//  Created by Nick Patrikeos on 2/9/17.
 //  Copyright © 2017 NullPointerAcception. All rights reserved.
 //
 
@@ -10,39 +10,42 @@ import UIKit
 import RealmSwift
 import Alamofire
 
-class ContactInfoViewController: UIViewController {
+class GroupChatInfoViewController: UIViewController {
+    
+    var pos = ""
+    var groupChat: GroupChat = GroupChat()
 
-    var user = ""
-    
-    @IBOutlet weak var studentNamelbl: UILabel!
-    @IBOutlet weak var studentIDlbl: UILabel!
-    
+    @IBOutlet weak var classNamelbl: UILabel!
+    @IBOutlet weak var classStudentslbl: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        groupChat = getClassChatClicked()
+        classNamelbl.text = groupChat.name
         
-        let student = getAllStudents()[Int(user)!]
+        var members = ""
+        for m in groupChat.members {
+            members += m.name + ","
+        }
         
-        studentNamelbl.text = student.name
-        studentIDlbl.text = student.ID
-        
-
         // Do any additional setup after loading the view.
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    func getAllStudents() -> List<Student> {
+    func getClassChatClicked() -> GroupChat {
         let realm = try! Realm()
-        let pupils = (realm.objects(StudentList.self).first?.studentList)!
-        
-        return pupils
-        
-        
+        let chats = (realm.objects(ClassChatList.self).first?.classChatList)!
+        var classes = [GroupChat]()
+        for chat in chats {
+            classes.append(chat)
+        }
+        return classes[Int(pos)!]
     }
+    
     
 
     /*

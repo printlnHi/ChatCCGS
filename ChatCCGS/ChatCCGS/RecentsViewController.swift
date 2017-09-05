@@ -24,49 +24,55 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         chatSelected = getRecentChats()[indexPath.row]
-        print("segueing")
         self.performSegue(withIdentifier: "selectDM", sender: nil)
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let chat = getRecentChats()[indexPath.row]
-        
         let cell = RecentsTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ConversationCell")
-        //cell.chatName = chat.getName()
-        //print(chat.person1)
         cell.textLabel?.text = chat.person1?.name
-        
         
         return cell
     }
     
     
-    /*public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let removeFromRecentsAction = UITableViewRowAction(style: .default, title: "Info") { (action, index) in
+    public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let removeFromRecentsAction = UITableViewRowAction(style: .default, title: "Remove") { (action, index) in
             
             let realm = try! Realm()
             let results = realm.objects(IndividualChat.self)
-            try! realm.write {
-                realm.delete(ch)
+            var tbd: IndividualChat? = nil
+            for r in results {
+                let chat = self.getRecentChats()[indexPath.row]
+                if (r.person2?.ID)! == self.currentStudent.ID && (r.person1?.name)! == chat.person1?.name {
+                    tbd = chat
+                    break
+                }
+            }
+            if tbd != nil {
+                try! realm.write {
+                    realm.delete(tbd!)
+                }
             }
         }
-        
-        //getInfoAction.backgroundColor = UIColor.blue
-        return[getInfoAction, addToRecentsAction]
-    }*/
+        removeFromRecentsAction.backgroundColor = UIColor.red
+        return [removeFromRecentsAction]
+    }
     
     func getRecentChats() -> [IndividualChat] {
         let realm = try! Realm()
         let results = realm.objects(IndividualChat.self)
-        //print(results)
-        
         var chats = [IndividualChat]()
+        
         for r in results {
             chats.append(r)
         }
         
-        //print(chats)
+        for chat in chats {
+            retrieveArchivedMessages(username: (chat.person2?.ID)!, password: "password123", author: (chat.person1?.ID)!)
+        }
+        
         return chats
     }
     
@@ -76,7 +82,6 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
         // Do any additional setup after loading the view.
         print("In recents view controller")
         
-        print(retrieveArchivedMessages())
     }
 
     override func didReceiveMemoryWarning() {
@@ -99,35 +104,31 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
         }
     }
     
-    func retrieveArchivedMessages() {
+    func retrieveArchivedMessages(username: String, password: String, author: String) {
         
-        //var request = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/archiveQuery.py?username="
-        //request += (chatSelected.person2?.ID)! + "&password="
-        //request += "password123&"
-        // Finish based on modified archive file
-        let request = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/archiveQuery.py?username=123&password=password123&author=124&from=2017-05-01%2000:00:00&to=2018-05-01%2000:00:00"
+        var request = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/archiveQuery.py?"
+        request += "username=" + username + "&password="
+        request += password + "&author="
+        request += author + "&from=2017-05-01%2000:00:00&to=2018-05-01%2000:00:00"
         Alamofire.request(request).authenticate(user: "ccgs", password: "1910").responseString { response in
-            print("*******")
-            debugPrint(response.result.value)
+
             let realm = try! Realm()
             
-            var data = response.result.value?.components(separatedBy: "\n")
+            let data = response.result.value?.components(separatedBy: "\n")
             var counter = (data?.count)! - 2
-            print(data)
+            
             for c in data! {
+                
                 if counter == 0 {
-                    print("Breaking")
                     break
                 }
-                
                 
                 var c_mutable = c
                 c_mutable.remove(at: c.index(before: c.endIndex))
                 c_mutable.remove(at: c.startIndex)
                 var components = c_mutable.components(separatedBy: ",")
-                //print(c_mutable)
-                print(components)
-                var m = Message()
+                
+                let m = Message()
                 m.content = components[1]
                 m.dateStamp = components[2]
                 m.author = components[3]
@@ -137,14 +138,9 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
                     realm.add(m)
                 }
                 
-                print(counter)
                 counter -= 1
             }
             
-            print(data)
-            
-            
-            print(realm.objects(Message.self))
         }
     }
     

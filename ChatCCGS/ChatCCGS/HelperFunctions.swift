@@ -20,6 +20,9 @@ class RequestHelper{
         return esc
     }
     
+    static func isDigit(_ c : Character) -> Bool{
+        return "0"<=c && c<="9"
+    }
     static let tartarusUsername = "ccgs"
     static let tartarusPassword = "1910"
     static var userUsername = "USERNAME NOT SET"

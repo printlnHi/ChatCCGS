@@ -36,20 +36,88 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         let queryText = "%\(escapedEnteredText)%"
         let escapedQueryText = RequestHelper.escapeStringForUrl(queryString: queryText)
 
-
+        var didSucceed = false;
         if (GroupSegmentedControl.selectedSegmentIndex==0){
-            let alamofireRequestString = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/studentQuery.py?username=\(RequestHelper.userUsername)&password=\(RequestHelper.userPassword)&query=\(escapedQueryText)"
-            print("request string is",alamofireRequestString)
-            
-            Alamofire.request(alamofireRequestString)
-                .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
-                .responseString { response in
+            if (enteredText==""){
+                filteredPupils = pupils
+                self.TableView.reloadData()
+            } else{
+                let alamofireRequestString = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/studentQuery.py?username=\(RequestHelper.userUsername)&password=\(RequestHelper.userPassword)&query=\(escapedQueryText)"
+                print("request string is",alamofireRequestString)
+                
+                Alamofire.request(alamofireRequestString)
+                    .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
+                    .responseString { response in
+                    switch response.result.value!{
+                        case "400 Bad Request\n":
+                            fallthrough
+                        case "400 Bad Request":
+                            fallthrough
+                        case "Unprocessable Entity\n":
+                            fallthrough
+                        case "Internal Server Error\n":
+                            fallthrough
+                        case "Interal Server Error":
+                            //TODO: Alert the user
+                            print("Something went wrong - response = \(response)")
+                        case "204 No Conent\n":
+                            fallthrough
+                        case "204 No Content":
+                            didSucceed = true
+                            self.parseSuccesfulStudentQuery(result: "")
+                        default:
+                            didSucceed = true
+                            self.parseSuccesfulStudentQuery(result: response.result.value!)
+                    }
+                }
+    
             }
             
         } else {}
         
         self.view.endEditing(true)
         
+    }
+    
+    func parseSuccesfulStudentQuery(result : String){
+        self.filteredPupils = List()
+        result.enumerateLines{line, _ in
+            if (line != ""){
+                print("parsing line \(line)")
+                let components : (ID: String, Name: String) = self.seperateStudentResponse(response: line)
+                print("ID = \(components.ID) Name = \(components.Name)")
+                var newStudent: Student = Student()
+                newStudent.ID = components.ID
+                newStudent.name = components.Name
+                print("adding new student")
+                self.filteredPupils.append(newStudent)
+            }
+        }
+        self.TableView.reloadData()
+    }
+    
+    func seperateStudentResponse(response: String) -> (ID: String, Name: String){
+        print("Response : \(response)")
+        let IDStartIndex = response.index(response.startIndex, offsetBy: 1)
+        var IDEndIndex = response.index(response.startIndex, offsetBy: 1)
+        
+
+        while (RequestHelper.isDigit(response[IDEndIndex])){
+            IDEndIndex = response.index(IDEndIndex, offsetBy: 1)
+        }
+		
+        let ID: String = response.substring(with: IDStartIndex..<IDEndIndex)
+        
+        let NameStartIndex = response.index(IDEndIndex, offsetBy:3)
+        var NameEndIndex = response.index(IDEndIndex, offsetBy: 3)
+        
+        while (response[NameEndIndex] != "'" as Character){
+            NameEndIndex = response.index(NameEndIndex, offsetBy: 1)
+        }
+        
+        let Name: String = response.substring(with: NameStartIndex..<NameEndIndex)
+        
+        return (ID: ID, Name: Name)
     }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{

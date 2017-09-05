@@ -36,46 +36,54 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         let queryText = "%\(escapedEnteredText)%"
         let escapedQueryText = RequestHelper.escapeStringForUrl(queryString: queryText)
 
-        var didSucceed = false;
         if (GroupSegmentedControl.selectedSegmentIndex==0){
+            //Pupils are currently being searched
+            
             if (enteredText==""){
-                resetFilteredPupils()
-            } else{
-                let alamofireRequestString = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/studentQuery.py?username=\(RequestHelper.userUsername)&password=\(RequestHelper.userPassword)&query=\(escapedQueryText)"
                 
-                Alamofire.request(alamofireRequestString)
-                    .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
-                    .responseString { response in
-                    switch response.result.value!{
-                        case "400 Bad Request\n":
-                            fallthrough
-                        case "400 Bad Request":
-                            fallthrough
-                        case "Unprocessable Entity\n":
-                            fallthrough
-                        case "Internal Server Error\n":
-                            fallthrough
-                        case "Interal Server Error":
-                            //TODO: Alert the user
-                            print("Something went wrong - response = \(response)")
-                        case "204 No Conent\n":
-                            fallthrough
-                        case "204 No Content":
-                            didSucceed = true
-                            self.parseSuccesfulStudentQuery(result: "")
-                        default:
-                            didSucceed = true
-                            self.parseSuccesfulStudentQuery(result: response.result.value!)
-                    }
-                }
+                resetFilteredPupils()
+                
+            } else{
+                
+                let alamofireRequestString = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/studentQuery.py?username=\(RequestHelper.userUsername)&password=\(RequestHelper.userPassword)&query=\(escapedQueryText)"
+                performNonEmptyPupilQuery(alamofireRequestString: alamofireRequestString)
     
             }
             
         } else {
+            //Chats are currently being searched
+            
         }
         
         self.view.endEditing(true)
         
+    }
+    
+    private func performNonEmptyPupilQuery(alamofireRequestString : String){
+    
+        Alamofire.request(alamofireRequestString)
+            .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
+            .responseString { response in
+                switch response.result.value!{
+                case "400 Bad Request\n":
+                    fallthrough
+                case "400 Bad Request":
+                    fallthrough
+                case "Unprocessable Entity\n":
+                    fallthrough
+                case "Internal Server Error\n":
+                    fallthrough
+                case "Interal Server Error":
+                    //TODO: Alert the user
+                    print("Something went wrong - response = \(response)")
+                case "204 No Conent\n":
+                    fallthrough
+                case "204 No Content":
+                    self.parseSuccesfulStudentQuery(result: "")
+                default:
+                    self.parseSuccesfulStudentQuery(result: response.result.value!)
+                }
+            }
     }
     
     public func searchBarCancelButtonClicked(_ searchBar: UISearchBar){
@@ -94,7 +102,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         result.enumerateLines{line, _ in
             if (line != ""){
                 let components : (ID: String, Name: String) = self.seperateStudentResponse(response: line)
-                var newStudent: Student = Student()
+                let newStudent: Student = Student()
                 newStudent.ID = components.ID
                 newStudent.name = components.Name
                 self.filteredPupils.append(newStudent)
@@ -214,7 +222,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
-    func getInfoOnContact(sender: UITableViewCell) {
+    private func getInfoOnContact(sender: UITableViewCell) {
         print(sender.tag)
     }
     
@@ -230,14 +238,14 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     }
     
     
-    func updatedStudents(){
+    private func updatedStudents(){
         let realm = try! Realm()
         pupils = (realm.objects(StudentList.self).first?.studentList)!
         
         
     }
     
-    func updatedClassesForStudent(){
+    private func updatedClassesForStudent(){
         let realm = try! Realm()
         
         chats = (realm.objects(ClassChatList.self).first?.classChatList)!

@@ -39,11 +39,9 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         var didSucceed = false;
         if (GroupSegmentedControl.selectedSegmentIndex==0){
             if (enteredText==""){
-                filteredPupils = pupils
-                self.TableView.reloadData()
+                resetFilteredPupils()
             } else{
                 let alamofireRequestString = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/studentQuery.py?username=\(RequestHelper.userUsername)&password=\(RequestHelper.userPassword)&query=\(escapedQueryText)"
-                print("request string is",alamofireRequestString)
                 
                 Alamofire.request(alamofireRequestString)
                     .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
@@ -73,31 +71,58 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     
             }
             
-        } else {}
+        } else {
+        }
         
         self.view.endEditing(true)
         
     }
     
+    public func searchBarCancelButtonClicked(_ searchBar: UISearchBar){
+        resetSelectedList()
+    }
+    
+    public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String){
+        if (searchText==""){
+            resetSelectedList()
+        }
+    }
+    
+    
     func parseSuccesfulStudentQuery(result : String){
         self.filteredPupils = List()
         result.enumerateLines{line, _ in
             if (line != ""){
-                print("parsing line \(line)")
                 let components : (ID: String, Name: String) = self.seperateStudentResponse(response: line)
-                print("ID = \(components.ID) Name = \(components.Name)")
                 var newStudent: Student = Student()
                 newStudent.ID = components.ID
                 newStudent.name = components.Name
-                print("adding new student")
                 self.filteredPupils.append(newStudent)
             }
         }
         self.TableView.reloadData()
     }
     
+    private func resetSelectedList(){
+        if (GroupSegmentedControl.selectedSegmentIndex == 0){
+            resetFilteredPupils()
+        } else{
+            resetFilteredChats()
+        }
+    }
+    private func resetFilteredPupils(){
+        print("Resetting filtered pupils")
+        self.filteredPupils = pupils
+        TableView.reloadData()
+    }
+    
+    private func resetFilteredChats(){
+        print("Resetting filtered chats")
+        self.filteredChats = chats
+        TableView.reloadData()
+    }
+    
     func seperateStudentResponse(response: String) -> (ID: String, Name: String){
-        print("Response : \(response)")
         let IDStartIndex = response.index(response.startIndex, offsetBy: 1)
         var IDEndIndex = response.index(response.startIndex, offsetBy: 1)
         
@@ -107,6 +132,8 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         }
 		
         let ID: String = response.substring(with: IDStartIndex..<IDEndIndex)
+        
+        
         
         let NameStartIndex = response.index(IDEndIndex, offsetBy:3)
         var NameEndIndex = response.index(IDEndIndex, offsetBy: 3)
@@ -154,10 +181,8 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                 
                 let realm = try! Realm()
                 let newChat = IndividualChat()
-                print("MAKING A NEW CHAT")
                 newChat.person1 = self.pupils[indexPath.row]
                 newChat.person2 = self.currentStudent
-                print(newChat)
                 try! realm.write {
                     realm.add(newChat)
                 }

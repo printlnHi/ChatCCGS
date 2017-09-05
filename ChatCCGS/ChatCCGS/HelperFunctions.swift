@@ -16,7 +16,7 @@ class RequestHelper{
     
     static func escapeStringForSQL(queryString s: String) -> String{
         print("Used value from unfinished function!")
-        var esc = s.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "%", with: "\\%").replacingOccurrences(of: "_", with: "\\_")
+        let esc = s.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "%", with: "\\%").replacingOccurrences(of: "_", with: "\\_")
         return esc
     }
     

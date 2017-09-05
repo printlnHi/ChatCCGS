@@ -45,9 +45,6 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                 .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
                 .responseString { response in
                 print("response string",response) //This evalues to NILx
-                    switch "400 Bad Request\n":
-                        fallthrough
-                    switch "401 Unauthorized"
             }
             
         } else {}

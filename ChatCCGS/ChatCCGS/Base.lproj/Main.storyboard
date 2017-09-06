@@ -49,7 +49,7 @@
                                         <rect key="frame" x="0.0" y="28" width="1024" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fhl-up-tLM" id="EwE-7f-NtJ">
-                                            <rect key="frame" x="0.0" y="0.0" width="1024" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="1024" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -88,6 +88,7 @@
                         <outlet property="TableView" destination="5l5-Xw-pM1" id="X2w-su-DzT"/>
                         <segue destination="umK-g2-pYg" kind="presentation" identifier="getInfo" id="lj9-gg-cop"/>
                         <segue destination="YXi-tB-TSZ" kind="presentation" identifier="getClassChatInfo" id="09F-DH-xyt"/>
+                        <segue destination="I5v-SZ-pbh" kind="presentation" identifier="classChat" id="vBA-xn-g57"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="g1Y-HG-zBy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -341,10 +342,10 @@
             </objects>
             <point key="canvasLocation" x="510" y="-152"/>
         </scene>
-        <!--View Controller-->
+        <!--Class Group Chat View Controller-->
         <scene sceneID="XFt-nY-2IN">
             <objects>
-                <viewController id="I5v-SZ-pbh" sceneMemberID="viewController">
+                <viewController id="I5v-SZ-pbh" customClass="ClassGroupChatViewController" customModule="ChatCCGS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="SOC-Nb-SX0"/>
                         <viewControllerLayoutGuide type="bottom" id="d8t-QK-JTj"/>
@@ -357,7 +358,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sxx-St-3A7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1341" y="-979"/>
+            <point key="canvasLocation" x="552" y="655"/>
         </scene>
         <!--Group Chat Info View Controller-->
         <scene sceneID="vTX-tw-7Pz">

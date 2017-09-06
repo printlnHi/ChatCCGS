@@ -113,7 +113,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                     fallthrough
                 case "Internal Server Error\n":
                     //TOOD: Alert the user
-                    print("Something went wrong - response = \(response)")
+                    print("Something went wrong - ƒresponse = \(response)")
                 case "204 No Content\n":
                     fallthrough
                 case "204 No Content":
@@ -249,6 +249,12 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         return cell
     }
     
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if GroupSegmentedControl.selectedSegmentIndex == 1 {
+            self.performSegue(withIdentifier: "classChat", sender: nil)
+        }
+    }
+    
     public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         if (GroupSegmentedControl.selectedSegmentIndex == 0) {
             
@@ -293,6 +299,9 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         if segue.identifier! == "getInfo" {
             let destViewContrller: ContactInfoViewController = segue.destination as! ContactInfoViewController
             destViewContrller.user = String(describing: studentPos!)
+        } else if segue.identifier == "classChat" {
+            let destViewController: ClassGroupChatViewController = segue.destination as! ClassGroupChatViewController
+            destViewController.currentStudent = currentStudent
         } else {
             print("OK~")
             let destViewController: GroupChatInfoViewController = segue.destination as! GroupChatInfoViewController

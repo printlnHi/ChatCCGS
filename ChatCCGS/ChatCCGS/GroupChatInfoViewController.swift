@@ -3,7 +3,7 @@
 //  ChatCCGS
 //
 //  Created by Nick Patrikeos on 2/9/17.
-//  Copyright © 2017 NullPointerAcception. All rights reserved.
+//  Copyright © 2017  . All rights reserved.
 //
 
 import UIKit

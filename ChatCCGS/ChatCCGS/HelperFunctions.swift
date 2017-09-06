@@ -16,10 +16,15 @@ class RequestHelper{
     
     static func escapeStringForSQL(queryString s: String) -> String{
         print("Used value from unfinished function!")
-        var esc = s.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "%", with: "\\%").replacingOccurrences(of: "_", with: "\\_")
+        let esc = s.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "%", with: "\\%").replacingOccurrences(of: "_", with: "\\_")
         return esc
     }
     
+    static func isDigit(_ c : Character) -> Bool{
+        return "0"<=c && c<="9"
+    }
+    
+    static let tartarusBaseUrl = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS"
     static let tartarusUsername = "ccgs"
     static let tartarusPassword = "1910"
     static var userUsername = "USERNAME NOT SET"

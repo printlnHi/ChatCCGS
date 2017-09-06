@@ -36,21 +36,123 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         let queryText = "%\(escapedEnteredText)%"
         let escapedQueryText = RequestHelper.escapeStringForUrl(queryString: queryText)
 
-
         if (GroupSegmentedControl.selectedSegmentIndex==0){
-            let alamofireRequestString = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/studentQuery.py?username=\(RequestHelper.userUsername)&password=\(RequestHelper.userPassword)&query=\(escapedQueryText)"
-            print("request string is",alamofireRequestString)
+            //Pupils are currently being searched
             
-            Alamofire.request(alamofireRequestString)
-                .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
-                .responseString { response in
-                print("response string",response) //This evalues to NILx
+            if (enteredText==""){
+                
+                resetFilteredPupils()
+                
+            } else{
+                
+                let alamofireRequestString = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/studentQuery.py?username=\(RequestHelper.userUsername)&password=\(RequestHelper.userPassword)&query=\(escapedQueryText)"
+                performNonEmptyPupilQuery(alamofireRequestString: alamofireRequestString)
+    
             }
             
-        } else {}
+        } else {
+            //Chats are currently being searched
+            
+        }
         
         self.view.endEditing(true)
         
+    }
+    
+    private func performNonEmptyPupilQuery(alamofireRequestString : String){
+    
+        Alamofire.request(alamofireRequestString)
+            .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
+            .responseString { response in
+                switch response.result.value!{
+                case "400 Bad Request\n":
+                    fallthrough
+                case "400 Bad Request":
+                    fallthrough
+                case "Unprocessable Entity\n":
+                    fallthrough
+                case "Internal Server Error\n":
+                    fallthrough
+                case "Interal Server Error":
+                    //TODO: Alert the user
+                    print("Something went wrong - response = \(response)")
+                case "204 No Conent\n":
+                    fallthrough
+                case "204 No Content":
+                    self.parseSuccesfulStudentQuery(result: "")
+                default:
+                    self.parseSuccesfulStudentQuery(result: response.result.value!)
+                }
+            }
+    }
+    
+    public func searchBarCancelButtonClicked(_ searchBar: UISearchBar){
+        resetSelectedList()
+    }
+    
+    public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String){
+        if (searchText==""){
+            resetSelectedList()
+        }
+    }
+    
+    
+    func parseSuccesfulStudentQuery(result : String){
+        self.filteredPupils = List()
+        result.enumerateLines{line, _ in
+            if (line != ""){
+                let components : (ID: String, Name: String) = self.seperateStudentResponse(response: line)
+                let newStudent: Student = Student()
+                newStudent.ID = components.ID
+                newStudent.name = components.Name
+                self.filteredPupils.append(newStudent)
+            }
+        }
+        self.TableView.reloadData()
+    }
+    
+    private func resetSelectedList(){
+        if (GroupSegmentedControl.selectedSegmentIndex == 0){
+            resetFilteredPupils()
+        } else{
+            resetFilteredChats()
+        }
+    }
+    private func resetFilteredPupils(){
+        print("Resetting filtered pupils")
+        self.filteredPupils = pupils
+        TableView.reloadData()
+    }
+    
+    private func resetFilteredChats(){
+        print("Resetting filtered chats")
+        self.filteredChats = chats
+        TableView.reloadData()
+    }
+    
+    func seperateStudentResponse(response: String) -> (ID: String, Name: String){
+        let IDStartIndex = response.index(response.startIndex, offsetBy: 1)
+        var IDEndIndex = response.index(response.startIndex, offsetBy: 1)
+        
+
+        while (RequestHelper.isDigit(response[IDEndIndex])){
+            IDEndIndex = response.index(IDEndIndex, offsetBy: 1)
+        }
+		
+        let ID: String = response.substring(with: IDStartIndex..<IDEndIndex)
+        
+        
+        
+        let NameStartIndex = response.index(IDEndIndex, offsetBy:3)
+        var NameEndIndex = response.index(IDEndIndex, offsetBy: 3)
+        
+        while (response[NameEndIndex] != "'" as Character){
+            NameEndIndex = response.index(NameEndIndex, offsetBy: 1)
+        }
+        
+        let Name: String = response.substring(with: NameStartIndex..<NameEndIndex)
+        
+        return (ID: ID, Name: Name)
     }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
@@ -87,10 +189,8 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                 
                 let realm = try! Realm()
                 let newChat = IndividualChat()
-                print("MAKING A NEW CHAT")
                 newChat.person1 = self.pupils[indexPath.row]
                 newChat.person2 = self.currentStudent
-                print(newChat)
                 try! realm.write {
                     realm.add(newChat)
                 }
@@ -124,7 +224,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
-    func getInfoOnContact(sender: UITableViewCell) {
+    private func getInfoOnContact(sender: UITableViewCell) {
         print(sender.tag)
     }
     
@@ -140,14 +240,14 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     }
     
     
-    func updatedStudents(){
+    private func updatedStudents(){
         let realm = try! Realm()
         pupils = (realm.objects(StudentList.self).first?.studentList)!
         
         
     }
     
-    func updatedClassesForStudent(){
+    private func updatedClassesForStudent(){
         let realm = try! Realm()
         
         chats = (realm.objects(ClassChatList.self).first?.classChatList)!

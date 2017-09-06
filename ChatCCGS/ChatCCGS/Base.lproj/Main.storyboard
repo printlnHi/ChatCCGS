@@ -181,7 +181,7 @@
                                         <rect key="frame" x="0.0" y="28" width="1024" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Dje-uV-k0n" id="fqF-1m-eAj">
-                                            <rect key="frame" x="0.0" y="0.0" width="1024" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="1024" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Preview..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Whj-Oz-kbw">
@@ -216,12 +216,15 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Recents" id="9Rn-rN-4x8">
-                        <barButtonItem key="rightBarButtonItem" image="PlusIcon" id="fdp-og-ofz"/>
+                        <barButtonItem key="rightBarButtonItem" image="PlusIcon" id="fdp-og-ofz">
+                            <connections>
+                                <segue destination="6tT-cP-C4F" kind="presentation" id="ApE-rO-GJG"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="tableView" destination="olg-XL-ndt" id="M9t-bg-n95"/>
-                        <segue destination="6tT-cP-C4F" kind="show" identifier="RecentsToNewSegue" id="Lmj-Ff-C0d"/>
                         <segue destination="S05-dy-Y82" kind="presentation" identifier="selectDM" id="oxe-Ew-cgX"/>
                     </connections>
                 </viewController>
@@ -274,7 +277,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="53q-x4-aeM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="509.76562499999994" y="-809.375"/>
+            <point key="canvasLocation" x="588" y="-809"/>
         </scene>
         <!--Contact Information-->
         <scene sceneID="chO-Ap-lia">

@@ -61,12 +61,18 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
     }
     
     func getRecentChats() -> [IndividualChat] {
+        
         let realm = try! Realm()
         let results = realm.objects(IndividualChat.self)
         var chats = [IndividualChat]()
-        
+        print("*******")
         for r in results {
-            chats.append(r)
+            print(r.person2?.ID)
+            print("{}")
+            print(currentStudent.ID)
+            if (r.person2?.ID)! == currentStudent.ID {
+                chats.append(r)
+            }
         }
         
         for chat in chats {
@@ -91,7 +97,8 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        print("hi there!!")
+        print(currentStudent.ID)
         
         tableView.reloadData()
     }

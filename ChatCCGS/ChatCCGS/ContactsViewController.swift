@@ -40,19 +40,23 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
             //Pupils are currently being searched
             
             if (enteredText==""){
-                
-                resetFilteredPupils()
-                
+                resetSelectedList()
             } else{
                 
-                let alamofireRequestString = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/studentQuery.py?username=\(RequestHelper.userUsername)&password=\(RequestHelper.userPassword)&query=\(escapedQueryText)"
+                let alamofireRequestString = "\(RequestHelper.tartarusBaseUrl)/studentQuery.py?username=\(RequestHelper.userUsername)&password=\(RequestHelper.userPassword)&query=\(escapedQueryText)"
                 performNonEmptyPupilQuery(alamofireRequestString: alamofireRequestString)
     
             }
             
         } else {
             //Chats are currently being searched
-            
+            if (enteredText==""){
+                resetSelectedList()
+            } else{
+                
+                let almaofireRequestString = "\(RequestHelper.tartarusBaseUrl)/classQuery.py?username=\(RequestHelper.userUsername)&password=\(RequestHelper.userPassword)&class=\(escapedQueryText)"
+                performNonEmptyClassQuery(alamofireRequestString: almaofireRequestString)
+            }
         }
         
         self.view.endEditing(true)
@@ -73,10 +77,12 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                     fallthrough
                 case "Internal Server Error\n":
                     fallthrough
+                case "Unprocessable Entity":
+                    fallthrough
                 case "Interal Server Error":
                     //TODO: Alert the user
                     print("Something went wrong - response = \(response)")
-                case "204 No Conent\n":
+                case "204 No Content\n":
                     fallthrough
                 case "204 No Content":
                     self.parseSuccesfulStudentQuery(result: "")
@@ -85,6 +91,40 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                 }
             }
     }
+    
+    private func performNonEmptyClassQuery(alamofireRequestString : String){
+        print("Str Str = \(alamofireRequestString)")
+        
+        Alamofire.request(alamofireRequestString)
+            .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
+            .responseString { response in
+                print("switching \(response.result.value!)")
+                switch response.result.value!{
+                 
+                case "400 Bad Request\n":
+                    fallthrough
+                case "400 Bad Request":
+                    fallthrough
+                case "Unprocessable Entity\n":
+                    fallthrough
+                case "Unprocessable Entity":
+                    fallthrough
+                case "Internal Server Error":
+                    fallthrough
+                case "Internal Server Error\n":
+                    //TOOD: Alert the user
+                    print("Something went wrong - response = \(response)")
+                case "204 No Content\n":
+                    fallthrough
+                case "204 No Content":
+                    self.parseSuccesfulChatQuery(result: "")
+                default:
+                    self.parseSuccesfulChatQuery(result: response.result.value!)
+                }
+                
+        }
+    }
+    
     
     public func searchBarCancelButtonClicked(_ searchBar: UISearchBar){
         resetSelectedList()
@@ -97,17 +137,35 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     }
     
     
-    func parseSuccesfulStudentQuery(result : String){
+    private func parseSuccesfulStudentQuery(result : String){
         self.filteredPupils = List()
         result.enumerateLines{line, _ in
             if (line != ""){
-                let components : (ID: String, Name: String) = self.seperateStudentResponse(response: line)
+                print("line = \(line)")
+                let components : (ID: String, Name: String) = self.seperateStudent(response: line)
                 let newStudent: Student = Student()
                 newStudent.ID = components.ID
                 newStudent.name = components.Name
                 self.filteredPupils.append(newStudent)
             }
         }
+        self.TableView.reloadData()
+    }
+    
+    private func parseSuccesfulChatQuery(result : String){
+        print("parsing succesful chat query with result \(result)")
+        self.filteredChats = List()
+        let chats = result.components(separatedBy: ", ")
+        //Important to split by ", " not ","
+        
+        for chat in chats{
+            print(chat)
+            if (chat != ""){
+                let chatName = extractChatFrom(response: chat)
+                print("Chat name: \(chatName)")
+            }
+        }
+            
         self.TableView.reloadData()
     }
     
@@ -130,7 +188,8 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         TableView.reloadData()
     }
     
-    func seperateStudentResponse(response: String) -> (ID: String, Name: String){
+    private func seperateStudent(response: String) -> (ID: String, Name: String){
+        print("seperate student has been parsed \(response)")
         let IDStartIndex = response.index(response.startIndex, offsetBy: 1)
         var IDEndIndex = response.index(response.startIndex, offsetBy: 1)
         
@@ -155,6 +214,23 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         return (ID: ID, Name: Name)
     }
     
+    private func extractChatFrom(response: String) -> String{
+        print("extractChatFrom has been passed \(response)")
+        var NameStartIndex = response.startIndex
+        //TODO: Make this no longer relient on chat names starting with a number
+        while (!RequestHelper.isDigit(response[NameStartIndex])){
+            NameStartIndex = response.index(NameStartIndex, offsetBy: 1)
+        }
+        
+        var NameEndIndex = NameStartIndex
+        
+        while (response[NameEndIndex] != "'" as Character){
+            NameEndIndex = response.index(NameEndIndex, offsetBy: 1)
+        }
+
+        return response.substring(with: NameStartIndex..<NameEndIndex)
+        
+    }
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
         if (GroupSegmentedControl.selectedSegmentIndex==0){
             return filteredPupils.count

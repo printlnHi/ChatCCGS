@@ -113,10 +113,12 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print(segue.identifier)
         if segue.identifier! == "getInfo" {
             let destViewContrller: ContactInfoViewController = segue.destination as! ContactInfoViewController
             destViewContrller.user = String(describing: studentPos!)
         } else {
+            print("OK~")
             let destViewController: GroupChatInfoViewController = segue.destination as! GroupChatInfoViewController
             destViewController.pos = String(describing: classPos!)
         }

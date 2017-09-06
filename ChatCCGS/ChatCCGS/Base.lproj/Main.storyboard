@@ -181,7 +181,7 @@
                                         <rect key="frame" x="0.0" y="28" width="1024" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Dje-uV-k0n" id="fqF-1m-eAj">
-                                            <rect key="frame" x="0.0" y="0.0" width="1024" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="1024" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Preview..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Whj-Oz-kbw">
@@ -218,7 +218,7 @@
                     <navigationItem key="navigationItem" title="Recents" id="9Rn-rN-4x8">
                         <barButtonItem key="rightBarButtonItem" image="PlusIcon" id="fdp-og-ofz">
                             <connections>
-                                <segue destination="6tT-cP-C4F" kind="presentation" id="ApE-rO-GJG"/>
+                                <segue destination="6tT-cP-C4F" kind="presentation" identifier="newChat" id="ApE-rO-GJG"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -270,10 +270,17 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="6tT-cP-C4F" id="JJ8-Ya-M0H"/>
+                                    <outlet property="delegate" destination="6tT-cP-C4F" id="4Jr-fJ-Ohx"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <outlet property="tableView" destination="Cvs-vJ-wz0" id="IeJ-Y8-LSp"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="53q-x4-aeM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -108,6 +108,9 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
         if segue.identifier == "selectDM" {
             let dest: IndividualChatViewController = segue.destination as! IndividualChatViewController
             dest.chat = chatSelected
+        } else if segue.identifier == "newChat" {
+            let dest: NewChatViewController = segue.destination as! NewChatViewController
+            dest.currentStudent = currentStudent
         }
     }
     

@@ -7,12 +7,19 @@
 //
 
 import UIKit
+import RealmSwift
+import Alamofire
 
 class NewChatViewController: ViewController, UITableViewDelegate, UITableViewDataSource {
     
+    var currentStudent: Student = Student()
+    var selectedPeople = [Student]()
+    
+    @IBOutlet weak var tableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        print("A new chat")
+        print(currentStudent)
         // Do any additional setup after loading the view.
     }
 
@@ -29,26 +36,46 @@ class NewChatViewController: ViewController, UITableViewDelegate, UITableViewDat
     }*/
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        print("used value from unfished function")
-        return 0//getIndividualContacts().count
+        return getRecentChats().count
     }
     
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("HELLO!")
+        let cell = tableView.cellForRow(at: indexPath)
+        selectedPeople.append(getRecentChats()[indexPath.row].person1!)
+        print(selectedPeople)
+        cell?.backgroundColor = UIColor.green
+    }
+    
+    
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("used value from unfished function")
         
-        //let chat = getIndividualContacts()[indexPath.row]
-        
+        let chat = getRecentChats()[indexPath.row]
         let cell = RecentsTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ConversationCell")
-        //cell.chatName = chat.getName()
-        
+        cell.textLabel?.text = chat.person1?.name
         
         return cell
     }
     
-    public func tableView(_: UITableView, didSelectRowAt: IndexPath){
-        //let selectedChat = getRecentsChats()[didSelectRowAt.row];
+    
+    func getRecentChats() -> [IndividualChat] {
+        
+        let realm = try! Realm()
+        let results = realm.objects(IndividualChat.self)
+        var chats = [IndividualChat]()
+        print("*******!")
+        for r in results {
+            print(r.person2?.ID)
+            print("{}")
+            print(currentStudent.ID)
+            if (r.person2?.ID)! == currentStudent.ID {
+                chats.append(r)
+            }
+        }
+        
+        
+        return chats
     }
-
     
     /*
     // MARK: - Navigation

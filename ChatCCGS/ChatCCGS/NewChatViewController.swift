@@ -29,7 +29,7 @@ class NewChatViewController: ViewController, UITableViewDelegate, UITableViewDat
     }
 
     func createNewGroupChat() {
-        
+        var groupChat = GroupChat()
     }
     
     /*func getIndividualContacts() -> [Student] {
@@ -41,10 +41,29 @@ class NewChatViewController: ViewController, UITableViewDelegate, UITableViewDat
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("HELLO!")
+        
         let cell = tableView.cellForRow(at: indexPath)
-        selectedPeople.append(getRecentChats()[indexPath.row].person1!)
-        print(selectedPeople)
-        cell?.backgroundColor = UIColor.green
+        
+        if cell?.contentView.backgroundColor != UIColor.green {
+            selectedPeople.append(getRecentChats()[indexPath.row].person1!)
+            print(selectedPeople)
+            cell?.contentView.backgroundColor = UIColor.green
+        } else {
+            selectedPeople.remove(at: getIndexFromSelected(of: (cell?.textLabel?.text!)!)!)
+            print(selectedPeople)
+            cell?.contentView.backgroundColor = UIColor.white
+        }
+    }
+    
+    func getIndexFromSelected(of student: String) -> Int? {
+        var x = 0
+        for s in selectedPeople {
+            if student == s.name {
+                return x
+            }
+            x += 1
+        }
+        return nil
     }
     
     

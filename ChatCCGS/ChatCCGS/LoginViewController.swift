@@ -216,6 +216,7 @@ class LoginViewController: ViewController {
                     m.dateStamp = components[2]
                     m.author = components[3]
                     m.recipient = components[4]
+                    m.group = components[5]
                     
                     try! realm.write {
                         realm.add(m)

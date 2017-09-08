@@ -18,6 +18,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     
     var studentPos: Int? = 0
     var currentStudent: Student = Student()
+    var chatSelected = GroupChat()
     var classPos: Int? = 0
     
     var pupils: List<Student> = List()
@@ -251,6 +252,9 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if GroupSegmentedControl.selectedSegmentIndex == 1 {
+            self.chatSelected = filteredChats[indexPath.row]
+            print("***")
+            print(filteredChats[indexPath.row].name)
             self.performSegue(withIdentifier: "classChat", sender: nil)
         }
     }
@@ -302,6 +306,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         } else if segue.identifier == "classChat" {
             let destViewController: ClassGroupChatViewController = segue.destination as! ClassGroupChatViewController
             destViewController.currentStudent = currentStudent
+            destViewController.group = chatSelected
         } else {
             print("OK~")
             let destViewController: GroupChatInfoViewController = segue.destination as! GroupChatInfoViewController

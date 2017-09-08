@@ -143,6 +143,9 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
                 m.dateStamp = components[2]
                 m.author = components[3]
                 m.recipient = components[4]
+                m.group = components[5]
+                print("^^^^^")
+                print(m)
                 
                 try! realm.write {
                     realm.add(m)

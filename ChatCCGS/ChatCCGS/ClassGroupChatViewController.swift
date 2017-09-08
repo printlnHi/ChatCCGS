@@ -7,14 +7,19 @@
 //
 
 import UIKit
+import RealmSwift
+import Alamofire
 
 class ClassGroupChatViewController: UIViewController {
 
     var currentStudent = Student()
+    var group = GroupChat()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         print(currentStudent)
+        print(group)
+        print(group.members)
         // Do any additional setup after loading the view.
     }
 
@@ -23,7 +28,23 @@ class ClassGroupChatViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func getMembers(for classGroupChat: GroupChat) {
+        var request = "tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/getStudentsForClass.py?"
+        request += "username=" + currentStudent.ID + "&password=123"
+        
+        Alamofire.request(request).authenticate(user: "ccgs", password:"1910").responseString { response in
+            
+        }
+        
+    }
 
+    func getAllMessages() {
+        let realm = try! Realm()
+        print(realm.objects(Message.self))
+    }
+    
+    
+    
     /*
     // MARK: - Navigation
 

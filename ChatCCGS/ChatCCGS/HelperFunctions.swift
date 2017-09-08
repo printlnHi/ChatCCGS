@@ -20,6 +20,9 @@ class RequestHelper{
         return esc
     }
     
+    static func prepareUrlFor(scriptName: String) -> String{
+        return "\(RequestHelper.tartarusBaseUrl)/\(scriptName).py?username=\(RequestHelper.userUsername)&password=\(RequestHelper.userPassword)"
+    }
     static func isDigit(_ c : Character) -> Bool{
         return "0"<=c && c<="9"
     }

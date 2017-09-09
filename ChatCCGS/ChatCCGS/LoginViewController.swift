@@ -186,6 +186,7 @@ class LoginViewController: ViewController {
         }
     }
     
+    
     func pullAllMessages(studentID: String, password: String) {
         
         

@@ -54,7 +54,8 @@ class IndividualChatViewController: UIViewController, UITableViewDataSource {
         
         var messages = [Message]()
         for r in results {
-            if r.author == " " + (chat.person1?.ID)! || r.author ==  " " + (chat.person2?.ID)! ||  r.author == (chat.person2?.ID)! {
+            print(r.group)
+            if (r.author == " " + (chat.person1?.ID)! || r.author ==  " " + (chat.person2?.ID)! ||  r.author == (chat.person2?.ID)!) {
                 messages.append(r)
             }
         }

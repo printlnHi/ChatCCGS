@@ -253,8 +253,6 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if GroupSegmentedControl.selectedSegmentIndex == 1 {
             self.chatSelected = filteredChats[indexPath.row]
-            print("***")
-            print(filteredChats[indexPath.row].name)
             self.performSegue(withIdentifier: "classChat", sender: nil)
         }
     }
@@ -341,6 +339,9 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         let realm = try! Realm()
         
         chats = (realm.objects(ClassChatList.self).first?.classChatList)!
+        for chat in chats {
+            retrieveArchivedGroupMessages(studentID: currentStudent.ID, password: "password123", groupID: chat.name)
+        }
 
     }
 
@@ -352,7 +353,60 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     @IBAction func GroupSegmentChanged(_ sender: Any) {
         TableView.reloadData()
     }
-
+    
+    
+    
+    func retrieveArchivedGroupMessages(studentID: String, password: String, groupID: String) {
+        print("HI THIS IS TESTING!")
+        var request = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/archiveGroupQuery.py?username="
+        request += studentID + "&password="
+        request += password + "&groupID="
+        request += groupID + "&from=2017-01-01%2000:00:00&to=2019-01-01%2000:00:00"
+        Alamofire.request(request).authenticate(user: "ccgs", password: "1910").responseString { response in
+            debugPrint(response.result.value)
+            
+            switch response.result.value! {
+                case "204 No Content\n":
+                    break
+                case "400 Bad Request\n":
+                    break
+                default:
+                    let realm = try! Realm()
+                    
+                    let data = response.result.value?.components(separatedBy: "\n")
+                    var counter = (data?.count)! - 2
+                    
+                    for c in data! {
+                        
+                        if counter == 0 {
+                            break
+                        }
+                        
+                        var c_mutable = c
+                        c_mutable.remove(at: c.index(before: c.endIndex))
+                        c_mutable.remove(at: c.startIndex)
+                        var components = c_mutable.components(separatedBy: ",")
+                        print(components)
+                        
+                        
+                        let m = Message()
+                        m.content = components[1]
+                        m.dateStamp = components[2]
+                        m.author = components[3]
+                        m.recipient = components[4]
+                        m.group = components[5]
+                        print("^__^^")
+                        print(m)
+                        
+                        try! realm.write {
+                            realm.add(m)
+                        }
+                        print(realm.objects(Message.self))
+                        counter -= 1
+                }
+            }
+        }
+    }
     /*
     // MARK: - Navigation
 

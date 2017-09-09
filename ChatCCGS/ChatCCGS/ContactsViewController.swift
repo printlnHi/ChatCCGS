@@ -99,7 +99,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         Alamofire.request(alamofireRequestString)
             .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
             .responseString { response in
-                print("switching \(response.result.value!)")
+
                 switch response.result.value!{
                  
                 case "400 Bad Request\n":
@@ -139,18 +139,24 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     
     
     private func parseSuccesfulStudentQuery(result : String){
-        self.filteredPupils = List()
+        self.filteredPupils = getStudentsFromStudentQuery(result: result)
+        self.TableView.reloadData()
+    }
+    
+    private func getStudentsFromStudentQuery(result: String) -> List<Student>{
+        let toReturn: List<Student> = List()
+        
         result.enumerateLines{line, _ in
             if (line != ""){
-                print("line = \(line)")
                 let components : (ID: String, Name: String) = self.seperateStudent(response: line)
                 let newStudent: Student = Student()
                 newStudent.ID = components.ID
                 newStudent.name = components.Name
-                self.filteredPupils.append(newStudent)
+                toReturn.append(newStudent)
             }
         }
-        self.TableView.reloadData()
+        
+        return toReturn
     }
     
     private func parseSuccesfulChatQuery(result : String){
@@ -163,11 +169,42 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
             print(chat)
             if (chat != ""){
                 let chatName = extractChatFrom(response: chat)
-                print("Chat name: \(chatName)")
+                
+                let alamofireRequestString = "\(RequestHelper.prepareUrlFor(scriptName: "getStudentsForClass"))&class=\(chatName)"
+                print("Request string is \(alamofireRequestString)")
+                Alamofire.request(alamofireRequestString).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
+                    print("switching \(response.result.value!)")
+                    let strResponse = response.result.value!
+                    let firstIndex = strResponse.startIndex
+                    let fourthIndex = strResponse.index(firstIndex, offsetBy: 3)
+                    let code = strResponse.substring(with: firstIndex..<fourthIndex)
+                    let chatNameCopy = chatName
+                    switch code{
+                    case "400":
+                        fallthrough
+                    case "422":
+                        fallthrough
+                    case "401":
+                        fallthrough
+                    case "500":
+                        fallthrough
+                    case "204":
+                        print("Something went wrong - response = \(response)")
+                    default:
+                        let students = self.getStudentsFromStudentQuery(result: strResponse)
+                        print(students)
+                        let newChat: GroupChat = GroupChat()
+                        newChat.name = chatNameCopy
+                        newChat.members = students
+                        print("adding new chat \(newChat)")
+                        self.filteredChats.append(newChat)
+                        self.TableView.reloadData()
+                    }
+                }
+                
             }
         }
-            
-        self.TableView.reloadData()
+        
     }
     
     private func resetSelectedList(){
@@ -190,7 +227,6 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     }
     
     private func seperateStudent(response: String) -> (ID: String, Name: String){
-        print("seperate student has been parsed \(response)")
         let IDStartIndex = response.index(response.startIndex, offsetBy: 1)
         var IDEndIndex = response.index(response.startIndex, offsetBy: 1)
         

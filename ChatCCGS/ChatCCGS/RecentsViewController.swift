@@ -67,7 +67,7 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
         var chats = [IndividualChat]()
         print("*******")
         for r in results {
-            print(r.person2?.ID)
+            print(r.person2?.ID as Any)
             print("{}")
             print(currentStudent.ID)
             if (r.person2?.ID)! == currentStudent.ID {

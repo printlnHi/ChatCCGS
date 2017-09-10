@@ -399,7 +399,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         request += password + "&groupID="
         request += groupID + "&from=2017-01-01%2000:00:00&to=2019-01-01%2000:00:00"
         Alamofire.request(request).authenticate(user: "ccgs", password: "1910").responseString { response in
-            debugPrint(response.result.value)
+            debugPrint(response.result.value as Any)
             
             switch response.result.value! {
                 case "204 No Content\n":

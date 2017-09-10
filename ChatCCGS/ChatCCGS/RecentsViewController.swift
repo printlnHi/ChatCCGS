@@ -68,6 +68,12 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
         var chats = [IndividualChat]()
         
         for r in results {
+<<<<<<< HEAD
+=======
+            print(r.person2?.ID as Any)
+            print("{}")
+            print(currentStudent.ID)
+>>>>>>> dee01061868242516917e95ed4f2e0200a7790fd
             if (r.person2?.ID)! == currentStudent.ID {
                 chats.append(r)
             }

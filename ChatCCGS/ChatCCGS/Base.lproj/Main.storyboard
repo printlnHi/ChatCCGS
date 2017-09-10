@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="MxE-OO-Co0">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="MxE-OO-Co0">
     <device id="ipad9_7" orientation="landscape">
         <adaptation id="fullscreen"/>
     </device>
@@ -26,7 +26,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="250-Gh-GYO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-141.796875" y="626.5625"/>
+            <point key="canvasLocation" x="-133" y="627"/>
         </scene>
         <!--Contacts-->
         <scene sceneID="vA4-Qf-JHC">
@@ -76,14 +76,14 @@
                         <outlet property="GroupSegmentedControl" destination="xNJ-fn-HLB" id="n0p-U5-g4U"/>
                         <outlet property="SearchBar" destination="GnR-tu-zTq" id="i0y-Vg-tPm"/>
                         <outlet property="TableView" destination="5l5-Xw-pM1" id="X2w-su-DzT"/>
-                        <segue destination="umK-g2-pYg" kind="presentation" identifier="getInfo" id="lj9-gg-cop"/>
-                        <segue destination="YXi-tB-TSZ" kind="presentation" identifier="getClassChatInfo" id="09F-DH-xyt"/>
-                        <segue destination="I5v-SZ-pbh" kind="presentation" identifier="classChat" id="vBA-xn-g57"/>
+                        <segue destination="umK-g2-pYg" kind="show" identifier="getInfo" id="lj9-gg-cop"/>
+                        <segue destination="YXi-tB-TSZ" kind="show" identifier="getClassChatInfo" id="09F-DH-xyt"/>
+                        <segue destination="I5v-SZ-pbh" kind="show" identifier="classChat" id="vBA-xn-g57"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="g1Y-HG-zBy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-237.30468749999997" y="-152.34375"/>
+            <point key="canvasLocation" x="-142" y="-152"/>
         </scene>
         <!--Individual Chat View Controller-->
         <scene sceneID="lF6-E8-1HO">
@@ -209,7 +209,7 @@
                     <navigationItem key="navigationItem" title="Recents" id="9Rn-rN-4x8">
                         <barButtonItem key="rightBarButtonItem" image="PlusIcon" id="fdp-og-ofz">
                             <connections>
-                                <segue destination="6tT-cP-C4F" kind="presentation" identifier="newChat" id="ApE-rO-GJG"/>
+                                <segue destination="6tT-cP-C4F" kind="show" identifier="newChat" id="ApE-rO-GJG"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -217,6 +217,7 @@
                     <connections>
                         <outlet property="tableView" destination="olg-XL-ndt" id="M9t-bg-n95"/>
                         <segue destination="S05-dy-Y82" kind="presentation" identifier="selectDM" id="oxe-Ew-cgX"/>
+                        <segue destination="6tT-cP-C4F" kind="show" id="B9H-KT-GKL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mjm-B6-xtI" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -252,7 +253,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="LqM-82-heO" customClass="RecentsTableViewCell" customModule="ChatCCGS" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RecentsCell" id="LqM-82-heO" customClass="RecentsTableViewCell" customModule="ChatCCGS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="941" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="LqM-82-heO" id="gWa-Em-jCM">
@@ -296,14 +297,6 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qbz-IH-WOf">
-                                <rect key="frame" x="20" y="28" width="48" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="&lt; Back"/>
-                                <connections>
-                                    <segue destination="Qxl-jR-C0b" kind="presentation" id="DDl-9L-3c2"/>
-                                </connections>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Student Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="raU-Ap-0AW">
                                 <rect key="frame" x="474" y="113" width="262" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -561,7 +554,7 @@
         <image name="SettingsIcon" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="JBd-5O-bKm"/>
-        <segue reference="DDl-9L-3c2"/>
+        <segue reference="W3C-bi-FDS"/>
+        <segue reference="ApE-rO-GJG"/>
     </inferredMetricsTieBreakers>
 </document>

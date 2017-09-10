@@ -361,6 +361,10 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         updatedClassesForStudent()
         filteredChats = chats
         
+        for chat in chats {
+            retrieveArchivedGroupMessages(studentID: currentStudent.ID, password: "password123", groupID: chat.name)
+        }
+        
     }
     
     
@@ -375,9 +379,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         let realm = try! Realm()
         
         chats = (realm.objects(ClassChatList.self).first?.classChatList)!
-        for chat in chats {
-            retrieveArchivedGroupMessages(studentID: currentStudent.ID, password: "password123", groupID: chat.name)
-        }
+        
 
     }
 

@@ -70,6 +70,8 @@ class LoginViewController: ViewController {
                         
                         self.studentLoggingIn = myStudent
                         self.pullAllMessages(studentID: username, password: password)
+                        self.pullAllArchivedMessages(username: username, password: password)
+                        
                         self.performSegue(withIdentifier: "loggingIn", sender: nil)
                     
                     case "400 Bad Request\n":
@@ -146,6 +148,8 @@ class LoginViewController: ViewController {
                     realm.delete(realm.objects(ClassChatList.self))
                     realm.delete(realm.objects(Message.self))
                 }
+                
+                print(realm.objects(Message.self))
         
                 let studentList = StudentList()
                 studentList.studentList = students
@@ -232,6 +236,62 @@ class LoginViewController: ViewController {
                 print(realm.objects(Message.self))
         }
         
+    }
+    
+    
+    func pullAllArchivedMessages(username: String, password: String) {
+        let realm = try! Realm()
+        let chats = realm.objects(IndividualChat.self)
+    
+        for chat in chats {
+            if (chat.person2?.ID)! == username {
+                retrieveArchivedMessages(username: username, password: "password123", author: (chat.person1?.ID)!)
+            }
+        }
+        
+    }
+    
+    func retrieveArchivedMessages(username: String, password: String, author: String) {
+        
+        var request = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/archiveQuery.py?"
+        request += "username=" + username + "&password="
+        request += password + "&author="
+        request += author + "&from=2017-05-01%2000:00:00&to=2018-05-01%2000:00:00"
+        Alamofire.request(request).authenticate(user: "ccgs", password: "1910").responseString { response in
+            
+            let realm = try! Realm()
+            
+            let data = response.result.value?.components(separatedBy: "\n")
+            var counter = (data?.count)! - 2
+            
+            for c in data! {
+                
+                if counter == 0 {
+                    break
+                }
+                
+                var c_mutable = c
+                c_mutable.remove(at: c.index(before: c.endIndex))
+                c_mutable.remove(at: c.startIndex)
+                var components = c_mutable.components(separatedBy: ",")
+                
+                let m = Message()
+                m.content = components[1]
+                m.dateStamp = components[2]
+                m.author = components[3]
+                m.recipient = components[4]
+                m.group = components[5]
+                
+                try! realm.write {
+                    realm.add(m)
+                }
+                
+                counter -= 1
+            }
+            print("<><><>")
+            print(realm.objects(Message.self))
+            
+        }
     }
 
 }

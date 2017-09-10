@@ -16,6 +16,7 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
     var currentStudent: Student = Student()
     var chatSelected: IndividualChat = IndividualChat()
     
+    
     @IBOutlet weak var tableView: UITableView!
 
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
@@ -65,18 +66,11 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
         let realm = try! Realm()
         let results = realm.objects(IndividualChat.self)
         var chats = [IndividualChat]()
-        print("*******")
+        
         for r in results {
-            print(r.person2?.ID)
-            print("{}")
-            print(currentStudent.ID)
             if (r.person2?.ID)! == currentStudent.ID {
                 chats.append(r)
             }
-        }
-        
-        for chat in chats {
-            retrieveArchivedMessages(username: (chat.person2?.ID)!, password: "password123", author: (chat.person1?.ID)!)
         }
         
         return chats
@@ -88,6 +82,11 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
         // Do any additional setup after loading the view.
         print("In recents view controller")
         
+        
+        //for chat in getRecentChats() {
+        //    retrieveArchivedMessages(username: (chat.person2?.ID)!, password: "password123", author: (chat.person1?.ID)!)
+        //}
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -97,8 +96,7 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("hi there!!")
-        print(currentStudent.ID)
+        
         
         tableView.reloadData()
     }
@@ -114,7 +112,7 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
         }
     }
     
-    func retrieveArchivedMessages(username: String, password: String, author: String) {
+    /*func retrieveArchivedMessages(username: String, password: String, author: String) {
         
         var request = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/archiveQuery.py?"
         request += "username=" + username + "&password="
@@ -144,8 +142,6 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
                 m.author = components[3]
                 m.recipient = components[4]
                 m.group = components[5]
-                print("^^^^^")
-                print(m)
                 
                 try! realm.write {
                     realm.add(m)
@@ -153,9 +149,11 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
                 
                 counter -= 1
             }
+            print("<><><>")
+            print(realm.objects(Message.self))
             
         }
-    }
+    }*/
     
     
     /*

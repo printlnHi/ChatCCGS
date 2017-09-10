@@ -14,20 +14,20 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var GroupSegmentedControl: UISegmentedControl!
     @IBOutlet weak var TableView: UITableView!
     @IBOutlet weak var SearchBar: UISearchBar!
-    
-    
+
+
     var studentPos: Int? = 0
     var currentStudent: Student = Student()
     var chatSelected = GroupChat()
     var classPos: Int? = 0
-    
+
     var pupils: List<Student> = List()
     var chats: List<GroupChat> = List()
     var filteredPupils: List<Student> = List()
     var filteredChats: List<GroupChat> = List()
-    
+
     var shouldFilterResult =  false;
-    
+
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         var enteredText = searchBar.text
         if enteredText == nil{
@@ -39,33 +39,33 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
 
         if (GroupSegmentedControl.selectedSegmentIndex==0){
             //Pupils are currently being searched
-            
+
             if (enteredText==""){
                 resetSelectedList()
             } else{
-                
+
                 let alamofireRequestString = "\(RequestHelper.tartarusBaseUrl)/studentQuery.py?username=\(RequestHelper.userUsername)&password=\(RequestHelper.userPassword)&query=\(escapedQueryText)"
                 performNonEmptyPupilQuery(alamofireRequestString: alamofireRequestString)
-    
+
             }
-            
+
         } else {
             //Chats are currently being searched
             if (enteredText==""){
                 resetSelectedList()
             } else{
-                
+
                 let almaofireRequestString = "\(RequestHelper.tartarusBaseUrl)/classQuery.py?username=\(RequestHelper.userUsername)&password=\(RequestHelper.userPassword)&class=\(escapedQueryText)"
                 performNonEmptyClassQuery(alamofireRequestString: almaofireRequestString)
             }
         }
-        
+
         self.view.endEditing(true)
-        
+
     }
-    
+
     private func performNonEmptyPupilQuery(alamofireRequestString : String){
-    
+
         Alamofire.request(alamofireRequestString)
             .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
             .responseString { response in
@@ -92,16 +92,16 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                 }
             }
     }
-    
+
     private func performNonEmptyClassQuery(alamofireRequestString : String){
         print("Str Str = \(alamofireRequestString)")
-        
+
         Alamofire.request(alamofireRequestString)
             .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
             .responseString { response in
 
                 switch response.result.value!{
-                 
+
                 case "400 Bad Request\n":
                     fallthrough
                 case "400 Bad Request":
@@ -122,30 +122,30 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                 default:
                     self.parseSuccesfulChatQuery(result: response.result.value!)
                 }
-                
+
         }
     }
-    
-    
+
+
     public func searchBarCancelButtonClicked(_ searchBar: UISearchBar){
         resetSelectedList()
     }
-    
+
     public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String){
         if (searchText==""){
             resetSelectedList()
         }
     }
-    
-    
+
+
     private func parseSuccesfulStudentQuery(result : String){
         self.filteredPupils = getStudentsFromStudentQuery(result: result)
         self.TableView.reloadData()
     }
-    
+
     private func getStudentsFromStudentQuery(result: String) -> List<Student>{
         let toReturn: List<Student> = List()
-        
+
         result.enumerateLines{line, _ in
             if (line != ""){
                 let components : (ID: String, Name: String) = self.seperateStudent(response: line)
@@ -155,21 +155,21 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                 toReturn.append(newStudent)
             }
         }
-        
+
         return toReturn
     }
-    
+
     private func parseSuccesfulChatQuery(result : String){
         print("parsing succesful chat query with result \(result)")
         self.filteredChats = List()
         let chats = result.components(separatedBy: ", ")
         //Important to split by ", " not ","
-        
+
         for chat in chats{
             print(chat)
             if (chat != ""){
                 let chatName = extractChatFrom(response: chat)
-                
+
                 let alamofireRequestString = "\(RequestHelper.prepareUrlFor(scriptName: "getStudentsForClass"))&class=\(chatName)"
                 print("Request string is \(alamofireRequestString)")
                 Alamofire.request(alamofireRequestString).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
@@ -201,12 +201,12 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                         self.TableView.reloadData()
                     }
                 }
-                
+
             }
         }
-        
+
     }
-    
+
     private func resetSelectedList(){
         if (GroupSegmentedControl.selectedSegmentIndex == 0){
             resetFilteredPupils()
@@ -219,38 +219,38 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         self.filteredPupils = pupils
         TableView.reloadData()
     }
-    
+
     private func resetFilteredChats(){
         print("Resetting filtered chats")
         self.filteredChats = chats
         TableView.reloadData()
     }
-    
+
     private func seperateStudent(response: String) -> (ID: String, Name: String){
         let IDStartIndex = response.index(response.startIndex, offsetBy: 1)
         var IDEndIndex = response.index(response.startIndex, offsetBy: 1)
-        
+
 
         while (RequestHelper.isDigit(response[IDEndIndex])){
             IDEndIndex = response.index(IDEndIndex, offsetBy: 1)
         }
-		
+
         let ID: String = response.substring(with: IDStartIndex..<IDEndIndex)
-        
-        
-        
+
+
+
         let NameStartIndex = response.index(IDEndIndex, offsetBy:3)
         var NameEndIndex = response.index(IDEndIndex, offsetBy: 3)
-        
+
         while (response[NameEndIndex] != "'" as Character){
             NameEndIndex = response.index(NameEndIndex, offsetBy: 1)
         }
-        
+
         let Name: String = response.substring(with: NameStartIndex..<NameEndIndex)
-        
+
         return (ID: ID, Name: Name)
     }
-    
+
     private func extractChatFrom(response: String) -> String{
         print("extractChatFrom has been passed \(response)")
         var NameStartIndex = response.startIndex
@@ -258,15 +258,15 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         while (!RequestHelper.isDigit(response[NameStartIndex])){
             NameStartIndex = response.index(NameStartIndex, offsetBy: 1)
         }
-        
+
         var NameEndIndex = NameStartIndex
-        
+
         while (response[NameEndIndex] != "'" as Character){
             NameEndIndex = response.index(NameEndIndex, offsetBy: 1)
         }
 
         return response.substring(with: NameStartIndex..<NameEndIndex)
-        
+
     }
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
         if (GroupSegmentedControl.selectedSegmentIndex==0){
@@ -275,17 +275,17 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
             return filteredChats.count
         }
     }
-    
+
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+
         let cell = RecentsTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ContactCell")
-        
+
         cell.tag = indexPath.row
         cell.textLabel?.text = "\((self.GroupSegmentedControl.selectedSegmentIndex==0 ? "\(filteredPupils[indexPath.row].name) (\(filteredPupils[indexPath.row].ID))" : "\(filteredChats[indexPath.row].name)")) "
-        
+
         return cell
     }
-    
+
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if GroupSegmentedControl.selectedSegmentIndex == 1 {
             self.chatSelected = filteredChats[indexPath.row]
@@ -294,21 +294,21 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
             self.performSegue(withIdentifier: "classChat", sender: nil)
         }
     }
-    
+
     public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         if (GroupSegmentedControl.selectedSegmentIndex == 0) {
-            
+
             let getInfoAction = UITableViewRowAction(style: .default, title: "Info") { (action, index) in
-                
+
                 self.studentPos = indexPath.row
                 self.performSegue(withIdentifier: "getInfo", sender: nil)
-                
+
             }
-            
+
             getInfoAction.backgroundColor = UIColor.blue
-            
+
             let addToRecentsAction = UITableViewRowAction(style: .default, title: "Add to Recents") { (action, index) in
-                
+
                 let realm = try! Realm()
                 let newChat = IndividualChat()
                 newChat.person1 = self.pupils[indexPath.row]
@@ -316,24 +316,24 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                 try! realm.write {
                     realm.add(newChat)
                 }
-                
+
             }
-            
+
             addToRecentsAction.backgroundColor = UIColor.green
-            
+
             return[getInfoAction, addToRecentsAction]
-            
+
         } else {
             let getInfoAction = UITableViewRowAction(style: .default, title: "Info") { (action, index) in
                 self.classPos = indexPath.row
                 self.performSegue(withIdentifier: "getClassChatInfo", sender: nil)
             }
             getInfoAction.backgroundColor = UIColor.blue
-            
+
             return [getInfoAction]
         }
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         print(segue.identifier)
         if segue.identifier! == "getInfo" {
@@ -349,33 +349,33 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
             destViewController.pos = String(describing: classPos!)
         }
     }
-    
+
     private func getInfoOnContact(sender: UITableViewCell) {
         print(sender.tag)
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         updatedStudents()
         filteredPupils = pupils
-        
+
         updatedClassesForStudent()
         filteredChats = chats
-        
+
     }
-    
-    
+
+
     private func updatedStudents(){
         let realm = try! Realm()
         pupils = (realm.objects(StudentList.self).first?.studentList)!
-        
-        
+
+
     }
-    
+
     private func updatedClassesForStudent(){
         let realm = try! Realm()
-        
+
         chats = (realm.objects(ClassChatList.self).first?.classChatList)!
 
     }
@@ -384,7 +384,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     @IBAction func GroupSegmentChanged(_ sender: Any) {
         TableView.reloadData()
     }

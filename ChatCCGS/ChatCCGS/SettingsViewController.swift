@@ -12,6 +12,8 @@ class SettingsViewController: ViewController {
     
     var currentStudent: Student = Student()
     
+    @IBOutlet weak var PushNotifications: UISwitch!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -34,4 +36,7 @@ class SettingsViewController: ViewController {
     }
     */
 
+    @IBAction func ValueChanged(_ sender: Any) {
+        //TODO: Update push notifications preference
+    }
 }

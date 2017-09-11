@@ -21,7 +21,7 @@ class IndividualChatViewController: UIViewController, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         print("Messages")
-        
+        print(getAllMessages())
         // Do any additional setup after loading the view.
         
     }
@@ -51,10 +51,11 @@ class IndividualChatViewController: UIViewController, UITableViewDataSource {
         let realm = try! Realm()
         
         let results = realm.objects(Message.self)
+        print("###")
+        print(results)
         
         var messages = [Message]()
         for r in results {
-            print(r.group)
             if (r.author == " " + (chat.person1?.ID)! || r.author ==  " " + (chat.person2?.ID)! ||  r.author == (chat.person2?.ID)!) {
                 messages.append(r)
             }

@@ -28,8 +28,10 @@ class NewChatViewController: ViewController, UITableViewDelegate, UITableViewDat
         // Dispose of any resources that can be recreated.
     }
 
-    func createNewGroupChat() {
-        var groupChat = GroupChat()
+    @IBAction func createNewGroupChat() {
+        var groupChat = CustomGroupChat()
+        
+        
     }
     
     /*func getIndividualContacts() -> [Student] {

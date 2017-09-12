@@ -20,7 +20,9 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
     @IBOutlet weak var tableView: UITableView!
 
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        return getRecentChats().count
+        print("the row length is:")
+        //print(getRecentChats().count + getCustomGroups().count + 1)
+        return getRecentChats().count //+ getCustomGroups().count + 1
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -30,11 +32,26 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
+        let count = getRecentChats().count
         let chat = getRecentChats()[indexPath.row]
         let cell = RecentsTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ConversationCell")
         cell.textLabel?.text = chat.person1?.name
-        
         return cell
+        /*if indexPath.row == count {
+            let cell = RecentsTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ConversationCell")
+            cell.textLabel?.text = "CUSTOM GROUP CHATS"
+            return cell
+        } else if indexPath.row < count {
+            let chat = getRecentChats()[indexPath.row]
+            let cell = RecentsTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ConversationCell")
+            cell.textLabel?.text = chat.person1?.name
+            return cell
+        } else {
+            let group = getCustomGroups()[indexPath.row - count]
+            let cell = RecentsTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ConversationCell")
+            cell.textLabel?.text = group.name
+            return cell
+        }*/
     }
     
     
@@ -77,12 +94,11 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
     }
     
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         print("In recents view controller")
-        
-        
         //for chat in getRecentChats() {
         //    retrieveArchivedMessages(username: (chat.person2?.ID)!, password: "password123", author: (chat.person1?.ID)!)
         //}
@@ -111,49 +127,6 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
             dest.currentStudent = currentStudent
         }
     }
-    
-    /*func retrieveArchivedMessages(username: String, password: String, author: String) {
-        
-        var request = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/archiveQuery.py?"
-        request += "username=" + username + "&password="
-        request += password + "&author="
-        request += author + "&from=2017-05-01%2000:00:00&to=2018-05-01%2000:00:00"
-        Alamofire.request(request).authenticate(user: "ccgs", password: "1910").responseString { response in
-
-            let realm = try! Realm()
-            
-            let data = response.result.value?.components(separatedBy: "\n")
-            var counter = (data?.count)! - 2
-            
-            for c in data! {
-                
-                if counter == 0 {
-                    break
-                }
-                
-                var c_mutable = c
-                c_mutable.remove(at: c.index(before: c.endIndex))
-                c_mutable.remove(at: c.startIndex)
-                var components = c_mutable.components(separatedBy: ",")
-                
-                let m = Message()
-                m.content = components[1]
-                m.dateStamp = components[2]
-                m.author = components[3]
-                m.recipient = components[4]
-                m.group = components[5]
-                
-                try! realm.write {
-                    realm.add(m)
-                }
-                
-                counter -= 1
-            }
-            print("<><><>")
-            print(realm.objects(Message.self))
-            
-        }
-    }*/
     
     
     /*

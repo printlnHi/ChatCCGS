@@ -39,7 +39,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
 
         if (GroupSegmentedControl.selectedSegmentIndex==0){
             //Pupils are currently being searched
-
+            
             if (enteredText==""){
                 resetSelectedList()
             } else{
@@ -269,20 +269,53 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
 
     }
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
+        print(filteredChats.count + getCustomGroups().count + 1)
+        
         if (GroupSegmentedControl.selectedSegmentIndex==0){
             return filteredPupils.count
         } else{
-            return filteredChats.count
+            print(filteredChats.count + getCustomGroups().count + 1)
+            return filteredChats.count + getCustomGroups().count + 1
         }
     }
 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         let cell = RecentsTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ContactCell")
-
+        let count = filteredChats.count
+        
+        
         cell.tag = indexPath.row
-        cell.textLabel?.text = "\((self.GroupSegmentedControl.selectedSegmentIndex==0 ? "\(filteredPupils[indexPath.row].name) (\(filteredPupils[indexPath.row].ID))" : "\(filteredChats[indexPath.row].name)")) "
+        
+        if self.GroupSegmentedControl.selectedSegmentIndex == 0 {
+            cell.textLabel?.text = filteredPupils[indexPath.row].name + " (" + filteredPupils[indexPath.row].ID + ")"
+        } else {
+            if indexPath.row == count {
+                cell.textLabel?.text = "CUSTOM GROUP CHATS"
+            } else if indexPath.row < count {
+                let chat = filteredChats[indexPath.row]
+                cell.textLabel?.text = chat.name
+            } else {
+                //print(indexPath.row - count)
+                //print(getCustomGroups()[indexPath.row - count])
+                
+                let group = getCustomGroups()[indexPath.row - count - 1]
+                cell.textLabel?.text = group.name
+                
+            }
+        }
+        print(cell.textLabel?.text)
+        //cell.textLabel?.text = "\((self.GroupSegmentedControl.selectedSegmentIndex==0 ? "\(filteredPupils[indexPath.row].name) (\(filteredPupils[indexPath.row].ID))" : "\(filteredChats[indexPath.row].name)")) "
 
+        
+        /*
+            return cell
+        } else {
+            let group = getCustomGroups()[indexPath.row - count]
+            let cell = RecentsTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ConversationCell")
+            cell.textLabel?.text = group.name
+            return cell
+        }*/
         return cell
     }
 
@@ -364,6 +397,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         for chat in chats {
             retrieveArchivedGroupMessages(studentID: currentStudent.ID, password: "password123", groupID: chat.name)
         }
+        print(getCustomGroups())
         
     }
 
@@ -444,6 +478,23 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                 }
             }
         }
+    }
+    
+    
+    func getCustomGroups() -> [CustomGroupChat] {
+        let realm = try! Realm()
+        
+        let data = realm.objects(CustomGroupChat.self)
+        var groups = [CustomGroupChat]()
+        //print(data)
+        
+        
+        for group in data {
+            groups.append(group)
+        }
+        
+        return groups
+        
     }
     /*
     // MARK: - Navigation

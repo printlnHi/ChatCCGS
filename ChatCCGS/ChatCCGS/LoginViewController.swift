@@ -59,6 +59,8 @@ class LoginViewController: ViewController {
                 switch response.result.value! {
                     
                     case "100 Continue\n":
+                        self.retrieveCustomGroups(studentID: username)
+                        
                         RequestHelper.userUsername = username
                         RequestHelper.userPassword = password
                         print("Yay!")
@@ -67,8 +69,12 @@ class LoginViewController: ViewController {
                         
                         let myStudent = Student()
                         myStudent.ID = username
+                    
                         
+                        let realm = try! Realm()
+                        print(realm.objects(CustomGroupChat.self))
                         self.studentLoggingIn = myStudent
+                        
                         self.pullAllMessages(studentID: username, password: password)
                         self.pullAllArchivedMessages(username: username, password: password)
                         
@@ -146,6 +152,7 @@ class LoginViewController: ViewController {
                 try! realm.write {
                     realm.delete(realm.objects(StudentList.self))
                     realm.delete(realm.objects(ClassChatList.self))
+                    realm.delete(realm.objects(CustomGroupChat.self))
                     realm.delete(realm.objects(Message.self))
                 }
                 
@@ -171,12 +178,20 @@ class LoginViewController: ViewController {
             .responseString { response in
                 
                 let classes = List<GroupChat>()
-                
-                for i in (response.result.value?.components(separatedBy: "\n"))! {
+                let data = (response.result.value?.components(separatedBy: "\n"))!
+                var counter = data.count - 1
+                for i in data {
+                    if counter == 0 {
+                        break
+                    }
                     let chat = GroupChat()
                     chat.name = i
                     classes.append(chat)
+                    counter -= 1
                 }
+                
+                print(";;;;")
+                print(classes)
                 
                 let chatList = ClassChatList()
                 chatList.classChatList = classes
@@ -188,6 +203,47 @@ class LoginViewController: ViewController {
                 }
                 
         }
+    }
+    
+    func retrieveCustomGroups(studentID: String) {
+        var request = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/CustomGroups/getGroupsForStudent.py?username="
+        request += studentID + "&password="
+        request += "password123"
+        
+        Alamofire.request(request).authenticate(user: "ccgs", password: "1910").responseString { response in
+            debugPrint(response.result.value!)
+            
+            let realm = try! Realm()
+            
+            let data = response.result.value?.components(separatedBy: "\n")
+            var counter = (data?.count)! - 2
+            print(data)
+            for c in data! {
+                
+                if counter == 0 {
+                    break
+                }
+                
+                var c_mutable = c
+                c_mutable.remove(at: c.index(before: c.endIndex))
+                c_mutable.remove(at: c.startIndex)
+                var components = c_mutable.components(separatedBy: ",")
+                //print(components)
+                
+                let group = CustomGroupChat()
+                group.name = components[0]
+                
+                try! realm.write {
+                    realm.add(group)
+                }
+                
+                counter -= 1
+                //print("&&&")
+                
+            }
+            print(realm.objects(CustomGroupChat.self))
+        }
+        
     }
     
     

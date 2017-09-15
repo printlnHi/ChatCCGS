@@ -589,7 +589,7 @@
 				INFOPLIST_FILE = ChatCCGS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = MarcusHandley.NPA.ChatCCGS;
+				PRODUCT_BUNDLE_IDENTIFIER = au.edu.wa.ccgs.MarcusHandley.NPA.ChatCCGS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 2;
@@ -610,7 +610,7 @@
 				INFOPLIST_FILE = ChatCCGS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = MarcusHandley.NPA.ChatCCGS;
+				PRODUCT_BUNDLE_IDENTIFIER = au.edu.wa.ccgs.MarcusHandley.NPA.ChatCCGS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 2;

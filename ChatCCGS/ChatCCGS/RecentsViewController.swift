@@ -37,21 +37,6 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
         let cell = RecentsTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ConversationCell")
         cell.textLabel?.text = chat.person1?.name
         return cell
-        /*if indexPath.row == count {
-            let cell = RecentsTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ConversationCell")
-            cell.textLabel?.text = "CUSTOM GROUP CHATS"
-            return cell
-        } else if indexPath.row < count {
-            let chat = getRecentChats()[indexPath.row]
-            let cell = RecentsTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ConversationCell")
-            cell.textLabel?.text = chat.person1?.name
-            return cell
-        } else {
-            let group = getCustomGroups()[indexPath.row - count]
-            let cell = RecentsTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ConversationCell")
-            cell.textLabel?.text = group.name
-            return cell
-        }*/
     }
     
     

@@ -20,6 +20,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     var currentStudent: Student = Student()
     var chatSelected = GroupChat()
     var classPos: Int? = 0
+    var customChatSelected = CustomGroupChat()
 
     var pupils: List<Student> = List()
     var chats: List<GroupChat> = List()
@@ -320,9 +321,19 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     }
 
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        
         if GroupSegmentedControl.selectedSegmentIndex == 1 {
-            self.chatSelected = filteredChats[indexPath.row]
-            self.performSegue(withIdentifier: "classChat", sender: nil)
+            if indexPath.row == filteredChats.count {
+                print("Soz dudes")
+                return
+            } else if indexPath.row > filteredChats.count {
+                self.customChatSelected = getCustomGroups()[indexPath.row - filteredChats.count - 1]
+                self.performSegue(withIdentifier: "customChat", sender: nil)
+            } else {
+                self.chatSelected = filteredChats[indexPath.row]
+                self.performSegue(withIdentifier: "classChat", sender: nil)
+            }
         }
     }
 
@@ -374,6 +385,10 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
             let destViewController: ClassGroupChatViewController = segue.destination as! ClassGroupChatViewController
             destViewController.currentStudent = currentStudent
             destViewController.group = chatSelected
+        } else if segue.identifier == "customChat" {
+            let destViewController: CustomGroupChatViewController = segue.destination as! CustomGroupChatViewController
+            destViewController.currentStudent = currentStudent
+            destViewController.groupChat = customChatSelected
         } else {
             print("OK~")
             let destViewController: GroupChatInfoViewController = segue.destination as! GroupChatInfoViewController
@@ -396,6 +411,14 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
 
         for chat in chats {
             retrieveArchivedGroupMessages(studentID: currentStudent.ID, password: "password123", groupID: chat.name)
+        }
+        
+        for customChat in getCustomGroups() {
+            print("===")
+            print(customChat.name)
+            retrieveArchiveCustomGroupMessages(studentID: currentStudent.ID, password: "password123", groupID: customChat.name)
+            let realm = try! Realm()
+            print(realm.objects(Message.self))
         }
         print(getCustomGroups())
         
@@ -475,6 +498,61 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                         }
                         print(realm.objects(Message.self))
                         counter -= 1
+                }
+            }
+        }
+    }
+    
+    func retrieveArchiveCustomGroupMessages(studentID: String, password: String, groupID: String) {
+        print("HI THIS IS TESTING!")
+        var request = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/CustomGroups/archiveGroupQuery.py?username="
+        request += studentID + "&password="
+        request += password + "&groupID="
+        request += groupID + "&from=2017-01-01%2000:00:00&to=2019-01-01%2000:00:00"
+        Alamofire.request(request).authenticate(user: "ccgs", password: "1910").responseString { response in
+            debugPrint(response.result.value!)
+            
+            switch response.result.value! {
+            case "204 No Content\n":
+                break
+            case "400 Bad Request\n":
+                break
+            case "500 Internal Server Error\n":
+                break
+            default:
+                print("--------")
+                let realm = try! Realm()
+                
+                let data = response.result.value?.components(separatedBy: "\n")
+                var counter = (data?.count)! - 2
+                
+                for c in data! {
+                    
+                    if counter == 0 {
+                        break
+                    }
+                    
+                    var c_mutable = c
+                    c_mutable.remove(at: c.index(before: c.endIndex))
+                    c_mutable.remove(at: c.startIndex)
+                    var components = c_mutable.components(separatedBy: ",")
+                    print(components)
+                    
+                    
+                    let m = Message()
+                    m.content = components[1]
+                    m.dateStamp = components[2]
+                    m.author = components[3]
+                    m.recipient = components[4]
+                    m.group = components[5]
+                    
+                    try! realm.write {
+                        realm.add(m)
+                    }
+                    print("&&&&()()")
+                    print(realm.objects(Message.self))
+                    
+                    counter -= 1
                 }
             }
         }

@@ -19,6 +19,7 @@
 		83E781521F301D7000F2A0F0 /* RecentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E781511F301D7000F2A0F0 /* RecentsViewController.swift */; };
 		83E781541F301E7A00F2A0F0 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E781531F301E7A00F2A0F0 /* SettingsViewController.swift */; };
 		83E781561F301E8D00F2A0F0 /* ContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E781551F301E8D00F2A0F0 /* ContactsViewController.swift */; };
+		C23C3C891F69332400140254 /* CustomGroupChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23C3C881F69332300140254 /* CustomGroupChatViewController.swift */; };
 		C24148161F495B8F00EDF401 /* ContactInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24148151F495B8F00EDF401 /* ContactInfoViewController.swift */; };
 		C24BE3771F5AB18700118104 /* GroupChatInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24BE3761F5AB18700118104 /* GroupChatInfoViewController.swift */; };
 		C25AA2961F44451E00C8D4E1 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C25AA2941F44451D00C8D4E1 /* Realm.framework */; };
@@ -89,6 +90,7 @@
 		83E781551F301E8D00F2A0F0 /* ContactsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsViewController.swift; sourceTree = "<group>"; };
 		9F179C03F74D75E8178204B7 /* Pods_ChatCCGS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ChatCCGS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A404DDA90A45751A0BD09C43 /* Pods-ChatCCGS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatCCGS.release.xcconfig"; path = "Pods/Target Support Files/Pods-ChatCCGS/Pods-ChatCCGS.release.xcconfig"; sourceTree = "<group>"; };
+		C23C3C881F69332300140254 /* CustomGroupChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomGroupChatViewController.swift; sourceTree = "<group>"; };
 		C24148151F495B8F00EDF401 /* ContactInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactInfoViewController.swift; sourceTree = "<group>"; };
 		C24BE3761F5AB18700118104 /* GroupChatInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupChatInfoViewController.swift; sourceTree = "<group>"; };
 		C25AA2941F44451D00C8D4E1 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
@@ -168,6 +170,7 @@
 				C24BE3761F5AB18700118104 /* GroupChatInfoViewController.swift */,
 				83A47EA41F39533B00E4067D /* TableViewCell.swift */,
 				C2C489811F600F9800F13086 /* ClassGroupChatViewController.swift */,
+				C23C3C881F69332300140254 /* CustomGroupChatViewController.swift */,
 				83DFEECA1F301847006AEE78 /* Main.storyboard */,
 				83DFEECD1F301847006AEE78 /* Assets.xcassets */,
 				83DFEECF1F301847006AEE78 /* LaunchScreen.storyboard */,
@@ -419,6 +422,7 @@
 				83680B601F39588E00365853 /* LoginViewController.swift in Sources */,
 				C2C489821F600F9800F13086 /* ClassGroupChatViewController.swift in Sources */,
 				83E781541F301E7A00F2A0F0 /* SettingsViewController.swift in Sources */,
+				C23C3C891F69332400140254 /* CustomGroupChatViewController.swift in Sources */,
 				83A47EA51F39533B00E4067D /* TableViewCell.swift in Sources */,
 				83E781561F301E8D00F2A0F0 /* ContactsViewController.swift in Sources */,
 			);

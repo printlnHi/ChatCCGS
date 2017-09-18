@@ -366,13 +366,54 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
             return[getInfoAction, addToRecentsAction]
 
         } else {
-            let getInfoAction = UITableViewRowAction(style: .default, title: "Info") { (action, index) in
-                self.classPos = indexPath.row
-                self.performSegue(withIdentifier: "getClassChatInfo", sender: nil)
-            }
-            getInfoAction.backgroundColor = UIColor.blue
+            if indexPath.row < filteredChats.count {
+                let getInfoAction = UITableViewRowAction(style: .default, title: "Info") { (action, index) in
+                    self.classPos = indexPath.row
+                    self.performSegue(withIdentifier: "getClassChatInfo", sender: nil)
+                }
+                getInfoAction.backgroundColor = UIColor.blue
 
-            return [getInfoAction]
+                return [getInfoAction]
+            } else if indexPath.row > filteredChats.count {
+                let leaveGroupAction = UITableViewRowAction(style: .default, title: "Leave Group") { (action, index) in
+                    print("I am leaving the group!")
+                    var request = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/CustomGroups/leaveGroup.py?username="
+                    request += self.currentStudent.ID + "&password="
+                    request += "password123" + "&group="
+                    let cell = tableView.cellForRow(at: indexPath)
+                    request += (cell?.textLabel?.text)!
+                    print(request)
+                    
+                    Alamofire.request(request).authenticate(user: "ccgs", password: "1910").responseString { response in
+                        debugPrint(response.result.value!)
+                        if response.result.value! == "100 Continue\n" {
+                            let realm = try! Realm()
+                            let results = realm.objects(CustomGroupChat.self)
+                            var tbd: CustomGroupChat? = nil
+                            
+                            for r in results {
+                                if r.name == (cell?.textLabel?.text)! {
+                                    tbd = r
+                                    break
+                                }
+                            }
+                            if tbd != nil {
+                                try! realm.write {
+                                    realm.delete(tbd!)
+                                }
+                                self.TableView.reloadData()
+                            } else {
+                                print("YOU FAILED")
+                            }
+                            
+                        }
+                    }
+                }
+                leaveGroupAction.backgroundColor = UIColor.red
+                return [leaveGroupAction]
+            } else {
+                return []
+            }
         }
     }
 
@@ -420,6 +461,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
             let realm = try! Realm()
             print(realm.objects(Message.self))
         }
+        print("Customs:")
         print(getCustomGroups())
         
     }

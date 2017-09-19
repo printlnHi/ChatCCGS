@@ -45,7 +45,7 @@ def Create(filename):
                                 FOREIGN KEY (studentID) REFERENCES Students(ID), FOREIGN KEY (classID) REFERENCES CustomGroups(ID));
 
                                 CREATE TABLE GroupStatusMessages(ID INTEGER PRIMARY KEY AUTOINCREMENT, recipientID INT, content TEXT, datestamp TEXT,
-                                groupID INT, FOREIGN KEY (recipientID) REFERENCES Students(ID), FOREIGN KEY (groupID) REFERENCES CustomGroups(ID);""")
+                                groupID INT, FOREIGN KEY (recipientID) REFERENCES Students(ID), FOREIGN KEY (groupID) REFERENCES CustomGroups(ID));""")
 
             print("Tables declared. Committing")
 
@@ -62,3 +62,4 @@ def Create(filename):
 
 if __name__ == "__main__":
     Create(input("File name: "))
+

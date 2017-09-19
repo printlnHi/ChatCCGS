@@ -98,6 +98,7 @@
                         <segue destination="umK-g2-pYg" kind="show" identifier="getInfo" id="lj9-gg-cop"/>
                         <segue destination="YXi-tB-TSZ" kind="show" identifier="getClassChatInfo" id="09F-DH-xyt"/>
                         <segue destination="I5v-SZ-pbh" kind="show" identifier="classChat" id="vBA-xn-g57"/>
+                        <segue destination="if6-Ku-7er" kind="presentation" identifier="customChat" id="ynQ-ii-YLE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="g1Y-HG-zBy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -425,6 +426,62 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MsZ-6r-dWQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1204.6875" y="-153.125"/>
+        </scene>
+        <!--Custom Group Chat View Controller-->
+        <scene sceneID="abg-Jz-EQ6">
+            <objects>
+                <viewController id="if6-Ku-7er" customClass="CustomGroupChatViewController" customModule="ChatCCGS" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Bwn-Kk-qcI"/>
+                        <viewControllerLayoutGuide type="bottom" id="mc4-Pi-jwC"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="YYa-74-2Ei">
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Group Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eyc-oa-qUF">
+                                <rect key="frame" x="20" y="20" width="97" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="sRj-TZ-TZJ">
+                                <rect key="frame" x="41" y="97" width="963" height="651"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="if6-Ku-7er" id="nv6-6u-nC0"/>
+                                    <outlet property="delegate" destination="if6-Ku-7er" id="ETC-gq-6da"/>
+                                </connections>
+                            </tableView>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Message" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hhB-Zp-4HC">
+                                <rect key="frame" x="41" y="49" width="817" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Frk-PE-OdR">
+                                <rect key="frame" x="884" y="49" width="36" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Send"/>
+                                <connections>
+                                    <action selector="pushMessage" destination="if6-Ku-7er" eventType="touchUpInside" id="LgF-jz-Kg0"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="groupNamelbl" destination="eyc-oa-qUF" id="XrB-AF-hDJ"/>
+                        <outlet property="messageContentField" destination="hhB-Zp-4HC" id="plK-Zv-H7c"/>
+                        <outlet property="tableView" destination="sRj-TZ-TZJ" id="r9o-ee-yY0"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cmT-0v-9fo" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1310.7421875" y="639.84375"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="xJr-wl-2Iv">

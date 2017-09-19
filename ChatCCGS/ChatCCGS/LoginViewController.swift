@@ -217,7 +217,7 @@ class LoginViewController: ViewController {
             
             let data = response.result.value?.components(separatedBy: "\n")
             var counter = (data?.count)! - 2
-            print(data)
+            //print(data)
             for c in data! {
                 
                 if counter == 0 {

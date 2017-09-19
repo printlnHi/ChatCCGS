@@ -35,7 +35,7 @@ class NewChatViewController: ViewController, UITableViewDelegate, UITableViewDat
         if selectedPeople.count <= 1 {
             alertNotValid()
         } else {
-            var groupChat = CustomGroupChat()
+            let groupChat = CustomGroupChat()
             groupChat.name = groupName.text!
             
             for i in selectedPeople {
@@ -84,9 +84,7 @@ class NewChatViewController: ViewController, UITableViewDelegate, UITableViewDat
         print("HELLO!")
         
         let cell = tableView.cellForRow(at: indexPath)
-        print(indexPath)
-        print(cell?.contentView.backgroundColor)
-        print(cell?.tag)
+
         
         if (cell?.tag)! == 0 {
             selectedPeople.append(getRecentChats()[indexPath.row].person1!)
@@ -134,9 +132,7 @@ class NewChatViewController: ViewController, UITableViewDelegate, UITableViewDat
         var chats = [IndividualChat]()
         print("*******!")
         for r in results {
-            print(r.person2?.ID)
-            print("{}")
-            print(currentStudent.ID)
+
             if (r.person2?.ID)! == currentStudent.ID {
                 chats.append(r)
             }

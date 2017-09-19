@@ -305,7 +305,6 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                 
             }
         }
-        print(cell.textLabel?.text)
         //cell.textLabel?.text = "\((self.GroupSegmentedControl.selectedSegmentIndex==0 ? "\(filteredPupils[indexPath.row].name) (\(filteredPupils[indexPath.row].ID))" : "\(filteredChats[indexPath.row].name)")) "
 
         
@@ -418,7 +417,6 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        print(segue.identifier)
         if segue.identifier! == "getInfo" {
             let destViewContrller: ContactInfoViewController = segue.destination as! ContactInfoViewController
             destViewContrller.user = String(describing: studentPos!)

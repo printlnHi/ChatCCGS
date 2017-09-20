@@ -95,7 +95,6 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     }
 
     private func performNonEmptyClassQuery(alamofireRequestString : String){
-        print("Str Str = \(alamofireRequestString)")
 
         Alamofire.request(alamofireRequestString)
             .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
@@ -161,20 +160,16 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     }
 
     private func parseSuccesfulChatQuery(result : String){
-        print("parsing succesful chat query with result \(result)")
         self.filteredChats = List()
         let chats = result.components(separatedBy: ", ")
         //Important to split by ", " not ","
 
         for chat in chats{
-            print(chat)
             if (chat != ""){
                 let chatName = extractChatFrom(response: chat)
 
                 let alamofireRequestString = "\(RequestHelper.prepareUrlFor(scriptName: "getStudentsForClass"))&class=\(chatName)"
-                print("Request string is \(alamofireRequestString)")
                 Alamofire.request(alamofireRequestString).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
-                    print("switching \(response.result.value!)")
                     let strResponse = response.result.value!
                     let firstIndex = strResponse.startIndex
                     let fourthIndex = strResponse.index(firstIndex, offsetBy: 3)
@@ -193,11 +188,9 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                         print("Something went wrong - response = \(response)")
                     default:
                         let students = self.getStudentsFromStudentQuery(result: strResponse)
-                        print(students)
                         let newChat: GroupChat = GroupChat()
                         newChat.name = chatNameCopy
                         newChat.members = students
-                        print("adding new chat \(newChat)")
                         self.filteredChats.append(newChat)
                         self.TableView.reloadData()
                     }
@@ -253,7 +246,6 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     }
 
     private func extractChatFrom(response: String) -> String{
-        print("extractChatFrom has been passed \(response)")
         var NameStartIndex = response.startIndex
         //TODO: Make this no longer relient on chat names starting with a number
         while (!RequestHelper.isDigit(response[NameStartIndex])){
@@ -270,12 +262,10 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
 
     }
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        print(filteredChats.count + getCustomGroups().count + 1)
         
         if (GroupSegmentedControl.selectedSegmentIndex==0){
             return filteredPupils.count
         } else{
-            print(filteredChats.count + getCustomGroups().count + 1)
             return filteredChats.count + getCustomGroups().count + 1
         }
     }
@@ -297,8 +287,6 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                 let chat = filteredChats[indexPath.row]
                 cell.textLabel?.text = chat.name
             } else {
-                //print(indexPath.row - count)
-                //print(getCustomGroups()[indexPath.row - count])
                 
                 let group = getCustomGroups()[indexPath.row - count - 1]
                 cell.textLabel?.text = group.name
@@ -324,7 +312,6 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         
         if GroupSegmentedControl.selectedSegmentIndex == 1 {
             if indexPath.row == filteredChats.count {
-                print("Soz dudes")
                 return
             } else if indexPath.row > filteredChats.count {
                 self.customChatSelected = getCustomGroups()[indexPath.row - filteredChats.count - 1]
@@ -375,16 +362,13 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                 return [getInfoAction]
             } else if indexPath.row > filteredChats.count {
                 let leaveGroupAction = UITableViewRowAction(style: .default, title: "Leave Group") { (action, index) in
-                    print("I am leaving the group!")
                     var request = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/CustomGroups/leaveGroup.py?username="
                     request += self.currentStudent.ID + "&password="
                     request += "password123" + "&group="
                     let cell = tableView.cellForRow(at: indexPath)
                     request += (cell?.textLabel?.text)!
-                    print(request)
                     
                     Alamofire.request(request).authenticate(user: "ccgs", password: "1910").responseString { response in
-                        debugPrint(response.result.value!)
                         if response.result.value! == "100 Continue\n" {
                             let realm = try! Realm()
                             let results = realm.objects(CustomGroupChat.self)
@@ -402,7 +386,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                                 }
                                 self.TableView.reloadData()
                             } else {
-                                print("YOU FAILED")
+                                print("Alamofire request failed")
                             }
                             
                         }
@@ -430,7 +414,6 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
             destViewController.currentStudent = currentStudent
             destViewController.groupChat = customChatSelected
         } else {
-            print("OK~")
             let destViewController: GroupChatInfoViewController = segue.destination as! GroupChatInfoViewController
             destViewController.pos = String(describing: classPos!)
         }
@@ -454,14 +437,10 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         }
         
         for customChat in getCustomGroups() {
-            print("===")
-            print(customChat.name)
             retrieveArchiveCustomGroupMessages(studentID: currentStudent.ID, password: "password123", groupID: customChat.name)
             let realm = try! Realm()
-            print(realm.objects(Message.self))
         }
-        print("Customs:")
-        print(getCustomGroups())
+
         
     }
 
@@ -493,13 +472,11 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
 
 
     func retrieveArchivedGroupMessages(studentID: String, password: String, groupID: String) {
-        print("HI THIS IS TESTING!")
         var request = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/archiveGroupQuery.py?username="
         request += studentID + "&password="
         request += password + "&groupID="
         request += groupID + "&from=2017-01-01%2000:00:00&to=2019-01-01%2000:00:00"
         Alamofire.request(request).authenticate(user: "ccgs", password: "1910").responseString { response in
-            debugPrint(response.result.value as Any)
 
             switch response.result.value! {
                 case "204 No Content\n":
@@ -522,7 +499,6 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                         c_mutable.remove(at: c.index(before: c.endIndex))
                         c_mutable.remove(at: c.startIndex)
                         var components = c_mutable.components(separatedBy: ",")
-                        print(components)
 
 
                         let m = Message()
@@ -531,13 +507,11 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                         m.author = components[3]
                         m.recipient = components[4]
                         m.group = components[5]
-                        print("^__^^")
-                        print(m)
+
 
                         try! realm.write {
                             realm.add(m)
                         }
-                        print(realm.objects(Message.self))
                         counter -= 1
                 }
             }
@@ -545,13 +519,11 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     }
     
     func retrieveArchiveCustomGroupMessages(studentID: String, password: String, groupID: String) {
-        print("HI THIS IS TESTING!")
         var request = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/CustomGroups/archiveGroupQuery.py?username="
         request += studentID + "&password="
         request += password + "&groupID="
         request += groupID + "&from=2017-01-01%2000:00:00&to=2019-01-01%2000:00:00"
         Alamofire.request(request).authenticate(user: "ccgs", password: "1910").responseString { response in
-            debugPrint(response.result.value!)
             
             switch response.result.value! {
             case "204 No Content\n":
@@ -561,7 +533,6 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
             case "500 Internal Server Error\n":
                 break
             default:
-                print("--------")
                 let realm = try! Realm()
                 
                 let data = response.result.value?.components(separatedBy: "\n")
@@ -577,7 +548,6 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                     c_mutable.remove(at: c.index(before: c.endIndex))
                     c_mutable.remove(at: c.startIndex)
                     var components = c_mutable.components(separatedBy: ",")
-                    print(components)
                     
                     
                     let m = Message()
@@ -590,8 +560,6 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                     try! realm.write {
                         realm.add(m)
                     }
-                    print("&&&&()()")
-                    print(realm.objects(Message.self))
                     
                     counter -= 1
                 }
@@ -605,7 +573,6 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         
         let data = realm.objects(CustomGroupChat.self)
         var groups = [CustomGroupChat]()
-        //print(data)
         
         
         for group in data {

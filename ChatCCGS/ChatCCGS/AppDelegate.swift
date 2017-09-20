@@ -139,7 +139,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let token = tokenParts.joined()
         //TODO: Send token to server
-        print("Device Token: \(token)")
+        print("Device Token for APNS: \(token)")
     }
     
     private func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [String : Any]){
@@ -147,7 +147,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     func application(_ application: UIApplication,
                      didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        print("Failed to register: \(error)")
+        print("Failed to register for push notifications: \(error)")
     }
 }
 

@@ -63,7 +63,6 @@ class LoginViewController: ViewController {
                         
                         RequestHelper.userUsername = username
                         RequestHelper.userPassword = password
-                        print("Yay!")
                         
                         self.retrieveClassesForStudent()
                         
@@ -72,7 +71,6 @@ class LoginViewController: ViewController {
                     
                         
                         let realm = try! Realm()
-                        print(realm.objects(CustomGroupChat.self))
                         self.studentLoggingIn = myStudent
                         
                         self.pullAllMessages(studentID: username, password: password)
@@ -156,7 +154,6 @@ class LoginViewController: ViewController {
                     realm.delete(realm.objects(Message.self))
                 }
                 
-                print(realm.objects(Message.self))
         
                 let studentList = StudentList()
                 studentList.studentList = students
@@ -189,9 +186,7 @@ class LoginViewController: ViewController {
                     classes.append(chat)
                     counter -= 1
                 }
-                
-                print(";;;;")
-                print(classes)
+
                 
                 let chatList = ClassChatList()
                 chatList.classChatList = classes
@@ -211,13 +206,11 @@ class LoginViewController: ViewController {
         request += "password123"
         
         Alamofire.request(request).authenticate(user: "ccgs", password: "1910").responseString { response in
-            debugPrint(response.result.value!)
             
             let realm = try! Realm()
             
             let data = response.result.value?.components(separatedBy: "\n")
             var counter = (data?.count)! - 2
-            //print(data)
             for c in data! {
                 
                 if counter == 0 {
@@ -228,7 +221,6 @@ class LoginViewController: ViewController {
                 c_mutable.remove(at: c.index(before: c.endIndex))
                 c_mutable.remove(at: c.startIndex)
                 var components = c_mutable.components(separatedBy: ",")
-                //print(components)
                 
                 let group = CustomGroupChat()
                 group.name = components[0]
@@ -238,10 +230,8 @@ class LoginViewController: ViewController {
                 }
                 
                 counter -= 1
-                //print("&&&")
                 
             }
-            print(realm.objects(CustomGroupChat.self))
         }
         
     }
@@ -254,7 +244,6 @@ class LoginViewController: ViewController {
             .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
             .responseString { response in
                 
-                debugPrint(response.result.value!)
                 
                 let realm = try! Realm()
                 
@@ -286,10 +275,7 @@ class LoginViewController: ViewController {
                     counter -= 1
                 }
                 
-                print(data!)
-                
-                
-                print(realm.objects(Message.self))
+
         }
         
     }
@@ -344,8 +330,6 @@ class LoginViewController: ViewController {
                 
                 counter -= 1
             }
-            print("<><><>")
-            print(realm.objects(Message.self))
             
         }
     }

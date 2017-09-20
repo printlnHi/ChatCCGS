@@ -14,10 +14,18 @@ class RequestHelper{
         return s.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
     }
     
+    
     static func escapeStringForSQL(queryString s: String) -> String{
         print("Used value from unfinished function!")
         let esc = s.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "%", with: "\\%").replacingOccurrences(of: "_", with: "\\_")
         return esc
+    }
+    
+    static func formatCurrentDateTimeForRequest() -> String{
+        let currentDate = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = dateFormatString
+        return formatter.string(from: currentDate)
     }
     
     static func prepareUrlFor(scriptName: String) -> String{
@@ -32,4 +40,6 @@ class RequestHelper{
     static let tartarusPassword = "1910"
     static var userUsername = "USERNAME NOT SET"
     static var userPassword = "PASSWORD NOT SET"
+    
+    private static let dateFormatString = "yyyy-MM-d%20hh:mm:ss"
 }

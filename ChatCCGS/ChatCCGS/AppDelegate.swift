@@ -142,6 +142,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("Device Token: \(token)")
     }
     
+    private func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [String : Any]){
+        print("recieved a foreground or background push notification")
+    }
     func application(_ application: UIApplication,
                      didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("Failed to register: \(error)")

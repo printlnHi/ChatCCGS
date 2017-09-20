@@ -19,8 +19,7 @@ class NewChatViewController: ViewController, UITableViewDelegate, UITableViewDat
     @IBOutlet weak var tableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("A new chat")
-        print(currentStudent)
+        print("NewChatViewController laoded")
         selectedPeople.append(currentStudent)
         // Do any additional setup after loading the view.
     }
@@ -42,7 +41,6 @@ class NewChatViewController: ViewController, UITableViewDelegate, UITableViewDat
                 groupChat.members.append(i)
             }
             
-            print(groupChat)
             
             var request = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/CustomGroups/createGroup.py?username="
             request += currentStudent.ID + "&password="
@@ -62,9 +60,7 @@ class NewChatViewController: ViewController, UITableViewDelegate, UITableViewDat
             members += "]"
             
             request += members
-            
-            print(members)
-            print(request)
+
             
             Alamofire.request(request).authenticate(user: "ccgs", password: "1910").responseString { response in
                 debugPrint(response.result.value!)
@@ -81,21 +77,18 @@ class NewChatViewController: ViewController, UITableViewDelegate, UITableViewDat
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("HELLO!")
         
         let cell = tableView.cellForRow(at: indexPath)
 
         
         if (cell?.tag)! == 0 {
             selectedPeople.append(getRecentChats()[indexPath.row].person1!)
-            print(selectedPeople)
             let chat = getRecentChats()[indexPath.row]
             
             cell?.textLabel?.text = (chat.person1?.name)! + " [SELECTED]"
             cell?.tag = 1
         } else {
             selectedPeople.remove(at: getIndexFromSelected(of: (cell?.textLabel?.text!)!)!)
-            print(selectedPeople)
             let chat = getRecentChats()[indexPath.row]
             cell?.textLabel?.text = (chat.person1?.name)!
             cell?.tag = 0
@@ -130,7 +123,6 @@ class NewChatViewController: ViewController, UITableViewDelegate, UITableViewDat
         let realm = try! Realm()
         let results = realm.objects(IndividualChat.self)
         var chats = [IndividualChat]()
-        print("*******!")
         for r in results {
 
             if (r.person2?.ID)! == currentStudent.ID {

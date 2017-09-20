@@ -336,6 +336,18 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         }
     }
 
+    func isInRecents(studentID: String) -> Bool {
+        let realm = try! Realm()
+        let data = realm.objects(IndividualChat.self)
+        for d in data {
+            if d.person1?.ID == studentID {
+                return true
+            }
+        }
+        
+        return false
+    }
+    
     public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         if (GroupSegmentedControl.selectedSegmentIndex == 0) {
 
@@ -347,22 +359,28 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
             }
 
             getInfoAction.backgroundColor = UIColor.blue
-
-            let addToRecentsAction = UITableViewRowAction(style: .default, title: "Add to Recents") { (action, index) in
-
-                let realm = try! Realm()
-                let newChat = IndividualChat()
-                newChat.person1 = self.pupils[indexPath.row]
-                newChat.person2 = self.currentStudent
-                try! realm.write {
-                    realm.add(newChat)
+            
+            if !(isInRecents(studentID: filteredPupils[indexPath.row].ID)) {
+                let addToRecentsAction = UITableViewRowAction(style: .default, title: "Add to Recents") { (action, index) in
+                    
+                    let realm = try! Realm()
+                    let newChat = IndividualChat()
+                    newChat.person1 = self.pupils[indexPath.row]
+                    newChat.person2 = self.currentStudent
+                    try! realm.write {
+                        realm.add(newChat)
+                    }
+                    
                 }
-
+                
+                addToRecentsAction.backgroundColor = UIColor.green
+                
+                return[getInfoAction, addToRecentsAction]
+            } else {
+                return [getInfoAction]
             }
-
-            addToRecentsAction.backgroundColor = UIColor.green
-
-            return[getInfoAction, addToRecentsAction]
+                
+            
 
         } else {
             if indexPath.row < filteredChats.count {

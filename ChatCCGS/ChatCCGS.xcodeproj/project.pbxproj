@@ -159,11 +159,11 @@
 			isa = PBXGroup;
 			children = (
 				C9F856801F6B6E6F006D5B93 /* ChatCCGS.entitlements */,
+				83E781531F301E7A00F2A0F0 /* SettingsViewController.swift */,
 				C91FC1651F4D4F8700929791 /* HelperFunctions.swift */,
 				83DFEEC61F301847006AEE78 /* AppDelegate.swift */,
 				83DFEEC81F301847006AEE78 /* ViewController.swift */,
 				83680B5F1F39588E00365853 /* LoginViewController.swift */,
-				83E781531F301E7A00F2A0F0 /* SettingsViewController.swift */,
 				83E781551F301E8D00F2A0F0 /* ContactsViewController.swift */,
 				C24148151F495B8F00EDF401 /* ContactInfoViewController.swift */,
 				C95239A51F30C21900417282 /* NewChatViewController.swift */,

@@ -21,7 +21,6 @@ class CustomGroupChatViewController: UIViewController, UITableViewDelegate, UITa
     override func viewDidLoad() {
         super.viewDidLoad()
         groupNamelbl.text = groupChat.name
-        print(getAllMessages())
         // Do any additional setup after loading the view.
     }
 
@@ -47,7 +46,6 @@ class CustomGroupChatViewController: UIViewController, UITableViewDelegate, UITa
         var messages = [Message]()
         
         for message in data {
-            print(message.group)
             if " '" + groupChat.name + "'" == message.group {
                 messages.append(message)
             }
@@ -57,33 +55,19 @@ class CustomGroupChatViewController: UIViewController, UITableViewDelegate, UITa
     
     @IBAction func pushMessage() {
         let content = messageContentField.text!.replacingOccurrences(of: " ", with: "%20", options: .literal, range: nil)
-        let date = Date()
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-d%20hh:mm:ss"
-        let dateTime = formatter.string(from: date)
+        
+        let dateString = RequestHelper.formatCurrentDateTimeForRequest()
         
         let author = currentStudent.ID
-        let name = groupChat.name.replacingOccurrences(of: " ", with: "%20", options: .literal, range: nil)
-        let password = "password123"
+        let name = RequestHelper.escapeStringForUrl(queryString: groupChat.name)
         
-        var request = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/CustomGroups/pushGroupMessage.py?username="
-        request += author
-        request += "&password="
-        request += password
-        request += "&content="
-        request += content
-        request += "&group="
-        request += name
-        request += "&datestamp="
-        request += dateTime
-        print(request)
+        let request = "\(RequestHelper.tartarusBaseUrl)?username=\(RequestHelper.userUsername)&password=\(RequestHelper.userPassword)&content=\(content)&group=\(name)&datestamp=\(dateString)"
         
         let message = Message()
         message.author = author
-        message.dateStamp = dateTime.replacingOccurrences(of: "%20", with: " ", options: .literal, range: nil) + "'"
+        message.dateStamp = dateString.replacingOccurrences(of: "%20", with: " ", options: .literal, range: nil) + "'"
         message.content = "'" + content.replacingOccurrences(of: "%20", with: " ", options: .literal, range: nil) + "'"
         message.group = " '" + name.replacingOccurrences(of: "%20", with: " ", options: .literal, range: nil) + "'"
-        print(message)
         let realm = try! Realm()
         
         try! realm.write {
@@ -91,9 +75,9 @@ class CustomGroupChatViewController: UIViewController, UITableViewDelegate, UITa
         }
         
         Alamofire.request(request)
-            .authenticate(user: "ccgs", password: "1910")
+            
+            .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
             .responseString { response in
-                debugPrint(response.result.value!)
                 self.tableView.reloadData()
         }
     }

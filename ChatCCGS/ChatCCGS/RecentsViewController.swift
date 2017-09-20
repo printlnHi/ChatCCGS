@@ -31,8 +31,7 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let count = getRecentChats().count
+    
         let chat = getRecentChats()[indexPath.row]
         let cell = RecentsTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ConversationCell")
         cell.textLabel?.text = chat.person1?.name

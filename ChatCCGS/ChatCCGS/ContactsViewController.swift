@@ -417,6 +417,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
         if segue.identifier! == "getInfo" {
             let destViewContrller: ContactInfoViewController = segue.destination as! ContactInfoViewController
             destViewContrller.user = String(describing: studentPos!)

@@ -97,9 +97,10 @@ class NewChatViewController: ViewController, UITableViewDelegate, UITableViewDat
     }
     
     func getIndexFromSelected(of student: String) -> Int? {
+        print(selectedPeople)
         var x = 0
         for s in selectedPeople {
-            if student + " [SELECTED]" == s.name {
+            if student == s.name + " [SELECTED]" {
                 return x
             }
             x += 1

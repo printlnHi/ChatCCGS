@@ -205,7 +205,7 @@ class LoginViewController: ViewController {
         request += studentID + "&password="
         request += "password123"
         
-        Alamofire.request(request).authenticate(user: "ccgs", password: "1910").responseString { response in
+        Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: "RequestHelper.tartarusPassword").responseString { response in
             
             let realm = try! Realm()
             
@@ -299,7 +299,7 @@ class LoginViewController: ViewController {
         request += "username=" + username + "&password="
         request += password + "&author="
         request += author + "&from=2017-05-01%2000:00:00&to=2018-05-01%2000:00:00"
-        Alamofire.request(request).authenticate(user: "ccgs", password: "1910").responseString { response in
+        Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: "RequestHelper.tartarusPassword").responseString { response in
             
             let realm = try! Realm()
             

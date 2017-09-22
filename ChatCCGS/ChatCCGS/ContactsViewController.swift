@@ -386,7 +386,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                     let cell = tableView.cellForRow(at: indexPath)
                     request += (cell?.textLabel?.text)!
                     
-                    Alamofire.request(request).authenticate(user: "ccgs", password: "1910").responseString { response in
+                    Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: "RequestHelper.tartarusPassword").responseString { response in
                         if response.result.value! == "100 Continue\n" {
                             let realm = try! Realm()
                             let results = realm.objects(CustomGroupChat.self)
@@ -425,7 +425,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
             destViewContrller.user = String(describing: studentPos!)
         } else if segue.identifier == "classChat" {
             let destViewController: ClassGroupChatViewController = segue.destination as! ClassGroupChatViewController
-            destViewController.currentStudent = currentStudent
+
             destViewController.group = chatSelected
         } else if segue.identifier == "customChat" {
             let destViewController: CustomGroupChatViewController = segue.destination as! CustomGroupChatViewController
@@ -494,7 +494,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         request += studentID + "&password="
         request += password + "&groupID="
         request += groupID + "&from=2017-01-01%2000:00:00&to=2019-01-01%2000:00:00"
-        Alamofire.request(request).authenticate(user: "ccgs", password: "1910").responseString { response in
+        Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: "RequestHelper.tartarusPassword").responseString { response in
 
             switch response.result.value! {
                 case "204 No Content\n":
@@ -541,7 +541,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         request += studentID + "&password="
         request += password + "&groupID="
         request += groupID + "&from=2017-01-01%2000:00:00&to=2019-01-01%2000:00:00"
-        Alamofire.request(request).authenticate(user: "ccgs", password: "1910").responseString { response in
+        Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: "RequestHelper.tartarusPassword").responseString { response in
             
             switch response.result.value! {
             case "204 No Content\n":

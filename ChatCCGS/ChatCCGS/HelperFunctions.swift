@@ -28,9 +28,14 @@ class RequestHelper{
         return formatter.string(from: currentDate)
     }
     
+    static func reformatCurrentDateTimeForRealmMessage(dateString: String) -> String{
+        return dateString.replacingOccurrences(of: "%20", with: " ", options: .literal, range: nil)
+        
+    }
     static func prepareUrlFor(scriptName: String) -> String{
         return "\(RequestHelper.tartarusBaseUrl)/\(scriptName).py?username=\(RequestHelper.userUsername)&password=\(RequestHelper.userPassword)"
     }
+    
     static func isDigit(_ c : Character) -> Bool{
         return "0"<=c && c<="9"
     }

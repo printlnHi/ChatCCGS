@@ -62,7 +62,7 @@ class NewChatViewController: ViewController, UITableViewDelegate, UITableViewDat
             request += members
 
             
-            Alamofire.request(request).authenticate(user: "ccgs", password: "1910").responseString { response in
+            Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: "RequestHelper.tartarusPassword").responseString { response in
                 debugPrint(response.result.value!)
             }
         }

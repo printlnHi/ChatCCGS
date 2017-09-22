@@ -99,7 +99,7 @@ class IndividualChatViewController: UIViewController, UITableViewDataSource {
         }
         
         Alamofire.request(request)
-            .authenticate(user: "ccgs", password: "1910")
+            .authenticate(user: "ccgs", password: "RequestHelper.tartarusPassword")
             .responseString { response in
                 self.tableView.reloadData()
         }

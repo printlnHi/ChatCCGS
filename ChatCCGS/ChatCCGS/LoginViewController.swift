@@ -50,7 +50,7 @@ class LoginViewController: ViewController {
         
         let username = usernameField.text!
         let password = passwordField.text!
-        let request = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/validate.py?username=" + username + "&password=" + password
+        let request = RequestHelper.prepareUrlFor(scriptName: "validate")
         
         Alamofire.request(request)
             .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
@@ -168,8 +168,8 @@ class LoginViewController: ViewController {
     }
     
     func retrieveClassesForStudent() {
-        let request = "http://tartarus.ccgs.wa.edu.au/~1019912/ChatCCGSServerStuff/getClassesForStudent.py?username=\(RequestHelper.userUsername)"
-        
+        let request = RequestHelper.prepareUrlFor(scriptName: "getClassesForStudent")
+        print("retrivieng classes: \(request)")
         Alamofire.request(request)
             .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
             .responseString { response in
@@ -201,11 +201,10 @@ class LoginViewController: ViewController {
     }
     
     func retrieveCustomGroups(studentID: String) {
-        var request = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/CustomGroups/getGroupsForStudent.py?username="
-        request += studentID + "&password="
-        request += "password123"
+
+        let request = RequestHelper.prepareUrlFor(scriptName: "getGroupsForStudent")
         
-        Alamofire.request(request).authenticate(user: "ccgs", password: "1910").responseString { response in
+        Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
             
             let realm = try! Realm()
             
@@ -240,7 +239,7 @@ class LoginViewController: ViewController {
     func pullAllMessages(studentID: String, password: String) {
         
         
-        Alamofire.request("http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/pullMessage.py?username=" + studentID + "&password=" + password)
+        Alamofire.request(RequestHelper.prepareUrlFor(scriptName: "pullMessage"))
             .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
             .responseString { response in
                 
@@ -295,11 +294,8 @@ class LoginViewController: ViewController {
     
     func retrieveArchivedMessages(username: String, password: String, author: String) {
         
-        var request = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/archiveQuery.py?"
-        request += "username=" + username + "&password="
-        request += password + "&author="
-        request += author + "&from=2017-05-01%2000:00:00&to=2018-05-01%2000:00:00"
-        Alamofire.request(request).authenticate(user: "ccgs", password: "1910").responseString { response in
+        let request = "\(RequestHelper.prepareUrlFor(scriptName: "archiveQuery"))&author = \(author)"
+        Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
             
             let realm = try! Realm()
             

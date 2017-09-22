@@ -61,7 +61,7 @@ class CustomGroupChatViewController: UIViewController, UITableViewDelegate, UITa
         let author = currentStudent.ID
         let name = RequestHelper.escapeStringForUrl(queryString: groupChat.name)
         
-        let request = "\(RequestHelper.tartarusBaseUrl)?username=\(RequestHelper.userUsername)&password=\(RequestHelper.userPassword)&content=\(content)&group=\(name)&datestamp=\(dateString)"
+        let request = "\(RequestHelper.tartarusBaseUrl)/CustomGroups/pushGroupMessage.py?username=\(RequestHelper.userUsername)&password=\(RequestHelper.userPassword)&content=\(content)&group=\(name)&datestamp=\(dateString)"
         
         let message = Message()
         message.author = author

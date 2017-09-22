@@ -12,9 +12,8 @@ import Alamofire
 
 class ClassGroupChatViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-    var currentStudent = Student()
     var group = GroupChat()
-    
+    var currentStudent = Student()
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var messageContentField: UITextField!
     
@@ -44,10 +43,9 @@ class ClassGroupChatViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     func getMembers(for classGroupChat: GroupChat) {
-        var request = "tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/getStudentsForClass.py?"
-        request += "username=" + currentStudent.ID + "&password=123"
+        let request = "tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/getStudentsForClass.py?username=\(RequestHelper.userUsername)&password=\(RequestHelper.userPassword)"
         
-        Alamofire.request(request).authenticate(user: "ccgs", password:"1910").responseString { response in
+        Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password:RequestHelper.tartarusPassword).responseString { response in
             
         }
         
@@ -72,32 +70,21 @@ class ClassGroupChatViewController: UIViewController, UITableViewDelegate, UITab
     
     @IBAction func pushMessage() {
         let content = messageContentField.text!.replacingOccurrences(of: " ", with: "%20", options: .literal, range: nil)
-        let date = Date()
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-d%20hh:mm:ss"
-        let dateTime = formatter.string(from: date)
+        let dateString = RequestHelper.formatCurrentDateTimeForRequest()
         
         let author = currentStudent.ID
         let classCode = group.name
-        let password = "password123"
         
-        var request = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/pushGroupMessage.py?username="
-        request += author
-        request += "&password="
-        request += password
-        request += "&content="
-        request += content
-        request += "&group="
-        request += classCode
-        request += "&datestamp="
-        request += dateTime
-        print(request)
+        let request = "\(RequestHelper.prepareUrlFor(scriptName: "pushGroupMessage"))&content=\(content)&group=\(classCode)&datastamp=\(dateString)"
+
+        
         let message = Message()
         message.author = author
-        message.dateStamp = dateTime.replacingOccurrences(of: "%20", with: " ", options: .literal, range: nil) + "'"
+        message.dateStamp = dateString.replacingOccurrences(of: "%20", with: " ", options: .literal, range: nil) + "'"
         message.content = "'" + content.replacingOccurrences(of: "%20", with: " ", options: .literal, range: nil) + "'"
         message.group = classCode
-        print(message)
+
+        
         let realm = try! Realm()
         
         try! realm.write {
@@ -105,7 +92,7 @@ class ClassGroupChatViewController: UIViewController, UITableViewDelegate, UITab
         }
         
         Alamofire.request(request)
-            .authenticate(user: "ccgs", password: "1910")
+            .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
             .responseString { response in
                 debugPrint(response.result.value!)
                 self.tableView.reloadData()

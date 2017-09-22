@@ -42,10 +42,7 @@ class NewChatViewController: ViewController, UITableViewDelegate, UITableViewDat
             }
             
             
-            var request = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/CustomGroups/createGroup.py?username="
-            request += currentStudent.ID + "&password="
-            request += "password123" + "&name="
-            request += groupChat.name.replacingOccurrences(of: " ", with: "%20") + "&members="
+            
             
             var members = "["
             var count = groupChat.members.count
@@ -59,10 +56,11 @@ class NewChatViewController: ViewController, UITableViewDelegate, UITableViewDat
             }
             members += "]"
             
-            request += members
+            
+            let request = "\(RequestHelper.prepareUrlFor(scriptName: "createGroup"))&name=\(RequestHelper.escapeStringForUrl(queryString: groupChat.name))&members=\(members)"
 
             
-            Alamofire.request(request).authenticate(user: "ccgs", password: "1910").responseString { response in
+            Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
                 debugPrint(response.result.value!)
             }
         }

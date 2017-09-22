@@ -28,9 +28,14 @@ class RequestHelper{
         return formatter.string(from: currentDate)
     }
     
+    static func reformatCurrentDateTimeForRealmMessage(dateString: String) -> String{
+        return dateString.replacingOccurrences(of: "%20", with: " ", options: .literal, range: nil)
+        
+    }
     static func prepareUrlFor(scriptName: String) -> String{
         return "\(RequestHelper.tartarusBaseUrl)/\(scriptName).py?username=\(RequestHelper.userUsername)&password=\(RequestHelper.userPassword)"
     }
+    
     static func isDigit(_ c : Character) -> Bool{
         return "0"<=c && c<="9"
     }
@@ -40,6 +45,6 @@ class RequestHelper{
     static let tartarusPassword = "1910"
     static var userUsername = "USERNAME NOT SET"
     static var userPassword = "PASSWORD NOT SET"
-    
+    static let timeStamp2017to2019 = "2017-01-01%2000:00:00&to=2019-01-01%2000:00:00"
     private static let dateFormatString = "yyyy-MM-d%20hh:mm:ss"
 }

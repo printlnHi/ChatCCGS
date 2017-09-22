@@ -380,11 +380,12 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                 return [getInfoAction]
             } else if indexPath.row > filteredChats.count {
                 let leaveGroupAction = UITableViewRowAction(style: .default, title: "Leave Group") { (action, index) in
-                    var request = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/CustomGroups/leaveGroup.py?username="
-                    request += self.currentStudent.ID + "&password="
-                    request += "password123" + "&group="
+                    
                     let cell = tableView.cellForRow(at: indexPath)
-                    request += (cell?.textLabel?.text)!
+                    
+                    let request = "\(RequestHelper.prepareUrlFor(scriptName: "CustomGroups/leaveGroup"))&group=\((cell?.textLabel?.text)!)"
+                    
+                    print("leaving group: \(request)")
                     
                     Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: "RequestHelper.tartarusPassword").responseString { response in
                         if response.result.value! == "100 Continue\n" {

@@ -66,29 +66,16 @@ class IndividualChatViewController: UIViewController, UITableViewDataSource {
     
     @IBAction func pushMessage() {
         let content = messageContentField.text!.replacingOccurrences(of: " ", with: "%20", options: .literal, range: nil)
-        let date = Date()
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-d%20hh:mm:ss"
-        let dateTime = formatter.string(from: date)
+        let dateString = RequestHelper.formatCurrentDateTimeForRequest()
         
         let author = chat.person2?.ID
         let recipient = chat.person1?.ID
-        let password = "password123"
         
-        var request = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/pushMessage.py?username="
-        request += author!
-        request += "&password="
-        request += password
-        request += "&content="
-        request += content
-        request += "&recipient="
-        request += recipient!
-        request += "&datestamp="
-        request += dateTime
         
+        let request = "\(RequestHelper.prepareUrlFor(scriptName: "pushMessage"))&content=\(content)&recipient=\(recipient!)&datestamp=\(dateString))"
         let message = Message()
         message.author = author!
-        message.dateStamp = dateTime.replacingOccurrences(of: "%20", with: " ", options: .literal, range: nil) + "'"
+        message.dateStamp = RequestHelper.reformatCurrentDateTimeForRealmMessage(dateString: dateString)
         message.content = "'" + content.replacingOccurrences(of: "%20", with: " ", options: .literal, range: nil) + "'"
         message.recipient = recipient!
         
@@ -99,7 +86,7 @@ class IndividualChatViewController: UIViewController, UITableViewDataSource {
         }
         
         Alamofire.request(request)
-            .authenticate(user: "ccgs", password: "RequestHelper.tartarusPassword")
+            .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
             .responseString { response in
                 self.tableView.reloadData()
         }
@@ -123,7 +110,7 @@ class IndividualChatViewController: UIViewController, UITableViewDataSource {
         destController3.currentStudent = (chat.person2)!
         
         
-        print("we did stuff!")
+        print(segued")
     }
 
     /*

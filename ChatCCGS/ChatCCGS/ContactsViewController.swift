@@ -451,11 +451,11 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         filteredChats = chats
 
         for chat in chats {
-            retrieveArchivedGroupMessages(studentID: currentStudent.ID, password: "password123", groupID: chat.name)
+            retrieveArchivedGroupMessages(groupID: chat.name)
         }
         
         for customChat in getCustomGroups() {
-            retrieveArchiveCustomGroupMessages(studentID: currentStudent.ID, password: "password123", groupID: customChat.name)
+            retrieveArchiveCustomGroupMessages(groupID: customChat.name)
             let realm = try! Realm()
         }
 
@@ -489,12 +489,11 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
 
 
 
-    func retrieveArchivedGroupMessages(studentID: String, password: String, groupID: String) {
-        var request = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/archiveGroupQuery.py?username="
-        request += studentID + "&password="
-        request += password + "&groupID="
-        request += groupID + "&from=2017-01-01%2000:00:00&to=2019-01-01%2000:00:00"
-        Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: "RequestHelper.tartarusPassword").responseString { response in
+    func retrieveArchivedGroupMessages(groupID: String) {
+        let request = "\(RequestHelper.prepareUrlFor(scriptName: "archiveGroupQuery"))&groupID=\(groupID)&from=\(RequestHelper.timeStamp2017to2019)"
+        print("retrieving archived messages: \(request)")
+        
+        Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
 
             switch response.result.value! {
                 case "204 No Content\n":
@@ -536,12 +535,10 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
-    func retrieveArchiveCustomGroupMessages(studentID: String, password: String, groupID: String) {
-        var request = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/CustomGroups/archiveGroupQuery.py?username="
-        request += studentID + "&password="
-        request += password + "&groupID="
-        request += groupID + "&from=2017-01-01%2000:00:00&to=2019-01-01%2000:00:00"
-        Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: "RequestHelper.tartarusPassword").responseString { response in
+    func retrieveArchiveCustomGroupMessages(groupID: String) {
+
+        let request = "\(RequestHelper.prepareUrlFor(scriptName: "archiveGroupQuery"))&groupID=\(groupID)&from=\(RequestHelper.timeStamp2017to2019)"
+        Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
             
             switch response.result.value! {
             case "204 No Content\n":

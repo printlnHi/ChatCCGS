@@ -110,7 +110,7 @@ class IndividualChatViewController: UIViewController, UITableViewDataSource {
         destController3.currentStudent = (chat.person2)!
         
         
-        print(segued")
+        print("segued")
     }
 
     /*

@@ -294,7 +294,7 @@ class LoginViewController: ViewController {
     
     func retrieveArchivedMessages(username: String, password: String, author: String) {
         
-        let request = "\(RequestHelper.prepareUrlFor(scriptName: "archiveQuery"))&author = \(author)"
+        let request = "\(RequestHelper.prepareUrlFor(scriptName: "archiveQuery"))&author=\(author)&from=\(RequestHelper.timeStamp2017to2019)"
         Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
             
             let realm = try! Realm()

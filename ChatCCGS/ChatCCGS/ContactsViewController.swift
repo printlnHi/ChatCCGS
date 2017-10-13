@@ -173,7 +173,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                     let strResponse = response.result.value!
                     let firstIndex = strResponse.startIndex
                     let fourthIndex = strResponse.index(firstIndex, offsetBy: 3)
-                    let code = strResponse.substring(with: firstIndex..<fourthIndex)
+                    let code = strResponse[..<fourthIndex]
                     let chatNameCopy = chatName
                     switch code{
                     case "400":
@@ -240,7 +240,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
             NameEndIndex = response.index(NameEndIndex, offsetBy: 1)
         }
 
-        let Name: String = response.substring(with: NameStartIndex..<NameEndIndex)
+        let Name = String(response[NameStartIndex..<NameEndIndex])
 
         return (ID: ID, Name: Name)
     }
@@ -258,7 +258,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
             NameEndIndex = response.index(NameEndIndex, offsetBy: 1)
         }
 
-        return response.substring(with: NameStartIndex..<NameEndIndex)
+        return String(response[NameStartIndex..<NameEndIndex])
 
     }
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{

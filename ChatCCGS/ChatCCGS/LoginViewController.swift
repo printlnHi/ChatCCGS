@@ -50,8 +50,10 @@
                 
                 let username = usernameField.text!
                 let password = passwordField.text!
+                RequestHelper.userUsername = username
+                RequestHelper.userPassword = password
                 let request = RequestHelper.prepareUrlFor(scriptName: "validate")
-                
+                print("request = \(request)")
                 Alamofire.request(request)
                     .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
                     .responseString { response in
@@ -202,7 +204,7 @@
             
             func retrieveCustomGroups(studentID: String) {
                 
-                let request = RequestHelper.prepareUrlFor(scriptName: "getGroupsForStudent")
+                let request = RequestHelper.prepareUrlFor(scriptName: "CustomGroups/getGroupsForStudent")
                 
                 Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
                     

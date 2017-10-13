@@ -66,7 +66,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     }
 
     private func performNonEmptyPupilQuery(alamofireRequestString : String){
-
+        print("(performNonEmptyPupilQuery) requesting \(alamofireRequestString)")
         Alamofire.request(alamofireRequestString)
             .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
             .responseString { response in
@@ -95,7 +95,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     }
 
     private func performNonEmptyClassQuery(alamofireRequestString : String){
-
+        print("(performNonEmptyClassQuery) requesting \(alamofireRequestString)")
         Alamofire.request(alamofireRequestString)
             .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
             .responseString { response in
@@ -539,6 +539,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     func retrieveArchiveCustomGroupMessages(groupID: String) {
 
         let request = "\(RequestHelper.prepareUrlFor(scriptName: "archiveGroupQuery"))&groupID=\(groupID)&from=\(RequestHelper.timeStamp2017to2019)"
+        print("Request: " + request)
         Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
             
             switch response.result.value! {

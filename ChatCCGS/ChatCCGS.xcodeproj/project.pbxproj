@@ -22,10 +22,6 @@
 		C23C3C891F69332400140254 /* CustomGroupChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23C3C881F69332300140254 /* CustomGroupChatViewController.swift */; };
 		C24148161F495B8F00EDF401 /* ContactInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24148151F495B8F00EDF401 /* ContactInfoViewController.swift */; };
 		C24BE3771F5AB18700118104 /* GroupChatInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24BE3761F5AB18700118104 /* GroupChatInfoViewController.swift */; };
-		C25AA2961F44451E00C8D4E1 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C25AA2941F44451D00C8D4E1 /* Realm.framework */; };
-		C25AA2971F44451E00C8D4E1 /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C25AA2941F44451D00C8D4E1 /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C25AA2981F44451E00C8D4E1 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C25AA2951F44451E00C8D4E1 /* RealmSwift.framework */; };
-		C25AA2991F44451E00C8D4E1 /* RealmSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C25AA2951F44451E00C8D4E1 /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C25AA29B1F44454A00C8D4E1 /* Realm.framework in Sources */ = {isa = PBXBuildFile; fileRef = C25AA2941F44451D00C8D4E1 /* Realm.framework */; };
 		C25AA29C1F44454A00C8D4E1 /* RealmSwift.framework in Sources */ = {isa = PBXBuildFile; fileRef = C25AA2951F44451E00C8D4E1 /* RealmSwift.framework */; };
 		C25AA29D1F44455400C8D4E1 /* Realm.framework in Resources */ = {isa = PBXBuildFile; fileRef = C25AA2941F44451D00C8D4E1 /* Realm.framework */; };
@@ -35,6 +31,10 @@
 		C47407865D9B263B36963E13 /* Pods_ChatCCGS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F179C03F74D75E8178204B7 /* Pods_ChatCCGS.framework */; };
 		C91FC1661F4D4F8700929791 /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91FC1651F4D4F8700929791 /* HelperFunctions.swift */; };
 		C95239A61F30C21900417282 /* NewChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95239A51F30C21900417282 /* NewChatViewController.swift */; };
+		C98491641F8C69CA00F2C9F2 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C98491631F8C69CA00F2C9F2 /* Realm.framework */; };
+		C98491651F8C69CA00F2C9F2 /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C98491631F8C69CA00F2C9F2 /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C98491681F8C69DC00F2C9F2 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C98491671F8C69DC00F2C9F2 /* RealmSwift.framework */; };
+		C98491691F8C69DC00F2C9F2 /* RealmSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C98491671F8C69DC00F2C9F2 /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,14 +55,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		C25AA29A1F44451E00C8D4E1 /* Embed Frameworks */ = {
+		C98491661F8C69CA00F2C9F2 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				C25AA2991F44451E00C8D4E1 /* RealmSwift.framework in Embed Frameworks */,
-				C25AA2971F44451E00C8D4E1 /* Realm.framework in Embed Frameworks */,
+				C98491691F8C69DC00F2C9F2 /* RealmSwift.framework in Embed Frameworks */,
+				C98491651F8C69CA00F2C9F2 /* Realm.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -99,6 +99,9 @@
 		C2DA7CE31F4CFA66003EACB6 /* IndividualChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndividualChatViewController.swift; sourceTree = "<group>"; };
 		C91FC1651F4D4F8700929791 /* HelperFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelperFunctions.swift; sourceTree = "<group>"; };
 		C95239A51F30C21900417282 /* NewChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewChatViewController.swift; sourceTree = "<group>"; };
+		C98491631F8C69CA00F2C9F2 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
+		C98491671F8C69DC00F2C9F2 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RealmSwift.framework; sourceTree = "<group>"; };
+		C9E580AA1F8C67B000EC01D2 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
 		C9F856801F6B6E6F006D5B93 /* ChatCCGS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ChatCCGS.entitlements; sourceTree = "<group>"; };
 		D2CD3C8FC43C93CA938E96CF /* Pods-ChatCCGS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatCCGS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ChatCCGS/Pods-ChatCCGS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -108,9 +111,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C25AA2961F44451E00C8D4E1 /* Realm.framework in Frameworks */,
+				C98491641F8C69CA00F2C9F2 /* Realm.framework in Frameworks */,
 				C47407865D9B263B36963E13 /* Pods_ChatCCGS.framework in Frameworks */,
-				C25AA2981F44451E00C8D4E1 /* RealmSwift.framework in Frameworks */,
+				C98491681F8C69DC00F2C9F2 /* RealmSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,7 +137,10 @@
 		83DFEEBA1F301847006AEE78 = {
 			isa = PBXGroup;
 			children = (
+				C98491671F8C69DC00F2C9F2 /* RealmSwift.framework */,
 				C25AA2941F44451D00C8D4E1 /* Realm.framework */,
+				C9E580AA1F8C67B000EC01D2 /* Realm.framework */,
+				C98491631F8C69CA00F2C9F2 /* Realm.framework */,
 				C25AA2951F44451E00C8D4E1 /* RealmSwift.framework */,
 				83DFEEC51F301847006AEE78 /* ChatCCGS */,
 				83DFEEDA1F301847006AEE78 /* ChatCCGSTests */,
@@ -229,7 +235,7 @@
 				83DFEEC11F301847006AEE78 /* Resources */,
 				94397ADFC0A8773D2CAA7FBF /* [CP] Embed Pods Frameworks */,
 				C927A0080D9C0709B657DF52 /* [CP] Copy Pods Resources */,
-				C25AA29A1F44451E00C8D4E1 /* Embed Frameworks */,
+				C98491661F8C69CA00F2C9F2 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

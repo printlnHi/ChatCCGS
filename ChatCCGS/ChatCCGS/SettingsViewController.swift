@@ -10,7 +10,7 @@ import UIKit
 
 class SettingsViewController: ViewController {
     
-    var currentStudent: Student = Student()
+    @objc var currentStudent: Student = Student()
     
     @IBOutlet weak var PushNotifications: UISwitch!
     

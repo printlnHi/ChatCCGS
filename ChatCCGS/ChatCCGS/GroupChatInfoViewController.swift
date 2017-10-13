@@ -12,8 +12,8 @@ import Alamofire
 
 class GroupChatInfoViewController: UIViewController {
     
-    var pos = ""
-    var groupChat: GroupChat = GroupChat()
+    @objc var pos = ""
+    @objc var groupChat: GroupChat = GroupChat()
 
     @IBOutlet weak var classNamelbl: UILabel!
     @IBOutlet weak var classStudentslbl: UILabel!
@@ -36,7 +36,7 @@ class GroupChatInfoViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func getClassChatClicked() -> GroupChat {
+    @objc func getClassChatClicked() -> GroupChat {
         let realm = try! Realm()
         let chats = (realm.objects(ClassChatList.self).first?.classChatList)!
         var classes = [GroupChat]()

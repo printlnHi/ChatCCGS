@@ -15,7 +15,7 @@
             @IBOutlet weak var usernameField: UITextField!
             @IBOutlet weak var passwordField: UITextField!
             
-            var studentLoggingIn: Student? = nil
+            @objc var studentLoggingIn: Student? = nil
             
             override func viewDidLoad() {
                 super.viewDidLoad()
@@ -123,7 +123,7 @@
                 
             }
             
-            func retrieveAllStudents() {
+            @objc func retrieveAllStudents() {
                 
                 let students = List<Student>()
                 
@@ -169,7 +169,7 @@
                 
             }
             
-            func retrieveClassesForStudent() {
+            @objc func retrieveClassesForStudent() {
                 let request = RequestHelper.prepareUrlFor(scriptName: "getClassesForStudent")
                 print("retrivieng classes: \(request)")
                 Alamofire.request(request)
@@ -202,7 +202,7 @@
                 }
             }
             
-            func retrieveCustomGroups(studentID: String) {
+            @objc func retrieveCustomGroups(studentID: String) {
                 
                 let request = RequestHelper.prepareUrlFor(scriptName: "CustomGroups/getGroupsForStudent")
                 
@@ -238,7 +238,7 @@
             }
             
             
-            func pullAllMessages(studentID: String, password: String) {
+            @objc func pullAllMessages(studentID: String, password: String) {
                 
                 
                 Alamofire.request(RequestHelper.prepareUrlFor(scriptName: "pullMessage"))
@@ -282,7 +282,7 @@
             }
             
             
-            func pullAllArchivedMessages(username: String, password: String) {
+            @objc func pullAllArchivedMessages(username: String, password: String) {
                 let realm = try! Realm()
                 let chats = realm.objects(IndividualChat.self)
                 
@@ -294,7 +294,7 @@
                 
             }
             
-            func retrieveArchivedMessages(username: String, password: String, author: String) {
+            @objc func retrieveArchivedMessages(username: String, password: String, author: String) {
                 
                 let request = "\(RequestHelper.prepareUrlFor(scriptName: "archiveQuery"))&author=\(author)&from=\(RequestHelper.timeStamp2017to2019)"
                 Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in

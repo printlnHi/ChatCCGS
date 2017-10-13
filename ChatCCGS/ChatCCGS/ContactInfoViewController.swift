@@ -12,7 +12,7 @@ import Alamofire
 
 class ContactInfoViewController: UIViewController {
 
-    var user = ""
+    @objc var user = ""
     
     @IBOutlet weak var studentNamelbl: UILabel!
     @IBOutlet weak var studentIDlbl: UILabel!

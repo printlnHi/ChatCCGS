@@ -13,8 +13,8 @@ import RealmSwift
 
 class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var currentStudent: Student = Student()
-    var chatSelected: IndividualChat = IndividualChat()
+    @objc var currentStudent: Student = Student()
+    @objc var chatSelected: IndividualChat = IndividualChat()
     
     
     @IBOutlet weak var tableView: UITableView!
@@ -62,7 +62,7 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
         return [removeFromRecentsAction]
     }
     
-    func getRecentChats() -> [IndividualChat] {
+    @objc func getRecentChats() -> [IndividualChat] {
         
         let realm = try! Realm()
         let results = realm.objects(IndividualChat.self)

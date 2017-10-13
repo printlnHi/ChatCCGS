@@ -13,8 +13,8 @@ import Alamofire
 class CustomGroupChatViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
-    var groupChat = CustomGroupChat()
-    var currentStudent = Student()
+    @objc var groupChat = CustomGroupChat()
+    @objc var currentStudent = Student()
     
     @IBOutlet weak var messageContentField: UITextField!
     @IBOutlet weak var groupNamelbl: UILabel!
@@ -40,7 +40,7 @@ class CustomGroupChatViewController: UIViewController, UITableViewDelegate, UITa
         return cell
     }
     
-    func getAllMessages() -> [Message] {
+    @objc func getAllMessages() -> [Message] {
         let realm = try! Realm()
         let data = realm.objects(Message.self)
         var messages = [Message]()

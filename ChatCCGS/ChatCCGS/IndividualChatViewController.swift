@@ -13,7 +13,7 @@ import Alamofire
 
 class IndividualChatViewController: UIViewController, UITableViewDataSource {
     
-    var chat: IndividualChat = IndividualChat()
+    @objc var chat: IndividualChat = IndividualChat()
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var messageContentField: UITextField!
@@ -47,7 +47,7 @@ class IndividualChatViewController: UIViewController, UITableViewDataSource {
     }
 
     
-    func getAllMessages() -> [Message] {
+    @objc func getAllMessages() -> [Message] {
         let realm = try! Realm()
         
         let results = realm.objects(Message.self)

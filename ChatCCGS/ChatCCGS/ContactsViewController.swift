@@ -17,17 +17,17 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
 
 
     var studentPos: Int? = 0
-    var currentStudent: Student = Student()
-    var chatSelected = GroupChat()
+    @objc var currentStudent: Student = Student()
+    @objc var chatSelected = GroupChat()
     var classPos: Int? = 0
-    var customChatSelected = CustomGroupChat()
+    @objc var customChatSelected = CustomGroupChat()
 
     var pupils: List<Student> = List()
     var chats: List<GroupChat> = List()
     var filteredPupils: List<Student> = List()
     var filteredChats: List<GroupChat> = List()
 
-    var shouldFilterResult =  false;
+    @objc var shouldFilterResult =  false;
 
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         var enteredText = searchBar.text
@@ -323,7 +323,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         }
     }
 
-    func isInRecents(studentID: String) -> Bool {
+    @objc func isInRecents(studentID: String) -> Bool {
         let realm = try! Realm()
         let data = realm.objects(IndividualChat.self)
         for d in data {
@@ -490,7 +490,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
 
 
 
-    func retrieveArchivedGroupMessages(groupID: String) {
+    @objc func retrieveArchivedGroupMessages(groupID: String) {
         let request = "\(RequestHelper.prepareUrlFor(scriptName: "archiveGroupQuery"))&groupID=\(groupID)&from=\(RequestHelper.timeStamp2017to2019)"
         print("retrieving archived messages: \(request)")
         
@@ -536,7 +536,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
-    func retrieveArchiveCustomGroupMessages(groupID: String) {
+    @objc func retrieveArchiveCustomGroupMessages(groupID: String) {
 
         let request = "\(RequestHelper.prepareUrlFor(scriptName: "archiveGroupQuery"))&groupID=\(groupID)&from=\(RequestHelper.timeStamp2017to2019)"
         print("Request: " + request)
@@ -585,7 +585,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     }
     
     
-    func getCustomGroups() -> [CustomGroupChat] {
+    @objc func getCustomGroups() -> [CustomGroupChat] {
         let realm = try! Realm()
         
         let data = realm.objects(CustomGroupChat.self)

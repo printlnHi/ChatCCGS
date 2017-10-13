@@ -12,8 +12,8 @@ import Alamofire
 
 class ClassGroupChatViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-    var group = GroupChat()
-    var currentStudent = Student()
+    @objc var group = GroupChat()
+    @objc var currentStudent = Student()
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var messageContentField: UITextField!
     
@@ -42,7 +42,7 @@ class ClassGroupChatViewController: UIViewController, UITableViewDelegate, UITab
         // Dispose of any resources that can be recreated.
     }
     
-    func getMembers(for classGroupChat: GroupChat) {
+    @objc func getMembers(for classGroupChat: GroupChat) {
         let request = "tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/getStudentsForClass.py?username=\(RequestHelper.userUsername)&password=\(RequestHelper.userPassword)"
         
         Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password:RequestHelper.tartarusPassword).responseString { response in
@@ -51,7 +51,7 @@ class ClassGroupChatViewController: UIViewController, UITableViewDelegate, UITab
         
     }
 
-    func getAllGroupMessages() -> [Message] {
+    @objc func getAllGroupMessages() -> [Message] {
         let realm = try! Realm()
         
         let results = realm.objects(Message.self)

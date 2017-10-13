@@ -12,8 +12,8 @@ import Alamofire
 
 class NewChatViewController: ViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var currentStudent: Student = Student()
-    var selectedPeople = [Student]()
+    @objc var currentStudent: Student = Student()
+    @objc var selectedPeople = [Student]()
     
     @IBOutlet weak var groupName: UITextField!
     @IBOutlet weak var tableView: UITableView!
@@ -66,7 +66,7 @@ class NewChatViewController: ViewController, UITableViewDelegate, UITableViewDat
         }
     }
     
-    func alertNotValid() {
+    @objc func alertNotValid() {
         
     }
     
@@ -117,7 +117,7 @@ class NewChatViewController: ViewController, UITableViewDelegate, UITableViewDat
     }
     
     
-    func getRecentChats() -> [IndividualChat] {
+    @objc func getRecentChats() -> [IndividualChat] {
         
         let realm = try! Realm()
         let results = realm.objects(IndividualChat.self)

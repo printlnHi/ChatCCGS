@@ -14,24 +14,24 @@ import UserNotifications
 
 class Chat : Object {
     
-    func getMessages() {}
-    func sendMessage() {}
-    func muteChat() {}
-    func deleteMessage() {}
-    func hideChat() {}
-    func getName() -> String{ return ""}
+    @objc func getMessages() {}
+    @objc func sendMessage() {}
+    @objc func muteChat() {}
+    @objc func deleteMessage() {}
+    @objc func hideChat() {}
+    @objc func getName() -> String{ return ""}
 }
 
 class IndividualChat : Chat {
-    dynamic var person1: Student? = Student()
-    dynamic var person2: Student? = Student()
+    @objc dynamic var person1: Student? = Student()
+    @objc dynamic var person2: Student? = Student()
     override func getName() -> String{
         return person2!.name
     }
 }
 
 class GroupChat : Chat {
-    dynamic var name: String = ""
+    @objc dynamic var name: String = ""
     var members = List<Student>()
     override func getName() -> String{
         return name
@@ -39,20 +39,20 @@ class GroupChat : Chat {
 }
 
 class CustomGroupChat : GroupChat {
-    func leaveChat() {}
-    func addMember() {}
+    @objc func leaveChat() {}
+    @objc func addMember() {}
 }
 
 class Message : Object {
-    dynamic var dateStamp = ""
-    dynamic var author = ""
-    dynamic var recipient = ""
-    dynamic var group = ""
-    dynamic var content = ""
+    @objc dynamic var dateStamp = ""
+    @objc dynamic var author = ""
+    @objc dynamic var recipient = ""
+    @objc dynamic var group = ""
+    @objc dynamic var content = ""
 }
 
 class TextMessage : Message {
-    var message = ""
+    @objc var message = ""
 }
 
 /*
@@ -62,12 +62,12 @@ class ImageMessage : Message {
 }*/
 
 class FileMessage: Message {
-    func getDownloadLink() {}
+    @objc func getDownloadLink() {}
 }
 
 class Student : Object {
-    dynamic var ID: String = ""
-    dynamic var name: String = ""
+    @objc dynamic var ID: String = ""
+    @objc dynamic var name: String = ""
 }
 
 class StudentList : Object {
@@ -113,7 +113,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-    func registerForPushNotifications() {
+    @objc func registerForPushNotifications() {
      UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) {
         (granted, error) in
         print("Permission granted: \(granted)")
@@ -123,7 +123,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    func getNotificationSettings() {
+    @objc func getNotificationSettings() {
         UNUserNotificationCenter.current().getNotificationSettings { (settings) in
             print("Notification settings: \(settings)")
             guard settings.authorizationStatus == .authorized else { return }

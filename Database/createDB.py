@@ -45,7 +45,10 @@ def Create(filename):
                                 FOREIGN KEY (studentID) REFERENCES Students(ID), FOREIGN KEY (classID) REFERENCES CustomGroups(ID));
 
                                 CREATE TABLE GroupStatusMessages(ID INTEGER PRIMARY KEY AUTOINCREMENT, recipientID INT, content TEXT, datestamp TEXT,
-                                groupID INT, FOREIGN KEY (recipientID) REFERENCES Students(ID), FOREIGN KEY (groupID) REFERENCES CustomGroups(ID));""")
+                                groupID INT, FOREIGN KEY (recipientID) REFERENCES Students(ID), FOREIGN KEY (groupID) REFERENCES CustomGroups(ID));
+
+                                CREATE TABLE APNS(ID INTEGER PRIMARY KEY AUTOINCREMENT, studentID INT, token TEXT, enabled INT,
+                                FOREIGN KEY (studentID) REFERENCES Students(ID));""")
 
             print("Tables declared. Committing")
 

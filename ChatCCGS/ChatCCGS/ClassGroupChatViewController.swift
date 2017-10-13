@@ -98,7 +98,7 @@ class ClassGroupChatViewController: UIViewController, UITableViewDelegate, UITab
                 self.tableView.reloadData()
         }
         
-        
+        messageContentField.text! = ""
     }
     
     /*

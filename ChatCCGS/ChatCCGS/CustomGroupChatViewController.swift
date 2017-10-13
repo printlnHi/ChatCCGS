@@ -80,6 +80,9 @@ class CustomGroupChatViewController: UIViewController, UITableViewDelegate, UITa
             .responseString { response in
                 self.tableView.reloadData()
         }
+        
+        messageContentField.text! = ""
+    
     }
     
     /*

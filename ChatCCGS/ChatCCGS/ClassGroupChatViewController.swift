@@ -57,6 +57,7 @@ class ClassGroupChatViewController: UIViewController, UITableViewDelegate, UITab
         let results = realm.objects(Message.self)
         
         var messages = [Message]()
+        
         for r in results {
             var g = r.group
             g = g.replacingOccurrences(of: "'", with: "").replacingOccurrences(of: " ", with: "")
@@ -64,6 +65,8 @@ class ClassGroupChatViewController: UIViewController, UITableViewDelegate, UITab
                 messages.append(r)
             }
         }
+        
+        print(messages)
         
         return messages.reversed()
     }
@@ -75,7 +78,7 @@ class ClassGroupChatViewController: UIViewController, UITableViewDelegate, UITab
         let author = currentStudent.ID
         let classCode = group.name
         
-        let request = "\(RequestHelper.prepareUrlFor(scriptName: "pushGroupMessage"))&content=\(content)&group=\(classCode)&datastamp=\(dateString)"
+        let request = "\(RequestHelper.prepareUrlFor(scriptName: "pushGroupMessage"))&content=\(content)&group=\(classCode)&datestamp=\(dateString)"
 
         
         let message = Message()
@@ -90,6 +93,9 @@ class ClassGroupChatViewController: UIViewController, UITableViewDelegate, UITab
         try! realm.write {
             realm.add(message)
         }
+        
+        print()
+        print(request)
         
         Alamofire.request(request)
             .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)

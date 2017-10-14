@@ -57,6 +57,8 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
                     realm.delete(tbd!)
                 }
             }
+            
+            tableView.reloadData()
         }
         removeFromRecentsAction.backgroundColor = UIColor.red
         return [removeFromRecentsAction]
@@ -96,7 +98,6 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         
         tableView.reloadData()
     }

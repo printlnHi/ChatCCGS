@@ -41,9 +41,6 @@ class NewChatViewController: ViewController, UITableViewDelegate, UITableViewDat
                 groupChat.members.append(i)
             }
             
-            
-            
-            
             var members = "["
             var count = groupChat.members.count
             for i in groupChat.members {
@@ -57,12 +54,20 @@ class NewChatViewController: ViewController, UITableViewDelegate, UITableViewDat
             members += "]"
             
             
-            let request = "\(RequestHelper.prepareUrlFor(scriptName: "createGroup"))&name=\(RequestHelper.escapeStringForUrl(queryString: groupChat.name))&members=\(members)"
-
-            
+            let request = "\(RequestHelper.prepareCustomUrlFor(scriptName: "createGroup"))&name=\(RequestHelper.escapeStringForUrl(queryString: groupChat.name))&members=\(members)"
+            print()
+            print(request)
+            print()
             Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
                 debugPrint(response.result.value!)
             }
+            
+            let realm = try! Realm()
+            try! realm.write {
+                realm.delete(realm.objects(CustomGroupChat.self))
+            }
+            LoginViewController.retrieveCustomGroups(studentID: RequestHelper.userUsername)
+
         }
     }
     

@@ -387,7 +387,8 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                     
                     print("leaving group: \(request)")
                     
-                    Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: "RequestHelper.tartarusPassword").responseString { response in
+                    Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
+                        debugPrint(response.result.value!)
                         if response.result.value! == "100 Continue\n" {
                             let realm = try! Realm()
                             let results = realm.objects(CustomGroupChat.self)
@@ -538,7 +539,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     
     @objc func retrieveArchiveCustomGroupMessages(groupID: String) {
 
-        let request = "\(RequestHelper.prepareUrlFor(scriptName: "archiveGroupQuery"))&groupID=\(groupID)&from=\(RequestHelper.timeStamp2017to2019)"
+        let request = "\(RequestHelper.prepareCustomUrlFor(scriptName: "archiveGroupQuery"))&groupID=\(groupID)&from=\(RequestHelper.timeStamp2017to2019)"
         print("Request: " + request)
         Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
             
@@ -599,6 +600,13 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         return groups
         
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        TableView.reloadData()
+    }
+    
     /*
     // MARK: - Navigation
 

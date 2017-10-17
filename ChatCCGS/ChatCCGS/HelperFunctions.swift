@@ -1,3 +1,6 @@
+/*=====================FOR NCSS SUMMER SCHOOL=====================
+ This is some code I have written this year for a mobile, for
+   Advanced Software Development.*/
 //
 //  HelperFunctions.swift
 //  

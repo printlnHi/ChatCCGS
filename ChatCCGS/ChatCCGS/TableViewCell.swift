@@ -1,3 +1,6 @@
+/*=====================FOR NCSS SUMMER SCHOOL=====================
+ This is code that I have
+ */
 //
 //  TableViewCell.swift
 //  ChatCCGS

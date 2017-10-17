@@ -33,14 +33,19 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
         let chat = getRecentChats()[indexPath.row]
+        
         let cell = RecentsTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ConversationCell")
-        cell.textLabel?.text = chat.person1?.name
+        if chat.person1IsBlocked == false {
+            cell.textLabel?.text = chat.person1?.name
+        } else {
+            cell.textLabel?.text = (chat.person1?.name)! + "[BLOCKED]"
+        }
         return cell
     }
     
     
     public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let removeFromRecentsAction = UITableViewRowAction(style: .default, title: "Remove") { (action, index) in
+        let removeFromRecentsAction = UITableViewRowAction(style: .default, title: "Remove from Recents") { (action, index) in
             
             let realm = try! Realm()
             let results = realm.objects(IndividualChat.self)
@@ -60,8 +65,68 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
             
             tableView.reloadData()
         }
+        
+        let blockAction = UITableViewRowAction(style: .default, title: "Block") { (action, index ) in
+
+            let request = RequestHelper.prepareUrlFor(scriptName: "blockUser") + "&user=" + (self.getRecentChats()[indexPath.row].person1?.ID)!
+            print(request)
+            Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
+                debugPrint(response.result.value!)
+                if response.result.value! == "100 Continue\n" {
+                    let realm = try! Realm()
+                    let results = realm.objects(IndividualChat.self)
+                    var tbd: IndividualChat? = nil
+                    for r in results {
+                        let chat = self.getRecentChats()[indexPath.row]
+                        if (r.person2?.ID)! == self.currentStudent.ID && (r.person1?.name)! == chat.person1?.name {
+                            tbd = chat
+                            try! realm.write {
+                                r.person1IsBlocked = true
+                            }
+                            break
+                        }
+                    }
+                    tableView.reloadData()
+                }
+            }
+        }
+        
+        let unblockAction = UITableViewRowAction(style: .default, title: "Unblock") { (action, index) in
+            let request = RequestHelper.prepareUrlFor(scriptName: "unblockUser") + "&user=" + (self.getRecentChats()[indexPath.row].person1?.ID)!
+            print(request)
+            
+            Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
+                debugPrint(response.result.value!)
+                
+                if response.result.value! == "100 Continue\n" {
+                    let realm = try! Realm()
+                    let results = realm.objects(IndividualChat.self)
+                    var tbd: IndividualChat? = nil
+                    for r in results {
+                        let chat = self.getRecentChats()[indexPath.row]
+                        if (r.person2?.ID)! == self.currentStudent.ID && (r.person1?.name)! == chat.person1?.name {
+                            tbd = chat
+                            try! realm.write {
+                                r.person1IsBlocked = false
+                            }
+                            break
+                        }
+                    }
+                    tableView.reloadData()
+                }
+            }
+        }
+        
         removeFromRecentsAction.backgroundColor = UIColor.red
-        return [removeFromRecentsAction]
+        blockAction.backgroundColor = UIColor.black
+        unblockAction.backgroundColor = UIColor.brown
+        
+        if self.getRecentChats()[indexPath.row].person1IsBlocked {
+            return [removeFromRecentsAction, unblockAction]
+        } else {
+            return [removeFromRecentsAction, blockAction]
+        }
+        
     }
     
     @objc func getRecentChats() -> [IndividualChat] {

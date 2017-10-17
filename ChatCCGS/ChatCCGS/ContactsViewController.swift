@@ -451,9 +451,9 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
 
         updatedClassesForStudent()
         filteredChats = chats
-
+        
         for chat in chats {
-            retrieveArchivedGroupMessages(groupID: chat.name)
+            //retrieveArchivedGroupMessages(groupID: chat.name)
         }
         
         for customChat in getCustomGroups() {
@@ -504,7 +504,9 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                     break
                 default:
                     let realm = try! Realm()
-
+                    print("=====")
+                    debugPrint(response.result.value!)
+                    
                     let data = response.result.value?.components(separatedBy: "\n")
                     var counter = (data?.count)! - 2
 
@@ -518,7 +520,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                         c_mutable.remove(at: c.index(before: c.endIndex))
                         c_mutable.remove(at: c.startIndex)
                         var components = c_mutable.components(separatedBy: ",")
-
+                        
 
                         let m = Message()
                         m.content = components[1]

@@ -39,6 +39,10 @@ class RequestHelper{
         return "\(RequestHelper.tartarusBaseUrl)/\(scriptName).py?username=\(RequestHelper.userUsername)&password=\(RequestHelper.userPassword)"
     }
     
+    static func prepareCustomUrlFor(scriptName: String) -> String{
+        return "\(RequestHelper.tartarusBaseUrl)/CustomGroups/\(scriptName).py?username=\(RequestHelper.userUsername)&password=\(RequestHelper.userPassword)"
+    }
+    
     static func isDigit(_ c : Character) -> Bool{
         return "0"<=c && c<="9"
     }

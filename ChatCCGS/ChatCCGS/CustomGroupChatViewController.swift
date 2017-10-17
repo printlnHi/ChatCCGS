@@ -73,11 +73,13 @@ class CustomGroupChatViewController: UIViewController, UITableViewDelegate, UITa
         try! realm.write {
             realm.add(message)
         }
-        
+        print()
         Alamofire.request(request)
             
             .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
             .responseString { response in
+                debugPrint(response)
+                print()
                 self.tableView.reloadData()
         }
         

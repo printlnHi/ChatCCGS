@@ -293,6 +293,13 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                 
             }
         }
+        
+        if indexPath.row % 2 == 0 {
+            cell.backgroundColor = UIColor.lightGray
+        } else {
+            cell.backgroundColor = UIColor.darkGray
+        }
+        
         //cell.textLabel?.text = "\((self.GroupSegmentedControl.selectedSegmentIndex==0 ? "\(filteredPupils[indexPath.row].name) (\(filteredPupils[indexPath.row].ID))" : "\(filteredChats[indexPath.row].name)")) "
 
         
@@ -325,6 +332,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
 
     @objc func isInRecents(studentID: String) -> Bool {
         let realm = try! Realm()
+        if currentStudent.ID == studentID { return true }
         let data = realm.objects(IndividualChat.self)
         for d in data {
             if d.person1?.ID == studentID {
@@ -488,8 +496,6 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     @IBAction func GroupSegmentChanged(_ sender: Any) {
         TableView.reloadData()
     }
-
-
 
     @objc func retrieveArchivedGroupMessages(groupID: String) {
         let request = "\(RequestHelper.prepareUrlFor(scriptName: "archiveGroupQuery"))&groupID=\(groupID)&from=\(RequestHelper.timeStamp2017to2019)"

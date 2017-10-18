@@ -294,12 +294,6 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
             }
         }
         
-        if indexPath.row % 2 == 0 {
-            cell.backgroundColor = UIColor.lightGray
-        } else {
-            cell.backgroundColor = UIColor.darkGray
-        }
-        
         //cell.textLabel?.text = "\((self.GroupSegmentedControl.selectedSegmentIndex==0 ? "\(filteredPupils[indexPath.row].name) (\(filteredPupils[indexPath.row].ID))" : "\(filteredChats[indexPath.row].name)")) "
 
         
@@ -344,6 +338,9 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     }
     
     public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+        // https://stackoverflow.com/questions/29808380/swift-insert-alert-box-with-text-input-and-store-text-input
+        
         if (GroupSegmentedControl.selectedSegmentIndex == 0) {
 
             let getInfoAction = UITableViewRowAction(style: .default, title: "Info") { (action, index) in

@@ -239,8 +239,8 @@ class LoginViewController: ViewController {
     
     
     @objc func pullAllMessages(studentID: String, password: String) {
-        
-        
+        print()
+        print(RequestHelper.prepareUrlFor(scriptName: "pullMessage"))
         Alamofire.request(RequestHelper.prepareUrlFor(scriptName: "pullMessage"))
             .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
             .responseString { response in

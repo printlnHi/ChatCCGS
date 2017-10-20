@@ -293,6 +293,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                 
             }
         }
+        
         //cell.textLabel?.text = "\((self.GroupSegmentedControl.selectedSegmentIndex==0 ? "\(filteredPupils[indexPath.row].name) (\(filteredPupils[indexPath.row].ID))" : "\(filteredChats[indexPath.row].name)")) "
 
         
@@ -325,6 +326,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
 
     @objc func isInRecents(studentID: String) -> Bool {
         let realm = try! Realm()
+        if currentStudent.ID == studentID { return true }
         let data = realm.objects(IndividualChat.self)
         for d in data {
             if d.person1?.ID == studentID {
@@ -336,6 +338,9 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     }
     
     public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+        // https://stackoverflow.com/questions/29808380/swift-insert-alert-box-with-text-input-and-store-text-input
+        
         if (GroupSegmentedControl.selectedSegmentIndex == 0) {
 
             let getInfoAction = UITableViewRowAction(style: .default, title: "Info") { (action, index) in
@@ -451,7 +456,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
 
         updatedClassesForStudent()
         filteredChats = chats
-
+        
         for chat in chats {
             //retrieveArchivedGroupMessages(groupID: chat.name)
         }
@@ -489,8 +494,6 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         TableView.reloadData()
     }
 
-
-
     @objc func retrieveArchivedGroupMessages(groupID: String) {
         let request = "\(RequestHelper.prepareUrlFor(scriptName: "archiveGroupQuery"))&groupID=\(groupID)&from=\(RequestHelper.timeStamp2017to2019)"
         print("retrieving archived messages: \(request)")
@@ -504,7 +507,9 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                     break
                 default:
                     let realm = try! Realm()
-
+                    print("=====")
+                    debugPrint(response.result.value!)
+                    
                     let data = response.result.value?.components(separatedBy: "\n")
                     var counter = (data?.count)! - 2
 
@@ -518,7 +523,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                         c_mutable.remove(at: c.index(before: c.endIndex))
                         c_mutable.remove(at: c.startIndex)
                         var components = c_mutable.components(separatedBy: ",")
-
+                        
 
                         let m = Message()
                         m.content = components[1]

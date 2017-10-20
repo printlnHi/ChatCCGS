@@ -25,6 +25,7 @@ class Chat : Object {
 class IndividualChat : Chat {
     @objc dynamic var person1: Student? = Student()
     @objc dynamic var person2: Student? = Student()
+    @objc dynamic var person1IsBlocked = false
     override func getName() -> String{
         return person2!.name
     }

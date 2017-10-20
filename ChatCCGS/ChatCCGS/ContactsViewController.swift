@@ -229,7 +229,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
             IDEndIndex = response.index(IDEndIndex, offsetBy: 1)
         }
 
-        let ID: String = response.substring(with: IDStartIndex..<IDEndIndex)
+        let ID: String = String(response[IDStartIndex..<IDEndIndex])
 
 
 
@@ -453,7 +453,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         filteredChats = chats
 
         for chat in chats {
-            retrieveArchivedGroupMessages(groupID: chat.name)
+            //retrieveArchivedGroupMessages(groupID: chat.name)
         }
         
         for customChat in getCustomGroups() {

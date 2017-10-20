@@ -198,7 +198,6 @@ class LoginViewController: ViewController {
                 try! realm.write {
                     realm.add(chatList)
                 }
-                
         }
     }
     

@@ -50,36 +50,6 @@ class GroupChatInfoViewController: UIViewController {
         return classes[Int(pos)!]
     }
     
-    func getStudentsForClass() -> [String] {
-        let request = RequestHelper.prepareUrlFor(scriptName: "getStudentsForClass") + "&class=\(groupChat.name)"
-        print(request)
-        var students = [String]()
-        Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
-            debugPrint(response.result.value!)
-            
-            let data = response.result.value?.components(separatedBy: "\n")
-            var counter = (data?.count)! - 2
-            
-            for c in data! {
-                
-                if counter == 0 {
-                    break
-                }
-                
-                var c_mutable = c
-                c_mutable.remove(at: c.index(before: c.endIndex))
-                c_mutable.remove(at: c.startIndex)
-                //print(c_mutable)
-
-                students.append(c_mutable)
-                counter -= 1
-            }
-            
-            print(students)
-            //return students
-        }
-        return students
-    }
     
 
     /*

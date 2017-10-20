@@ -347,6 +347,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
 
                 self.studentPos = indexPath.row
                 self.performSegue(withIdentifier: "getInfo", sender: nil)
+                
 
             }
 
@@ -417,8 +418,59 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                         }
                     }
                 }
+                
+                let addToGroupAction = UITableViewRowAction(style: .default, title: "Add to Group") { (action, index) in
+                    let cell = tableView.cellForRow(at: indexPath)
+                    let alert = UIAlertController(title: "Add to Group", message: "Please enter the ID of the student you would like to add", preferredStyle: .alert)
+                    
+                    let confirmAction = UIAlertAction(title: "Add", style: .default) { (_) in
+                        if let field = alert.textFields! [0] as? UITextField {
+                            
+                            let studentID = field.text!
+                            let request = "\(RequestHelper.prepareUrlFor(scriptName: "CustomGroups/addToGroup"))&group=\((cell?.textLabel?.text)!)&members=[\(studentID)]"
+                            print(request)
+                            
+                            Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
+                                debugPrint(response.result.value!)
+                                var title = ""
+                                var message = ""
+                                if response.result.value! == "100 Continue\n" {
+                                    title = "Success!"
+                                    message = "\(studentID) was added to the group."
+                                } else if response.result.value! == "605 User Already in Group\n" {
+                                    title = "Failed."
+                                    message = "The user is already in the group."
+                                } else if response.result.value! == "601 Recipient Not Found\n" {
+                                    title = "Failed."
+                                    message = "That person is not a student."
+                                } else {}
+                                let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                                alert.addAction(UIAlertAction(title: "OK", style: .default) { (_) in })
+                                self.present(alert, animated: true, completion: nil)
+                            }
+                            
+    
+                            
+                        } else {}
+                    }
+                    
+                    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
+                    
+                    alert.addTextField {(textField) in
+                        textField.placeholder = "Student ID"
+                    }
+                    
+                    alert.addAction(confirmAction)
+                    alert.addAction(cancelAction)
+                    
+                    self.present(alert, animated: true, completion: nil)
+                    
+                }
+                
+                addToGroupAction.backgroundColor = UIColor.orange
                 leaveGroupAction.backgroundColor = UIColor.red
-                return [leaveGroupAction]
+                
+                return [leaveGroupAction, addToGroupAction]
             } else {
                 return []
             }
@@ -481,10 +533,46 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         let realm = try! Realm()
 
         chats = (realm.objects(ClassChatList.self).first?.classChatList)!
-
+        
+        for chat in chats {
+            let name = chat.name
+            
+        }
 
     }
 
+    /* =====FIX THIS so that it adds the members to realm===== 
+     func getStudentsForClass(groupChatName: String) -> <String> {
+        let request = RequestHelper.prepareUrlFor(scriptName: "getStudentsForClass") + "&class=\(groupChatName)"
+        print(request)
+        var students = <String>()
+        Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
+            debugPrint(response.result.value!)
+            
+            let data = response.result.value?.components(separatedBy: "\n")
+            var counter = (data?.count)! - 2
+            
+            for c in data! {
+                
+                if counter == 0 {
+                    break
+                }
+                
+                var c_mutable = c
+                c_mutable.remove(at: c.index(before: c.endIndex))
+                c_mutable.remove(at: c.startIndex)
+                //print(c_mutable)
+                
+                students.append(c_mutable)
+                counter -= 1
+            }
+            
+            print(students)
+            //return students
+        }
+        return students
+    }*/
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

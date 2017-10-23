@@ -438,7 +438,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                                 if response.result.value! == "100 Continue\n" {
                                     title = "Success!"
                                     message = "\(studentID) was added to the group."
-                                } else if response.result.value! == "605 User Already in Group\n" {
+                                } else if response.result.value! == "605 User Already in Group\n" || response.result.value! == "604 Not Enough Members\n" {
                                     title = "Failed."
                                     message = "The user is already in the group."
                                 } else if response.result.value! == "601 Recipient Not Found\n" {
@@ -511,7 +511,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         filteredChats = chats
         
         for chat in chats {
-            //retrieveArchivedGroupMessages(groupID: chat.name)
+            retrieveArchivedGroupMessages(groupID: chat.name)
         }
         
         for customChat in getCustomGroups() {

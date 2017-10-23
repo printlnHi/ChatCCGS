@@ -55,3 +55,7 @@ class RequestHelper{
     static let timeStamp2017to2019 = "2017-01-01%2000:00:00&to=2019-01-01%2000:00:00"
     private static let dateFormatString = "yyyy-MM-d%20hh:mm:ss"
 }
+
+class UIColours{
+    //static let BlueColour = UIColours(
+}

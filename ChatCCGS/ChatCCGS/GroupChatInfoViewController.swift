@@ -24,12 +24,12 @@ class GroupChatInfoViewController: UIViewController {
         classNamelbl.text = groupChat.name
         
         var members = ""
-        for m in getStudentsForClass() {
-            members += m + "\n"
-        }
+        //for m in getStudentsForClass() {
+        //    members += m + "\n"
+        //}
         
-        print()
-        print(getStudentsForClass())
+        //print()
+        //print(getStudentsForClass())
         
         classStudentslbl.text! = members
         // Do any additional setup after loading the view.

@@ -191,6 +191,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                         let newChat: GroupChat = GroupChat()
                         newChat.name = chatNameCopy
                         newChat.members = students
+                        
                         self.filteredChats.append(newChat)
                         self.TableView.reloadData()
                     }
@@ -383,7 +384,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                 }
                 getInfoAction.backgroundColor = UIColor.blue
 
-                return [getInfoAction]
+                return []
             } else if indexPath.row > filteredChats.count {
                 let leaveGroupAction = UITableViewRowAction(style: .default, title: "Leave Group") { (action, index) in
                     
@@ -541,11 +542,11 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
 
     }
 
-    /* =====FIX THIS so that it adds the members to realm===== 
-     func getStudentsForClass(groupChatName: String) -> <String> {
-        let request = RequestHelper.prepareUrlFor(scriptName: "getStudentsForClass") + "&class=\(groupChatName)"
+    // =====FIX THIS so that it adds the members to realm=====
+     /*func retrieveStudentsForClass(groupID: String) {
+        let request = RequestHelper.prepareUrlFor(scriptName: "getStudentsForClass") + "&class=\(groupID)"
         print(request)
-        var students = <String>()
+        var students = List<Student>()
         Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
             debugPrint(response.result.value!)
             
@@ -562,15 +563,55 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                 c_mutable.remove(at: c.index(before: c.endIndex))
                 c_mutable.remove(at: c.startIndex)
                 //print(c_mutable)
+                var new = Student()
+                new.name = c_mutable
                 
-                students.append(c_mutable)
+                students.append(new)
                 counter -= 1
             }
             
             print(students)
-            //return students
+            let realm = try! Realm()
+            let list = realm.objects(ClassChatList.self).first
+            var tempClasses = [GroupChat]()
+            for c in (list?.classChatList)! {
+                tempClasses.append(c)
+            }
+            print("&&&&&")
+            print(tempClasses)
+            
+            var i = 0
+            for chat in tempClasses {
+                if chat.name == groupID {
+                    tempClasses[i].members = students
+                    print(tempClasses[i].members)
+                    print("()()()()")
+                    print(tempClasses)
+                }
+                i += 1
+            }
+            
+            for chat in tempClasses {
+                print(chat.members.count)
+            }
+            print("*****")
+            print(tempClasses)
+            let finalClassesList = ClassChatList()
+            for t in tempClasses {
+                finalClassesList.classChatList.append(t)
+            }
+            
+            print(finalClassesList)
+            try! realm.write {
+                realm.delete(realm.objects(ClassChatList.self))
+            }
+            
+            try! realm.write {
+                realm.add(finalClassesList)
+            }
+            print(realm.objects(ClassChatList.self))
+            
         }
-        return students
     }*/
     
     override func didReceiveMemoryWarning() {

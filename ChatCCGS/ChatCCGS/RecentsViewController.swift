@@ -75,7 +75,7 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
                 if response.result.value! == "100 Continue\n" {
                     let realm = try! Realm()
                     let results = realm.objects(IndividualChat.self)
-                    var tbd: IndividualChat? = nil
+
                     for r in results {
                         let chat = self.getRecentChats()[indexPath.row]
                         if (r.person2?.ID)! == self.currentStudent.ID && (r.person1?.name)! == chat.person1?.name {
@@ -101,7 +101,6 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
                 if response.result.value! == "100 Continue\n" {
                     let realm = try! Realm()
                     let results = realm.objects(IndividualChat.self)
-                    var tbd: IndividualChat? = nil
                     for r in results {
                         let chat = self.getRecentChats()[indexPath.row]
                         if (r.person2?.ID)! == self.currentStudent.ID && (r.person1?.name)! == chat.person1?.name {

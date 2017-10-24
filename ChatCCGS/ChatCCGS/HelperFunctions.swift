@@ -10,6 +10,7 @@
 //
 
 import Foundation
+import UIKit
 
 class RequestHelper{
     static func escapeStringForUrl(queryString s: String) -> String{

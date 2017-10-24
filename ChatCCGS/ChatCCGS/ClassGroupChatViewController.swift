@@ -107,6 +107,13 @@ class ClassGroupChatViewController: UIViewController, UITableViewDelegate, UITab
         messageContentField.text! = ""
     }
     
+    
+    func sendUnicodeAlert() {
+        let alert = UIAlertController(title: "Message Edited to Send", message: "There was unicode in your message. We removed it in order to send the message.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     /*
     // MARK: - Navigation
 

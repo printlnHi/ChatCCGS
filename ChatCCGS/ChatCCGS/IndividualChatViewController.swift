@@ -82,11 +82,7 @@ class IndividualChatViewController: UIViewController, UITableViewDataSource {
         message.content = "'" + content.replacingOccurrences(of: "%20", with: " ", options: .literal, range: nil) + "'"
         message.recipient = recipient!
         
-        let realm = try! Realm()
         
-        try! realm.write {
-            realm.add(message)
-        }
         
         print(request)
         print()
@@ -94,8 +90,23 @@ class IndividualChatViewController: UIViewController, UITableViewDataSource {
         Alamofire.request(request)
             .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
             .responseString { response in
-                self.tableView.reloadData()
                 debugPrint(response.result.value!)
+                
+                if response.result.value == "100 Continue\n" {
+                    let realm = try! Realm()
+                    
+                    try! realm.write {
+                        realm.add(message)
+                    }
+                    
+                    self.tableView.reloadData()
+                    
+                } else {
+                    let alert = UIAlertController(title: "Message Failed to Send", message: "An error occurred.", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                    
+                }
         }
         
         
@@ -118,6 +129,13 @@ class IndividualChatViewController: UIViewController, UITableViewDataSource {
         
         
         print("segued")
+    }
+    
+    
+    func sendUnicodeAlert() {
+        let alert = UIAlertController(title: "Message Edited to Send", message: "There was unicode in your message. We removed it in order to send the message.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
 
     /*

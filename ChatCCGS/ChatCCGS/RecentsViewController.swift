@@ -79,7 +79,6 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
                     for r in results {
                         let chat = self.getRecentChats()[indexPath.row]
                         if (r.person2?.ID)! == self.currentStudent.ID && (r.person1?.name)! == chat.person1?.name {
-                            tbd = chat
                             try! realm.write {
                                 r.person1IsBlocked = true
                             }
@@ -104,7 +103,6 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
                     for r in results {
                         let chat = self.getRecentChats()[indexPath.row]
                         if (r.person2?.ID)! == self.currentStudent.ID && (r.person1?.name)! == chat.person1?.name {
-                            tbd = chat
                             try! realm.write {
                                 r.person1IsBlocked = false
                             }

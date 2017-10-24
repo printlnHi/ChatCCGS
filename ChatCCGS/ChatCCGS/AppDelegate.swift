@@ -142,6 +142,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         let token = tokenParts.joined()
+        RequestHelper.userAPNSToken = token
         //TODO: Send token to server
         print("Device Token for APNS: \(token)")
     }

@@ -72,7 +72,6 @@ class LoginViewController: ViewController {
                     myStudent.ID = username
                     
                     
-                    let realm = try! Realm()
                     self.studentLoggingIn = myStudent
                     
                     self.pullAllMessages(studentID: username, password: password)

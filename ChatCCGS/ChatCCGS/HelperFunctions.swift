@@ -47,6 +47,14 @@ class RequestHelper{
         return "0"<=c && c<="9"
     }
     
+    static func doesContainNonUnicode(message: String) -> Bool{
+        for c in message{
+            if (c>Character(UnicodeScalar(127))){
+                return true;
+            }
+        }
+        return false;
+    }
     static let tartarusBaseUrl = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS"
     static let tartarusUsername = "ccgs"
     static let tartarusPassword = "1910"

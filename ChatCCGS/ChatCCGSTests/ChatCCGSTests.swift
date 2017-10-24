@@ -33,4 +33,10 @@ class ChatCCGSTests: XCTestCase {
         }
     }
     
+    func testUnicodeDetection() {
+        XCTAssertFalse(RequestHelper.doesContainNonUnicode(message: "ThisShould\"Not Contain any n0n unicode characters"));
+        XCTAssertTrue(RequestHelper.doesContainNonUnicode(message: "This should be 👍 because of the 👍"))
+        XCTAssertTrue(RequestHelper.doesContainNonUnicode(message: "This containing \"⇒\" ⇒ this should be True"))
+        
+    }
 }

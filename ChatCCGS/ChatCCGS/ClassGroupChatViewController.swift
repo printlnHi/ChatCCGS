@@ -26,7 +26,8 @@ class ClassGroupChatViewController: UIViewController, UITableViewDelegate, UITab
         
         let message = getAllGroupMessages()[indexPath.row]
         let cell = RecentsTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ConversationCell")
-        cell.textLabel?.text = "At " + message.dateStamp + ", " + message.author + " wrote: " + message.content
+        //cell.textLabel?.text = "At " + message.dateStamp + ", " + message.author + " wrote: " + message.content
+        cell.textLabel?.text = message.author + " : " + RequestHelper.reformatDateTimeStampForDisplay(message.dateStamp) + "\t\t\t" + message.content
         
         return cell
     }

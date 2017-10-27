@@ -19,6 +19,8 @@ class LoginViewController: ViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //print(RequestHelper.reformatDateTimeStampForDisplay("2017-10-23 01:51:51"))
+        print("------")
         
         
         // ### Code for testing

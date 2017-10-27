@@ -41,7 +41,12 @@ class IndividualChatViewController: UIViewController, UITableViewDataSource {
         
         let message = getAllMessages()[indexPath.row]
         let cell = TableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "individualChatCell")
-        cell.textLabel?.text = "At " + message.dateStamp + ", " + message.author + " wrote: " + message.content
+        print("()()()")
+        print(message.author + " : " + RequestHelper.reformatDateTimeStampForDisplay(message.dateStamp) + "\t\t\t" + message.content)
+        print(RequestHelper.reformatDateTimeStampForDisplay(message.dateStamp).count)
+        cell.textLabel?.text = message.author + " : " + RequestHelper.reformatDateTimeStampForDisplay(message.dateStamp) + "\t\t\t" + message.content
+        
+        //"At " + RequestHelper.reformatDateTimeStampForDisplay(message.dateStamp) + ", " + message.author + " wrote: " + message.content
         
         return cell
     }

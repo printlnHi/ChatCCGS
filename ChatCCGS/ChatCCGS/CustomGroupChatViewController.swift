@@ -36,7 +36,9 @@ class CustomGroupChatViewController: UIViewController, UITableViewDelegate, UITa
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let message = getAllMessages()[indexPath.row]
         let cell = TableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "customGroupChatCell")
-        cell.textLabel?.text = "At " + message.dateStamp + ", " + message.author + " wrote: " + message.content
+        //cell.textLabel?.text = "At " + message.dateStamp + ", " + message.author + " wrote: " + message.content
+        cell.textLabel?.text = message.author + " : " + RequestHelper.reformatDateTimeStampForDisplay(message.dateStamp) + "\t\t\t" + message.content
+        
         return cell
     }
     

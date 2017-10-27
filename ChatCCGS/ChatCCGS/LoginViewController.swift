@@ -74,7 +74,6 @@ class LoginViewController: ViewController {
                     myStudent.ID = username
                     
                     
-                    let realm = try! Realm()
                     self.studentLoggingIn = myStudent
                     
                     self.pullAllMessages(studentID: username, password: password)
@@ -125,6 +124,7 @@ class LoginViewController: ViewController {
         
     }
     
+    @objc func setAPNSToken()
     @objc func retrieveAllStudents() {
         
         let students = List<Student>()

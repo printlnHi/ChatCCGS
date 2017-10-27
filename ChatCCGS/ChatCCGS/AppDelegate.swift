@@ -129,7 +129,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UNUserNotificationCenter.current().getNotificationSettings { (settings) in
             print("Notification settings: \(settings)")
             guard settings.authorizationStatus == .authorized else { return }
-            UIApplication.shared.registerForRemoteNotifications()
+            DispatchQueue.main.async(execute:{
+                UIApplication.shared.registerForRemoteNotifications()
+            })
         }
     }
     
@@ -140,6 +142,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         let token = tokenParts.joined()
+        RequestHelper.userAPNSToken = token
         //TODO: Send token to server
         print("Device Token for APNS: \(token)")
     }

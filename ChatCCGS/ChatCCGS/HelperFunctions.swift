@@ -48,11 +48,20 @@ class RequestHelper{
         return "0"<=c && c<="9"
     }
     
+    static func doesContainNonUnicode(message: String) -> Bool{
+        for c in message{
+            if (c>Character(UnicodeScalar(127))){
+                return true;
+            }
+        }
+        return false;
+    }
     static let tartarusBaseUrl = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS"
     static let tartarusUsername = "ccgs"
     static let tartarusPassword = "1910"
     static var userUsername = "USERNAME NOT SET"
     static var userPassword = "PASSWORD NOT SET"
+    static var userAPNSToken = "-2"
     static let timeStamp2017to2019 = "2017-01-01%2000:00:00&to=2019-01-01%2000:00:00"
     private static let dateFormatString = "yyyy-MM-d%20hh:mm:ss"
     

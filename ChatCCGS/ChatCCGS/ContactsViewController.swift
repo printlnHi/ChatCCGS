@@ -516,7 +516,6 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         
         for customChat in getCustomGroups() {
             retrieveArchiveCustomGroupMessages(groupID: customChat.name)
-            let realm = try! Realm()
         }
 
         
@@ -534,85 +533,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         let realm = try! Realm()
 
         chats = (realm.objects(ClassChatList.self).first?.classChatList)!
-        
-        for chat in chats {
-            let name = chat.name
-            
-        }
-
     }
-
-    // =====FIX THIS so that it adds the members to realm=====
-     /*func retrieveStudentsForClass(groupID: String) {
-        let request = RequestHelper.prepareUrlFor(scriptName: "getStudentsForClass") + "&class=\(groupID)"
-        print(request)
-        var students = List<Student>()
-        Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
-            debugPrint(response.result.value!)
-            
-            let data = response.result.value?.components(separatedBy: "\n")
-            var counter = (data?.count)! - 2
-            
-            for c in data! {
-                
-                if counter == 0 {
-                    break
-                }
-                
-                var c_mutable = c
-                c_mutable.remove(at: c.index(before: c.endIndex))
-                c_mutable.remove(at: c.startIndex)
-                //print(c_mutable)
-                var new = Student()
-                new.name = c_mutable
-                
-                students.append(new)
-                counter -= 1
-            }
-            
-            print(students)
-            let realm = try! Realm()
-            let list = realm.objects(ClassChatList.self).first
-            var tempClasses = [GroupChat]()
-            for c in (list?.classChatList)! {
-                tempClasses.append(c)
-            }
-            print("&&&&&")
-            print(tempClasses)
-            
-            var i = 0
-            for chat in tempClasses {
-                if chat.name == groupID {
-                    tempClasses[i].members = students
-                    print(tempClasses[i].members)
-                    print("()()()()")
-                    print(tempClasses)
-                }
-                i += 1
-            }
-            
-            for chat in tempClasses {
-                print(chat.members.count)
-            }
-            print("*****")
-            print(tempClasses)
-            let finalClassesList = ClassChatList()
-            for t in tempClasses {
-                finalClassesList.classChatList.append(t)
-            }
-            
-            print(finalClassesList)
-            try! realm.write {
-                realm.delete(realm.objects(ClassChatList.self))
-            }
-            
-            try! realm.write {
-                realm.add(finalClassesList)
-            }
-            print(realm.objects(ClassChatList.self))
-            
-        }
-    }*/
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

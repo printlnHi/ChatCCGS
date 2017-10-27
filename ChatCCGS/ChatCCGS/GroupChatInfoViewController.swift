@@ -23,7 +23,7 @@ class GroupChatInfoViewController: UIViewController {
         groupChat = getClassChatClicked()
         classNamelbl.text = groupChat.name
         
-        var members = ""
+        let members = ""
         //for m in getStudentsForClass() {
         //    members += m + "\n"
         //}

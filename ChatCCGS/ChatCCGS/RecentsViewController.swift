@@ -38,7 +38,7 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
         if chat.person1IsBlocked == false {
             cell.textLabel?.text = chat.person1?.name
         } else {
-            cell.textLabel?.text = (chat.person1?.name)! + "[BLOCKED]"
+            cell.textLabel?.text = (chat.person1?.name)! + " [BLOCKED]"
         }
         return cell
     }
@@ -138,9 +138,31 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
             }
         }
         
+        for c in chats {
+            if invididualChatHasUnreadMessages(c) {
+                try! realm.write {
+                    c.hasUnreadMessages = true
+                }
+            }
+        }
+        
+        print("&&&&&")
+        print(chats)
+        
         return chats
     }
     
+    @objc func invididualChatHasUnreadMessages(_ chat: IndividualChat) -> Bool {
+        let realm = try! Realm()
+        let messages = realm.objects(Message.self)
+        
+        for m in messages {
+            if m.isUnreadMessage && (m.author == " " + (chat.person1?.ID)! || m.author == (chat.person1?.ID)!) {
+                return true
+            }
+        }
+        return false
+    }
     
     
     override func viewDidLoad() {

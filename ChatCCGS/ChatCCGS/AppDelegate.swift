@@ -20,6 +20,7 @@ class Chat : Object {
     @objc func deleteMessage() {}
     @objc func hideChat() {}
     @objc func getName() -> String{ return ""}
+    @objc dynamic var hasUnreadMessages: Bool = false
 }
 
 class IndividualChat : Chat {
@@ -50,6 +51,7 @@ class Message : Object {
     @objc dynamic var recipient = ""
     @objc dynamic var group = ""
     @objc dynamic var content = ""
+    @objc dynamic var isUnreadMessage = false
 }
 
 class TextMessage : Message {
@@ -149,6 +151,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     private func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [String : Any]){
         print("recieved a foreground or background push notification")
+        
     }
     func application(_ application: UIApplication,
                      didFailToRegisterForRemoteNotificationsWithError error: Error) {

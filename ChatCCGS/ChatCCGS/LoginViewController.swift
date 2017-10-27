@@ -124,7 +124,7 @@ class LoginViewController: ViewController {
         
     }
     
-    @objc func setAPNSToken()
+    @objc func setAPNSToken() {}
     @objc func retrieveAllStudents() {
         
         let students = List<Student>()
@@ -269,6 +269,7 @@ class LoginViewController: ViewController {
                     m.author = components[3]
                     m.recipient = components[4]
                     m.group = components[5]
+                    m.isUnreadMessage = true
                     
                     try! realm.write {
                         realm.add(m)
@@ -323,14 +324,37 @@ class LoginViewController: ViewController {
                 m.recipient = components[4]
                 m.group = components[5]
                 
-                try! realm.write {
-                    realm.add(m)
+                // REMOVAL OF DUPLICATES
+                // if ! messageIsDuplicate(content: m.content, dateStamp: m.dateStamp)  then add to realm
+                
+                if !(self.messageIsDuplicate(content: m.content, dateStamp: m.dateStamp)) {
+                    try! realm.write {
+                        realm.add(m)
+                    }
+
+                } else {
+                    print("DUPLICATE DETECTED")
                 }
+                
                 
                 counter -= 1
             }
             
         }
+    }
+    
+    @objc func messageIsDuplicate(content: String, dateStamp: String) -> Bool {
+        
+        let realm = try! Realm()
+        let messages = realm.objects(Message.self)
+        
+        for m in messages {
+            if m.content == content && m.dateStamp == dateStamp {
+                return true
+            }
+        }
+        
+        return false
     }
     
 }

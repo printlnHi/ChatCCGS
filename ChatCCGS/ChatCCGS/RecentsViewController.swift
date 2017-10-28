@@ -164,7 +164,7 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
         let messages = realm.objects(Message.self)
         
         for m in messages {
-            if m.isUnreadMessage && (m.author == " " + (chat.person1?.ID)! || m.author == (chat.person1?.ID)!) {
+            if m.isUnreadMessage && (m.author == " " + (chat.person1?.ID)! || m.author == (chat.person1?.ID)!) && m.group == " None" {
                 return true
             }
         }

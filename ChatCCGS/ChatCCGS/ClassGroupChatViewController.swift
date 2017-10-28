@@ -16,25 +16,37 @@ class ClassGroupChatViewController: UIViewController, UITableViewDelegate, UITab
     @objc var currentStudent = Student()
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var messageContentField: UITextField!
+    var messages = [(Message, Bool)]()
+    
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        return getAllGroupMessages().count
+        return messages.count
     }
     
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let message = getAllGroupMessages()[indexPath.row]
+        let result = messages[indexPath.row]
+        let message = result.0
+        let isUnread = result.1
+        
         let cell = RecentsTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ConversationCell")
         //cell.textLabel?.text = "At " + message.dateStamp + ", " + message.author + " wrote: " + message.content
-        cell.textLabel?.text = message.author + " : " + RequestHelper.reformatDateTimeStampForDisplay(message.dateStamp) + "\t\t\t" + message.content
+        var unread = ""
+        if isUnread {
+            unread += " <UNREAD>"
+        }
+        
+        cell.textLabel?.text = message.author + " : " + RequestHelper.reformatDateTimeStampForDisplay(message.dateStamp) + "\t\t\t" + message.content + unread
+        
         
         return cell
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(getAllGroupMessages())
+        //print(getAllGroupMessages())
+        messages = getAllGroupMessages()
         // Do any additional setup after loading the view.
     }
 
@@ -52,24 +64,36 @@ class ClassGroupChatViewController: UIViewController, UITableViewDelegate, UITab
         
     }
 
-    @objc func getAllGroupMessages() -> [Message] {
+    func getAllGroupMessages() -> [(Message, Bool)] {
         let realm = try! Realm()
         
         let results = realm.objects(Message.self)
+        print("**")
+        print(results)
         
-        var messages = [Message]()
+        var receievedMessages = [(Message, Bool)]()
         
         for r in results {
             var g = r.group
             g = g.replacingOccurrences(of: "'", with: "").replacingOccurrences(of: " ", with: "")
             if g == group.name {
-                messages.append(r)
+                print("so that worked")
+                if r.isUnreadMessage {
+                    receievedMessages.append((r, true))
+                } else {
+                    receievedMessages.append((r, false))
+                }
+                try! realm.write {
+                    r.isUnreadMessage = false
+                }
+                
             }
         }
         
-        print(messages)
+        //print(messages)
+        // Sort by datetime stamp
         
-        return messages.reversed()
+        return receievedMessages.reversed()
     }
     
     @IBAction func pushMessage() {
@@ -83,7 +107,7 @@ class ClassGroupChatViewController: UIViewController, UITableViewDelegate, UITab
 
         
         let message = Message()
-        message.author = author
+        message.author = RequestHelper.userUsername
         message.dateStamp = dateString.replacingOccurrences(of: "%20", with: " ", options: .literal, range: nil) + "'"
         message.content = "'" + content.replacingOccurrences(of: "%20", with: " ", options: .literal, range: nil) + "'"
         message.group = classCode
@@ -102,6 +126,7 @@ class ClassGroupChatViewController: UIViewController, UITableViewDelegate, UITab
             .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
             .responseString { response in
                 debugPrint(response.result.value!)
+                self.messages = self.getAllGroupMessages()
                 self.tableView.reloadData()
         }
         

@@ -23,9 +23,14 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     @objc var customChatSelected = CustomGroupChat()
 
     var pupils: List<Student> = List()
-    var chats: List<GroupChat> = List()
+    //var chats: List<GroupChat> = List()
+    var chats = [(GroupChat, Bool)]()
+    
     var filteredPupils: List<Student> = List()
-    var filteredChats: List<GroupChat> = List()
+    //var filteredChats: List<GroupChat> = List()
+    var filteredChats = [(GroupChat, Bool)]()
+    
+    var classGroupChats = [(GroupChat, Bool)]()
 
     @objc var shouldFilterResult =  false;
 
@@ -160,7 +165,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     }
 
     private func parseSuccesfulChatQuery(result : String){
-        self.filteredChats = List()
+        self.filteredChats = [(GroupChat, Bool)]()
         let chats = result.components(separatedBy: ", ")
         //Important to split by ", " not ","
 
@@ -192,7 +197,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                         newChat.name = chatNameCopy
                         newChat.members = students
                         
-                        self.filteredChats.append(newChat)
+                        self.filteredChats.append((newChat, false))
                         self.TableView.reloadData()
                     }
                 }
@@ -285,8 +290,13 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
             if indexPath.row == count {
                 cell.textLabel?.text = "CUSTOM GROUP CHATS"
             } else if indexPath.row < count {
-                let chat = filteredChats[indexPath.row]
-                cell.textLabel?.text = chat.name
+                let chat = filteredChats[indexPath.row].0
+                if filteredChats[indexPath.row].1 {
+                    cell.textLabel?.text = chat.name
+                    cell.imageView?.image = UIImage(named: "message")
+                } else {
+                    cell.textLabel?.text = chat.name
+                }
             } else {
                 
                 let group = getCustomGroups()[indexPath.row - count - 1]
@@ -319,7 +329,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                 self.customChatSelected = getCustomGroups()[indexPath.row - filteredChats.count - 1]
                 self.performSegue(withIdentifier: "customChat", sender: nil)
             } else {
-                self.chatSelected = filteredChats[indexPath.row]
+                self.chatSelected = filteredChats[indexPath.row].0
                 self.performSegue(withIdentifier: "classChat", sender: nil)
             }
         }
@@ -510,8 +520,8 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         updatedClassesForStudent()
         filteredChats = chats
         
-        for chat in chats {
-            retrieveArchivedGroupMessages(groupID: chat.name)
+        for c in chats {
+            retrieveArchivedGroupMessages(groupID: c.0.name)
         }
         
         for customChat in getCustomGroups() {
@@ -532,7 +542,34 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     private func updatedClassesForStudent(){
         let realm = try! Realm()
         print(realm.objects(ClassChatList.self))
-        chats = (realm.objects(ClassChatList.self).first?.classChatList)!
+        let results = (realm.objects(ClassChatList.self).first?.classChatList)!
+        chats = [(GroupChat, Bool)]()
+        
+        for r in results {
+            if classGroupChatHasUnreadMessages(r) {
+                print("HAPPY DAYS")
+                chats.append((r, true))
+            } else {
+                chats.append((r, false))
+            }
+        }
+        
+        // temp
+        //chats = (realm.objects(ClassChatList.self).first?.classChatList)!
+        //chats = something
+    }
+    
+    @objc func classGroupChatHasUnreadMessages(_ chat: GroupChat) -> Bool {
+        let realm = try! Realm()
+        let messages = realm.objects(Message.self)
+        
+        for m in messages {
+            var g = m.group.replacingOccurrences(of: "'", with: "").replacingOccurrences(of: " ", with: "")
+            if m.isUnreadMessage && g == chat.name {
+                return true
+            }
+        }
+        return false
     }
     
     override func didReceiveMemoryWarning() {
@@ -658,6 +695,8 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        updatedClassesForStudent()
+        filteredChats = chats
         
         TableView.reloadData()
     }

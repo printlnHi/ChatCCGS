@@ -531,7 +531,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
 
     private func updatedClassesForStudent(){
         let realm = try! Realm()
-
+        print(realm.objects(ClassChatList.self))
         chats = (realm.objects(ClassChatList.self).first?.classChatList)!
     }
     

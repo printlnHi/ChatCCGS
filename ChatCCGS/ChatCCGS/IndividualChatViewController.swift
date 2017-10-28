@@ -46,9 +46,9 @@ class IndividualChatViewController: UIViewController, UITableViewDataSource {
         let isUnread = result.1
         
         let cell = TableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "individualChatCell")
-        print("()()()")
-        print(message.author + " : " + RequestHelper.reformatDateTimeStampForDisplay(message.dateStamp) + "\t\t\t" + message.content)
-        print(RequestHelper.reformatDateTimeStampForDisplay(message.dateStamp).count)
+        //print("()()()")
+        //print(message.author + " : " + RequestHelper.reformatDateTimeStampForDisplay(message.dateStamp) + "\t\t\t" + message.content)
+        //print(RequestHelper.reformatDateTimeStampForDisplay(message.dateStamp).count)
         
         var unread = ""
         if isUnread {
@@ -70,17 +70,17 @@ class IndividualChatViewController: UIViewController, UITableViewDataSource {
         
         let results = realm.objects(Message.self)
         print(results)
-        print("###")
-        print((chat.person2?.ID)!)
-        print((chat.person1?.ID)!)
+        //print("###")
+        //print((chat.person2?.ID)!)
+        //print((chat.person1?.ID)!)
         var recievedMessages = [(Message, Bool)]()
         for r in results {
-            print("Author:"+r.author)
-            print("Recipient"+r.recipient)
+            //print("Author:"+r.author)
+            //print("Recipient"+r.recipient)
             if ((r.author == " " + (chat.person1?.ID)! || r.author == (chat.person1?.ID)!) || (r.author ==  " " + (chat.person2?.ID)! ||  r.author == (chat.person2?.ID)!)) && ((r.recipient == " " + (chat.person1?.ID)! || r.recipient == (chat.person1?.ID)!) || (r.recipient ==  " " + (chat.person2?.ID)! ||  r.recipient == (chat.person2?.ID)!)) && (r.group == " None" || r.group == "") {
                 
                 if r.isUnreadMessage {
-                    print("!!!!")
+                    //print("!!!!")
                     recievedMessages.append((r, true))
                 } else {
                     recievedMessages.append((r, false))
@@ -94,8 +94,8 @@ class IndividualChatViewController: UIViewController, UITableViewDataSource {
         }
         
         // Sort messages by date-time stamp
-        print(recievedMessages)
-        print("[][][]")
+        //print(recievedMessages)
+        //print("[][][]")
         return recievedMessages.reversed()
     }
     
@@ -158,15 +158,15 @@ class IndividualChatViewController: UIViewController, UITableViewDataSource {
         
         let destTabController: UITabBarController = segue.destination as! UITabBarController
         
-        let destController1: ContactsViewController = destTabController.viewControllers![1].childViewControllers[0] as! ContactsViewController
+        let destController1: ContactsViewController = destTabController.viewControllers![2].childViewControllers[0] as! ContactsViewController
         
         destController1.currentStudent = (chat.person2)!
         
-        let destController2: RecentsViewController = destTabController.viewControllers![0].childViewControllers[0] as! RecentsViewController
+        let destController2: RecentsViewController = destTabController.viewControllers![1].childViewControllers[0] as! RecentsViewController
         destController2.currentStudent = (chat.person2)!
         
         
-        let destController3: SettingsViewController = destTabController.viewControllers![2].childViewControllers[0] as! SettingsViewController
+        let destController3: SettingsViewController = destTabController.viewControllers![3].childViewControllers[0] as! SettingsViewController
         destController3.currentStudent = (chat.person2)!
         
         

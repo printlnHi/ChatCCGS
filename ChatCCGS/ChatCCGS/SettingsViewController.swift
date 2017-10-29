@@ -25,7 +25,10 @@ class SettingsViewController: ViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
+    @IBAction func logOut(_ sender: Any) {
+        self.performSegue(withIdentifier: "logOut", sender: nil)
+    }
+    
     /*
     // MARK: - Navigation
 

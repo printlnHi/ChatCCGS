@@ -19,8 +19,10 @@ class LoginViewController: ViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //print(RequestHelper.reformatDateTimeStampForDisplay("2017-10-23 01:51:51"))
+        print("------")
         
-        
+        passwordField.isSecureTextEntry = true
         // ### Code for testing
         usernameField.text = "123"
         passwordField.text = "password123"
@@ -32,6 +34,11 @@ class LoginViewController: ViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.isNavigationBarHidden = true
+        self.tabBarController?.tabBar.isHidden = true
     }
     
     
@@ -110,20 +117,21 @@ class LoginViewController: ViewController {
         let destTabController: UITabBarController = segue.destination as! UITabBarController
         
         
-        let destController1: ContactsViewController = destTabController.viewControllers![1].childViewControllers[0] as! ContactsViewController
+        let destController1: ContactsViewController = destTabController.viewControllers![2].childViewControllers[0] as! ContactsViewController
         
         destController1.currentStudent = studentLoggingIn!
         
-        let destController2: RecentsViewController = destTabController.viewControllers![0].childViewControllers[0] as! RecentsViewController
+        let destController2: RecentsViewController = destTabController.viewControllers![1].childViewControllers[0] as! RecentsViewController
         destController2.currentStudent = studentLoggingIn!
         
-        let destController3: SettingsViewController = destTabController.viewControllers![2].childViewControllers[0] as! SettingsViewController
+        let destController3: SettingsViewController = destTabController.viewControllers![3].childViewControllers[0] as! SettingsViewController
         destController3.currentStudent = studentLoggingIn!
         
         print("Student Logging In")
         
     }
     
+
     @objc func setAPNSToken(){
         let request = RequestHelper.prepareUrlFor(scriptName: "APNS/setToken")+"&token=\(RequestHelper.userAPNSToken)&enabled=\(RequestHelper.userPushNotificationPreferences)"
         print(request)
@@ -137,6 +145,7 @@ class LoginViewController: ViewController {
         
     }
     
+    @objc func setAPNSToken() {}
     @objc func retrieveAllStudents() {
         
         let students = List<Student>()
@@ -281,6 +290,7 @@ class LoginViewController: ViewController {
                     m.author = components[3]
                     m.recipient = components[4]
                     m.group = components[5]
+                    m.isUnreadMessage = true
                     
                     try! realm.write {
                         realm.add(m)
@@ -335,14 +345,37 @@ class LoginViewController: ViewController {
                 m.recipient = components[4]
                 m.group = components[5]
                 
-                try! realm.write {
-                    realm.add(m)
+                // REMOVAL OF DUPLICATES
+                // if ! messageIsDuplicate(content: m.content, dateStamp: m.dateStamp)  then add to realm
+                
+                if !(self.messageIsDuplicate(content: m.content, dateStamp: m.dateStamp)) {
+                    try! realm.write {
+                        realm.add(m)
+                    }
+
+                } else {
+                    print("DUPLICATE DETECTED")
                 }
+                
                 
                 counter -= 1
             }
             
         }
+    }
+    
+    @objc func messageIsDuplicate(content: String, dateStamp: String) -> Bool {
+        
+        let realm = try! Realm()
+        let messages = realm.objects(Message.self)
+        
+        for m in messages {
+            if m.content == content && m.dateStamp == dateStamp {
+                return true
+            }
+        }
+        
+        return false
     }
     
 }

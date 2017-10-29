@@ -18,9 +18,12 @@ class CustomGroupChatViewController: UIViewController, UITableViewDelegate, UITa
     
     @IBOutlet weak var messageContentField: UITextField!
     @IBOutlet weak var groupNamelbl: UILabel!
+    var messages = [(Message, Bool)]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         groupNamelbl.text = groupChat.name
+        messages = getAllMessages()
         // Do any additional setup after loading the view.
     }
 
@@ -34,23 +37,43 @@ class CustomGroupChatViewController: UIViewController, UITableViewDelegate, UITa
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let message = getAllMessages()[indexPath.row]
+        let result = messages[indexPath.row]
+        let message = result.0
+        let isUnread = result.1
+        
         let cell = TableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "customGroupChatCell")
-        cell.textLabel?.text = "At " + message.dateStamp + ", " + message.author + " wrote: " + message.content
+        //cell.textLabel?.text = "At " + message.dateStamp + ", " + message.author + " wrote: " + message.content
+        
+        if isUnread {
+            cell.textLabel?.text = message.author + " : " + RequestHelper.reformatDateTimeStampForDisplay(message.dateStamp) + "\t\t\t" + message.content  + " <NEW>"
+        } else {
+            cell.textLabel?.text = message.author + " : " + RequestHelper.reformatDateTimeStampForDisplay(message.dateStamp) + "\t\t\t" + message.content
+        }
+        
         return cell
     }
     
-    @objc func getAllMessages() -> [Message] {
+    func getAllMessages() -> [(Message, Bool)] {
         let realm = try! Realm()
         let data = realm.objects(Message.self)
-        var messages = [Message]()
+        var recievedMessages = [(Message, Bool)]()
         
-        for message in data {
-            if " '" + groupChat.name + "'" == message.group {
-                messages.append(message)
+        print(data)
+        for r in data {
+            if " '" + groupChat.name + "'" == r.group {
+                if r.isUnreadMessage {
+                    recievedMessages.append((r, true))
+                } else {
+                    recievedMessages.append((r, false))
+                }
+                try! realm.write {
+                    r.isUnreadMessage = false
+                }
+                
             }
         }
-        return messages.reversed()
+        print(recievedMessages)
+        return recievedMessages.reversed()
     }
     
     @IBAction func pushMessage() {

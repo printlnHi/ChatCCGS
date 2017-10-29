@@ -145,7 +145,6 @@ class LoginViewController: ViewController {
         
     }
     
-    @objc func setAPNSToken() {}
     @objc func retrieveAllStudents() {
         
         let students = List<Student>()

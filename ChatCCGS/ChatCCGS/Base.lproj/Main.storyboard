@@ -35,17 +35,26 @@
                                     <action selector="ValueChanged:" destination="QVN-NP-KB2" eventType="valueChanged" id="XQ1-Th-hMp"/>
                                 </connections>
                             </switch>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yAI-MI-DEP">
+                                <rect key="frame" x="300" y="317" width="55" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Log Out"/>
+                                <connections>
+                                    <action selector="logOut:" destination="QVN-NP-KB2" eventType="touchUpInside" id="qUP-4F-bn3"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Settings" id="v4t-YH-oxs"/>
                     <connections>
                         <outlet property="PushNotifications" destination="Nvc-ma-7Gi" id="Erl-4M-O1d"/>
+                        <segue destination="MxE-OO-Co0" kind="show" identifier="logOut" id="wCF-q3-d4r"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="250-Gh-GYO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-8.7890625" y="626.5625"/>
+            <point key="canvasLocation" x="-343" y="1624"/>
         </scene>
         <!--Contacts-->
         <scene sceneID="vA4-Qf-JHC">

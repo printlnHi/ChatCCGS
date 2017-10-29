@@ -51,7 +51,7 @@ class GroupChatInfoViewController: UIViewController {
     }
     
     
-
+    
     /*
     // MARK: - Navigation
 

@@ -22,7 +22,7 @@ class LoginViewController: ViewController {
         //print(RequestHelper.reformatDateTimeStampForDisplay("2017-10-23 01:51:51"))
         print("------")
         
-        
+        passwordField.isSecureTextEntry = true
         // ### Code for testing
         usernameField.text = "123"
         passwordField.text = "password123"
@@ -34,6 +34,11 @@ class LoginViewController: ViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.isNavigationBarHidden = true
+        self.tabBarController?.tabBar.isHidden = true
     }
     
     

@@ -102,6 +102,8 @@ class LoginViewController: ViewController {
                 }
                 
         }
+        setAPNSToken()
+        resetNotificationBadge()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -122,7 +124,19 @@ class LoginViewController: ViewController {
         
     }
     
-    @objc func setAPNSToken()
+    @objc func setAPNSToken(){
+        let request = RequestHelper.prepareUrlFor(scriptName: "APNS/setToken")+"&token=\(RequestHelper.userAPNSToken)&enabled=\(RequestHelper.userPushNotificationPreferences)"
+        print(request)
+        Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString{
+            response in
+            print(response)
+        }
+    }
+    
+    @objc func resetNotificationBadge(){
+        
+    }
+    
     @objc func retrieveAllStudents() {
         
         let students = List<Student>()
@@ -166,7 +180,7 @@ class LoginViewController: ViewController {
                 
         }
         
-        
+
     }
     
     @objc func retrieveClassesForStudent() {

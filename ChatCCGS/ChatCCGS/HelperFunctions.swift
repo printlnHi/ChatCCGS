@@ -61,7 +61,8 @@ class RequestHelper{
     static let tartarusPassword = "1910"
     static var userUsername = "USERNAME NOT SET"
     static var userPassword = "PASSWORD NOT SET"
-    static var userAPNSToken = "-2"
+    static var userAPNSToken = "-1"
+    static var userPushNotificationPreferences = "1"
     static let timeStamp2017to2019 = "2017-01-01%2000:00:00&to=2019-01-01%2000:00:00"
     private static let dateFormatString = "yyyy-MM-d%20hh:mm:ss"
 }

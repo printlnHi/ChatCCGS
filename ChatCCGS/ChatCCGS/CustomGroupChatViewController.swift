@@ -33,10 +33,11 @@ class CustomGroupChatViewController: UIViewController, UITableViewDelegate, UITa
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return getAllMessages().count
+        return messages.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        print(indexPath.row)
         let result = messages[indexPath.row]
         let message = result.0
         let isUnread = result.1
@@ -45,10 +46,10 @@ class CustomGroupChatViewController: UIViewController, UITableViewDelegate, UITa
         //cell.textLabel?.text = "At " + message.dateStamp + ", " + message.author + " wrote: " + message.content
         
         if isUnread {
-            cell.textLabel?.text = message.author + " : " + RequestHelper.reformatDateTimeStampForDisplay(message.dateStamp) + "\t\t\t" + message.content  + " <NEW>"
-        } else {
-            cell.textLabel?.text = message.author + " : " + RequestHelper.reformatDateTimeStampForDisplay(message.dateStamp) + "\t\t\t" + message.content
+            cell.imageView!.image = UIImage(named: "chat")
         }
+        cell.textLabel?.text = message.author + " : " + RequestHelper.reformatDateTimeStampForDisplay(message.dateStamp) + "\t\t\t" + message.content
+        
         
         return cell
     }
@@ -91,28 +92,35 @@ class CustomGroupChatViewController: UIViewController, UITableViewDelegate, UITa
         message.dateStamp = dateString.replacingOccurrences(of: "%20", with: " ", options: .literal, range: nil) + "'"
         message.content = "'" + content.replacingOccurrences(of: "%20", with: " ", options: .literal, range: nil) + "'"
         message.group = " '" + name.replacingOccurrences(of: "%20", with: " ", options: .literal, range: nil) + "'"
-        let realm = try! Realm()
         
-        try! realm.write {
-            realm.add(message)
-        }
-        print()
-        Alamofire.request(request)
+        if !(RequestHelper.doesContainNonUnicode(message: content)) {
+            let realm = try! Realm()
             
-            .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
-            .responseString { response in
-                debugPrint(response)
-                print()
-                self.tableView.reloadData()
+            try! realm.write {
+                realm.add(message)
+            }
+            print()
+            Alamofire.request(request)
+                
+                .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
+                .responseString { response in
+                    debugPrint(response)
+                    print()
+                    self.messageContentField.text! = ""
+                    self.messages = self.getAllMessages()
+                    self.tableView.reloadData()
+            }
+            
+        } else {
+            sendUnicodeAlert()
+            messageContentField.text! = ""
         }
-        
-        messageContentField.text! = ""
     
     }
     
     
     func sendUnicodeAlert() {
-        let alert = UIAlertController(title: "Message Edited to Send", message: "There was unicode in your message. We removed it in order to send the message.", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Message Failed to Send", message: "There was unicode in your message. You cannot send messages containing unicode.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }

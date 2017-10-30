@@ -32,12 +32,12 @@ class ClassGroupChatViewController: UIViewController, UITableViewDelegate, UITab
         
         let cell = RecentsTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ConversationCell")
         //cell.textLabel?.text = "At " + message.dateStamp + ", " + message.author + " wrote: " + message.content
-        var unread = ""
+        //var unread = ""
         if isUnread {
-            unread += " <UNREAD>"
+            cell.imageView!.image = UIImage(named: "chat")
         }
         
-        cell.textLabel?.text = message.author + " : " + RequestHelper.reformatDateTimeStampForDisplay(message.dateStamp) + "\t\t\t" + message.content + unread
+        cell.textLabel?.text = message.author + " : " + RequestHelper.reformatDateTimeStampForDisplay(message.dateStamp) + "\t\t\t" + message.content //+ unread
         
         
         return cell
@@ -112,30 +112,34 @@ class ClassGroupChatViewController: UIViewController, UITableViewDelegate, UITab
         message.content = "'" + content.replacingOccurrences(of: "%20", with: " ", options: .literal, range: nil) + "'"
         message.group = classCode
 
-        
-        let realm = try! Realm()
-        
-        try! realm.write {
-            realm.add(message)
+        if !(RequestHelper.doesContainNonUnicode(message: content)) {
+            let realm = try! Realm()
+            
+            try! realm.write {
+                realm.add(message)
+            }
+            
+            print()
+            print(request)
+            
+            
+            Alamofire.request(request)
+                .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
+                .responseString { response in
+                    debugPrint(response.result.value!)
+                    self.messages = self.getAllGroupMessages()
+                    self.tableView.reloadData()
+                    self.messageContentField.text! = ""
+            }
+            
+        } else {
+            sendUnicodeAlert()
+            messageContentField.text! = ""
         }
-        
-        print()
-        print(request)
-        
-        Alamofire.request(request)
-            .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
-            .responseString { response in
-                debugPrint(response.result.value!)
-                self.messages = self.getAllGroupMessages()
-                self.tableView.reloadData()
-        }
-        
-        messageContentField.text! = ""
     }
     
-    
     func sendUnicodeAlert() {
-        let alert = UIAlertController(title: "Message Edited to Send", message: "There was unicode in your message. We removed it in order to send the message.", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Message Failed to Send", message: "There was unicode in your message. You cannot send messages containing unicode.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }

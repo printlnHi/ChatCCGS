@@ -50,13 +50,13 @@ class IndividualChatViewController: UIViewController, UITableViewDataSource {
         //print(message.author + " : " + RequestHelper.reformatDateTimeStampForDisplay(message.dateStamp) + "\t\t\t" + message.content)
         //print(RequestHelper.reformatDateTimeStampForDisplay(message.dateStamp).count)
         
-        var unread = ""
+        //var unread = ""
         if isUnread {
-            unread = " <UNREAD>"
+            cell.imageView!.image = UIImage(named: "chat")
         }
         
         
-        cell.textLabel?.text = message.author + " : " + RequestHelper.reformatDateTimeStampForDisplay(message.dateStamp) + "\t\t\t" + message.content + unread
+        cell.textLabel?.text = message.author + " : " + RequestHelper.reformatDateTimeStampForDisplay(message.dateStamp) + "\t\t\t" + message.content //+ unread
         
         
         //"At " + RequestHelper.reformatDateTimeStampForDisplay(message.dateStamp) + ", " + message.author + " wrote: " + message.content
@@ -101,57 +101,63 @@ class IndividualChatViewController: UIViewController, UITableViewDataSource {
     
     @IBAction func pushMessage() {
         let content = messageContentField.text!.replacingOccurrences(of: " ", with: "%20", options: .literal, range: nil)
-        let dateString = RequestHelper.formatCurrentDateTimeForRequest()
         
-        let author = chat.person2?.ID
-        let recipient = chat.person1?.ID
-        
-        
-        let request = "\(RequestHelper.prepareUrlFor(scriptName: "pushMessage"))&content=\(content)&recipient=\(recipient!)&datestamp=\(dateString)"
-        let message = Message()
-        message.author = author!
-        message.dateStamp = RequestHelper.reformatCurrentDateTimeForRealmMessage(dateString: dateString)
-        message.content = "'" + content.replacingOccurrences(of: "%20", with: " ", options: .literal, range: nil) + "'"
-        message.recipient = recipient!
-        
-        
-        
-        print(request)
-        print()
-        
-        Alamofire.request(request)
-            .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
-            .responseString { response in
-                debugPrint(response.result.value!)
-                
-                if response.result.value == "100 Continue\n" {
-                    let realm = try! Realm()
+        if !(RequestHelper.doesContainNonUnicode(message: content)) {
+            let dateString = RequestHelper.formatCurrentDateTimeForRequest()
+            
+            let author = chat.person2?.ID
+            let recipient = chat.person1?.ID
+            
+            
+            let request = "\(RequestHelper.prepareUrlFor(scriptName: "pushMessage"))&content=\(content)&recipient=\(recipient!)&datestamp=\(dateString)"
+            let message = Message()
+            message.author = author!
+            message.dateStamp = RequestHelper.reformatCurrentDateTimeForRealmMessage(dateString: dateString)
+            message.content = "'" + content.replacingOccurrences(of: "%20", with: " ", options: .literal, range: nil) + "'"
+            message.recipient = recipient!
+            
+            
+            
+            print(request)
+            print()
+            
+            Alamofire.request(request)
+                .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
+                .responseString { response in
+                    debugPrint(response.result.value!)
                     
-                    try! realm.write {
-                        realm.add(message)
+                    if response.result.value == "100 Continue\n" {
+                        let realm = try! Realm()
+                        
+                        try! realm.write {
+                            realm.add(message)
+                        }
+                        
+                        self.messages = self.getAllMessages()
+                        self.tableView.reloadData()
+                        
+                    } else if response.result.value == "609 Sender Blocked Recipient\n" {
+                        let alert = UIAlertController(title: "User Blocked", message: "You must unblock this user in order to send messages to them.", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+                    } else if response.result.value == "608 Recipient has Blocked Sender\n" {
+                        let alert = UIAlertController(title: "Message Did Not Send", message: "This user has blocked you from sending messages.", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+                        
+                    } else {
+                        let alert = UIAlertController(title: "Message Failed to Send", message: "An error occurred.", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+                        
                     }
-                    
-                    self.messages = self.getAllMessages()
-                    self.tableView.reloadData()
-                    
-                } else if response.result.value == "609 Sender Blocked Recipient\n" {
-                    let alert = UIAlertController(title: "User Blocked", message: "You must unblock this user in order to send messages to them.", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                    self.present(alert, animated: true, completion: nil)
-                } else if response.result.value == "608 Recipient has Blocked Sender\n" {
-                    let alert = UIAlertController(title: "Message Did Not Send", message: "This user has blocked you from sending messages.", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                    self.present(alert, animated: true, completion: nil)
-                    
-                } else {
-                    let alert = UIAlertController(title: "Message Failed to Send", message: "An error occurred.", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                    self.present(alert, animated: true, completion: nil)
-                    
-                }
+                    self.messageContentField.text! = ""
+            }
+        
+        } else {
+            sendUnicodeAlert()
+            messageContentField.text! = ""
         }
-        
-        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -175,7 +181,7 @@ class IndividualChatViewController: UIViewController, UITableViewDataSource {
     
     
     func sendUnicodeAlert() {
-        let alert = UIAlertController(title: "Message Edited to Send", message: "There was unicode in your message. We removed it in order to send the message.", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Message Failed to Send", message: "There was unicode in your message. You cannot send messages containing unicode.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }

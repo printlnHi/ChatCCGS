@@ -172,8 +172,8 @@ class IndividualChatViewController: UIViewController, UITableViewDataSource {
         destController2.currentStudent = (chat.person2)!
         
         
-        let destController3: SettingsViewController = destTabController.viewControllers![3].childViewControllers[0] as! SettingsViewController
-        destController3.currentStudent = (chat.person2)!
+        //let destController3: SettingsViewController = destTabController.viewControllers![3].childViewControllers[0] as! SettingsViewController
+        //destController3.currentStudent = (chat.person2)!
         
         
         print("segued")

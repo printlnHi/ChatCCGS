@@ -124,8 +124,8 @@ class LoginViewController: ViewController {
         let destController2: RecentsViewController = destTabController.viewControllers![1].childViewControllers[0] as! RecentsViewController
         destController2.currentStudent = studentLoggingIn!
         
-        let destController3: SettingsViewController = destTabController.viewControllers![3].childViewControllers[0] as! SettingsViewController
-        destController3.currentStudent = studentLoggingIn!
+        //let destController3: SettingsViewController = destTabController.viewControllers![3].childViewControllers[0] as! SettingsViewController
+        //destController3.currentStudent = studentLoggingIn!
         
         print("Student Logging In")
         

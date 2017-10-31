@@ -17,7 +17,6 @@
 		83DFEEDC1F301847006AEE78 /* ChatCCGSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DFEEDB1F301847006AEE78 /* ChatCCGSTests.swift */; };
 		83DFEEE71F301848006AEE78 /* ChatCCGSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DFEEE61F301848006AEE78 /* ChatCCGSUITests.swift */; };
 		83E781521F301D7000F2A0F0 /* RecentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E781511F301D7000F2A0F0 /* RecentsViewController.swift */; };
-		83E781541F301E7A00F2A0F0 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E781531F301E7A00F2A0F0 /* SettingsViewController.swift */; };
 		83E781561F301E8D00F2A0F0 /* ContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E781551F301E8D00F2A0F0 /* ContactsViewController.swift */; };
 		C23C3C891F69332400140254 /* CustomGroupChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23C3C881F69332300140254 /* CustomGroupChatViewController.swift */; };
 		C24148161F495B8F00EDF401 /* ContactInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24148151F495B8F00EDF401 /* ContactInfoViewController.swift */; };
@@ -87,7 +86,6 @@
 		83DFEEE61F301848006AEE78 /* ChatCCGSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCCGSUITests.swift; sourceTree = "<group>"; };
 		83DFEEE81F301848006AEE78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		83E781511F301D7000F2A0F0 /* RecentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentsViewController.swift; sourceTree = "<group>"; };
-		83E781531F301E7A00F2A0F0 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		83E781551F301E8D00F2A0F0 /* ContactsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsViewController.swift; sourceTree = "<group>"; };
 		9F179C03F74D75E8178204B7 /* Pods_ChatCCGS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ChatCCGS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A404DDA90A45751A0BD09C43 /* Pods-ChatCCGS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatCCGS.release.xcconfig"; path = "Pods/Target Support Files/Pods-ChatCCGS/Pods-ChatCCGS.release.xcconfig"; sourceTree = "<group>"; };
@@ -167,7 +165,6 @@
 			isa = PBXGroup;
 			children = (
 				C9F856801F6B6E6F006D5B93 /* ChatCCGS.entitlements */,
-				83E781531F301E7A00F2A0F0 /* SettingsViewController.swift */,
 				C91FC1651F4D4F8700929791 /* HelperFunctions.swift */,
 				83DFEEC61F301847006AEE78 /* AppDelegate.swift */,
 				83DFEEC81F301847006AEE78 /* ViewController.swift */,
@@ -441,7 +438,6 @@
 				83DFEEC71F301847006AEE78 /* AppDelegate.swift in Sources */,
 				83680B601F39588E00365853 /* LoginViewController.swift in Sources */,
 				C2C489821F600F9800F13086 /* ClassGroupChatViewController.swift in Sources */,
-				83E781541F301E7A00F2A0F0 /* SettingsViewController.swift in Sources */,
 				C23C3C891F69332400140254 /* CustomGroupChatViewController.swift in Sources */,
 				83A47EA51F39533B00E4067D /* TableViewCell.swift in Sources */,
 				83E781561F301E8D00F2A0F0 /* ContactsViewController.swift in Sources */,

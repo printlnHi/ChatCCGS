@@ -109,7 +109,7 @@ class LoginViewController: ViewController {
                 }
                 
         }
-        setAPNSToken()
+        //setAPNSToken()
         resetNotificationBadge()
     }
     

@@ -571,7 +571,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         let messages = realm.objects(Message.self)
         
         for m in messages {
-            var g = m.group.replacingOccurrences(of: "'", with: "").replacingOccurrences(of: " ", with: "")
+            let g = m.group.replacingOccurrences(of: "'", with: "").replacingOccurrences(of: " ", with: "")
             if m.isUnreadMessage && g == chat.name {
                 return true
             }

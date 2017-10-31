@@ -100,7 +100,6 @@ class ClassGroupChatViewController: UIViewController, UITableViewDelegate, UITab
         let content = messageContentField.text!.replacingOccurrences(of: " ", with: "%20", options: .literal, range: nil)
         let dateString = RequestHelper.formatCurrentDateTimeForRequest()
         
-        let author = currentStudent.ID
         let classCode = group.name
         
         let request = "\(RequestHelper.prepareUrlFor(scriptName: "pushGroupMessage"))&content=\(content)&group=\(classCode)&datestamp=\(dateString)"

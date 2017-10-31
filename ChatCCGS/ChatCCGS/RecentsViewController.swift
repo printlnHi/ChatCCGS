@@ -20,8 +20,6 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
     @IBOutlet weak var tableView: UITableView!
 
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        print("the row length is:")
-        //print(getRecentChats().count + getCustomGroups().count + 1)
         return chats.count //+ getCustomGroups().count + 1
     }
     
@@ -71,19 +69,20 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
                 }
             }
             
+            self.chats = self.getRecentChats()
             tableView.reloadData()
         }
         
         let blockAction = UITableViewRowAction(style: .default, title: "Block") { (action, index ) in
-
+            
             let request = RequestHelper.prepareUrlFor(scriptName: "blockUser") + "&user=" + (self.chats[indexPath.row].0.person1?.ID)!
-            print(request)
+            print("requesting: \(request)")
+            
             Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
                 debugPrint(response.result.value!)
                 if response.result.value! == "100 Continue\n" {
                     let realm = try! Realm()
                     let results = realm.objects(IndividualChat.self)
-
                     for r in results {
                         let chat = self.chats[indexPath.row].0
                         if (r.person2?.ID)! == self.currentStudent.ID && (r.person1?.name)! == chat.person1?.name {
@@ -93,6 +92,7 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
                             break
                         }
                     }
+                    self.chats = self.getRecentChats()
                     tableView.reloadData()
                 }
             }
@@ -100,7 +100,7 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
         
         let unblockAction = UITableViewRowAction(style: .default, title: "Unblock") { (action, index) in
             let request = RequestHelper.prepareUrlFor(scriptName: "unblockUser") + "&user=" + (self.chats[indexPath.row].0.person1?.ID)!
-            print(request)
+            print("requesting: \(request)")
             
             Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
                 debugPrint(response.result.value!)
@@ -142,9 +142,7 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
         
         for r in results {
             if (r.person2?.ID)! == currentStudent.ID {
-                print(realm.objects(Message.self))
                 if invididualChatHasUnreadMessages(r) {
-                    print("hmm")
                     chats.append((r, true))
                 } else {
                     chats.append((r, false))
@@ -153,8 +151,6 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
         }
         
         
-        print("&&&&&")
-        print(chats)
         
         return chats
     }
@@ -193,8 +189,6 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
         
         chats = getRecentChats()
         
-        print("^^^^")
-        print(chats)
         tableView.reloadData()
     }
     

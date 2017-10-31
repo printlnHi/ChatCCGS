@@ -45,7 +45,7 @@ class ClassGroupChatViewController: UIViewController, UITableViewDelegate, UITab
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //print(getAllGroupMessages())
+        
         messages = getAllGroupMessages()
         // Do any additional setup after loading the view.
     }
@@ -58,6 +58,8 @@ class ClassGroupChatViewController: UIViewController, UITableViewDelegate, UITab
     @objc func getMembers(for classGroupChat: GroupChat) {
         let request = "tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/getStudentsForClass.py?username=\(RequestHelper.userUsername)&password=\(RequestHelper.userPassword)"
         
+        print("requesting: \(request)")
+        
         Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password:RequestHelper.tartarusPassword).responseString { response in
             
         }
@@ -68,8 +70,6 @@ class ClassGroupChatViewController: UIViewController, UITableViewDelegate, UITab
         let realm = try! Realm()
         
         let results = realm.objects(Message.self)
-        print("**")
-        print(results)
         
         var receievedMessages = [(Message, Bool)]()
         
@@ -77,7 +77,7 @@ class ClassGroupChatViewController: UIViewController, UITableViewDelegate, UITab
             var g = r.group
             g = g.replacingOccurrences(of: "'", with: "").replacingOccurrences(of: " ", with: "")
             if g == group.name {
-                print("so that worked")
+                
                 if r.isUnreadMessage {
                     receievedMessages.append((r, true))
                 } else {
@@ -90,7 +90,6 @@ class ClassGroupChatViewController: UIViewController, UITableViewDelegate, UITab
             }
         }
         
-        //print(messages)
         // Sort by datetime stamp
         
         return receievedMessages.reversed()
@@ -104,9 +103,10 @@ class ClassGroupChatViewController: UIViewController, UITableViewDelegate, UITab
         
         let request = "\(RequestHelper.prepareUrlFor(scriptName: "pushGroupMessage"))&content=\(content)&group=\(classCode)&datestamp=\(dateString)"
 
+        print("requesting: \(request)")
         
         let message = Message()
-        message.author = RequestHelper.userUsername
+        message.author = " " + RequestHelper.userUsername
         message.dateStamp = dateString.replacingOccurrences(of: "%20", with: " ", options: .literal, range: nil) + "'"
         message.content = "'" + content.replacingOccurrences(of: "%20", with: " ", options: .literal, range: nil) + "'"
         message.group = classCode
@@ -117,10 +117,6 @@ class ClassGroupChatViewController: UIViewController, UITableViewDelegate, UITab
             try! realm.write {
                 realm.add(message)
             }
-            
-            print()
-            print(request)
-            
             
             Alamofire.request(request)
                 .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)

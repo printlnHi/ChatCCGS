@@ -79,16 +79,13 @@ class RequestHelper{
         
         let dateComponents = date.components(separatedBy: "-")
         let timeComponents = time.components(separatedBy: ":")
-        print(dateComponents)
-        print(timeComponents)
+        
         let goodTime = timeComponents[0] + ":" + timeComponents[1]
         
         let currentDate = Date()
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-d"
         
-        print(formatter.string(from: currentDate))
-        print(date)
         
         var returnString = ""
         if formatter.string(from: currentDate) == date {
@@ -96,8 +93,6 @@ class RequestHelper{
         } else {
             returnString = "\(date) at \(goodTime)"
         }
-        print("****")
-        //print(returnString.count)
         
         return returnString
         

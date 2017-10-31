@@ -21,7 +21,6 @@ class IndividualChatViewController: UIViewController, UITableViewDataSource {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Messages")
         
         messages = getAllMessages()
         // Do any additional setup after loading the view.
@@ -46,11 +45,7 @@ class IndividualChatViewController: UIViewController, UITableViewDataSource {
         let isUnread = result.1
         
         let cell = TableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "individualChatCell")
-        //print("()()()")
-        //print(message.author + " : " + RequestHelper.reformatDateTimeStampForDisplay(message.dateStamp) + "\t\t\t" + message.content)
-        //print(RequestHelper.reformatDateTimeStampForDisplay(message.dateStamp).count)
-        
-        //var unread = ""
+
         if isUnread {
             cell.imageView!.image = UIImage(named: "chat")
         }
@@ -69,18 +64,11 @@ class IndividualChatViewController: UIViewController, UITableViewDataSource {
         let realm = try! Realm()
         
         let results = realm.objects(Message.self)
-        print(results)
-        //print("###")
-        //print((chat.person2?.ID)!)
-        //print((chat.person1?.ID)!)
         var recievedMessages = [(Message, Bool)]()
         for r in results {
-            //print("Author:"+r.author)
-            //print("Recipient"+r.recipient)
             if ((r.author == " " + (chat.person1?.ID)! || r.author == (chat.person1?.ID)!) || (r.author ==  " " + (chat.person2?.ID)! ||  r.author == (chat.person2?.ID)!)) && ((r.recipient == " " + (chat.person1?.ID)! || r.recipient == (chat.person1?.ID)!) || (r.recipient ==  " " + (chat.person2?.ID)! ||  r.recipient == (chat.person2?.ID)!)) && (r.group == " None" || r.group == "") {
                 
                 if r.isUnreadMessage {
-                    //print("!!!!")
                     recievedMessages.append((r, true))
                 } else {
                     recievedMessages.append((r, false))
@@ -94,8 +82,6 @@ class IndividualChatViewController: UIViewController, UITableViewDataSource {
         }
         
         // Sort messages by date-time stamp
-        //print(recievedMessages)
-        //print("[][][]")
         return recievedMessages.reversed()
     }
     
@@ -111,15 +97,12 @@ class IndividualChatViewController: UIViewController, UITableViewDataSource {
             
             let request = "\(RequestHelper.prepareUrlFor(scriptName: "pushMessage"))&content=\(content)&recipient=\(recipient!)&datestamp=\(dateString)"
             let message = Message()
-            message.author = author!
+            message.author = " " + author!
             message.dateStamp = RequestHelper.reformatCurrentDateTimeForRealmMessage(dateString: dateString)
             message.content = "'" + content.replacingOccurrences(of: "%20", with: " ", options: .literal, range: nil) + "'"
             message.recipient = recipient!
             
-            
-            
-            print(request)
-            print()
+            print("requesting: \(request)")
             
             Alamofire.request(request)
                 .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)

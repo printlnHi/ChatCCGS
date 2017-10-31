@@ -37,7 +37,7 @@ class CustomGroupChatViewController: UIViewController, UITableViewDelegate, UITa
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print(indexPath.row)
+
         let result = messages[indexPath.row]
         let message = result.0
         let isUnread = result.1
@@ -59,7 +59,6 @@ class CustomGroupChatViewController: UIViewController, UITableViewDelegate, UITa
         let data = realm.objects(Message.self)
         var recievedMessages = [(Message, Bool)]()
         
-        print(data)
         for r in data {
             if " '" + groupChat.name + "'" == r.group {
                 if r.isUnreadMessage {
@@ -73,7 +72,7 @@ class CustomGroupChatViewController: UIViewController, UITableViewDelegate, UITa
                 
             }
         }
-        print(recievedMessages)
+        
         return recievedMessages.reversed()
     }
     
@@ -87,8 +86,10 @@ class CustomGroupChatViewController: UIViewController, UITableViewDelegate, UITa
         
         let request = "\(RequestHelper.tartarusBaseUrl)/CustomGroups/pushGroupMessage.py?username=\(RequestHelper.userUsername)&password=\(RequestHelper.userPassword)&content=\(content)&group=\(name)&datestamp=\(dateString)"
         
+        print("requesting: \(request)")
+        
         let message = Message()
-        message.author = author
+        message.author = " " + author
         message.dateStamp = dateString.replacingOccurrences(of: "%20", with: " ", options: .literal, range: nil) + "'"
         message.content = "'" + content.replacingOccurrences(of: "%20", with: " ", options: .literal, range: nil) + "'"
         message.group = " '" + name.replacingOccurrences(of: "%20", with: " ", options: .literal, range: nil) + "'"
@@ -105,7 +106,7 @@ class CustomGroupChatViewController: UIViewController, UITableViewDelegate, UITa
                 .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
                 .responseString { response in
                     debugPrint(response)
-                    print()
+                    
                     self.messageContentField.text! = ""
                     self.messages = self.getAllMessages()
                     self.tableView.reloadData()

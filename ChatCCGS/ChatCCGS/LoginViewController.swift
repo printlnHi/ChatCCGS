@@ -19,8 +19,6 @@ class LoginViewController: ViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //print(RequestHelper.reformatDateTimeStampForDisplay("2017-10-23 01:51:51"))
-        print("------")
         
         passwordField.isSecureTextEntry = true
         // ### Code for testing
@@ -60,7 +58,9 @@ class LoginViewController: ViewController {
         RequestHelper.userUsername = username
         RequestHelper.userPassword = password
         let request = RequestHelper.prepareUrlFor(scriptName: "validate")
-        print("request = \(request)")
+        
+        print("requesting: \(request)")
+        
         Alamofire.request(request)
             .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
             .responseString { response in
@@ -68,7 +68,7 @@ class LoginViewController: ViewController {
                 switch response.result.value! {
                     
                 case "100 Continue\n":
-                    LoginViewController.retrieveCustomGroups(studentID: username)
+                    //LoginViewController.retrieveCustomGroups(studentID: username)
                     
                     RequestHelper.userUsername = username
                     RequestHelper.userPassword = password
@@ -134,7 +134,7 @@ class LoginViewController: ViewController {
 
     @objc func setAPNSToken(){
         let request = RequestHelper.prepareUrlFor(scriptName: "setToken")+"&token=\(RequestHelper.userAPNSToken)&enabled=\(RequestHelper.userPushNotificationPreferences)"
-        print(request)
+        print("requesting: \(request)")
         Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString{
             response in
             print(response)
@@ -193,7 +193,8 @@ class LoginViewController: ViewController {
     
     @objc func retrieveClassesForStudent() {
         let request = RequestHelper.prepareUrlFor(scriptName: "getClassesForStudent")
-        print("retrivieng classes: \(request)")
+        print("requesting: \(request)")
+        
         Alamofire.request(request)
             .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
             .responseString { response in
@@ -226,6 +227,7 @@ class LoginViewController: ViewController {
     static func retrieveCustomGroups(studentID: String) {
         
         let request = RequestHelper.prepareUrlFor(scriptName: "CustomGroups/getGroupsForStudent")
+        print("requesting: \(request)")
         
         Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
             
@@ -240,6 +242,7 @@ class LoginViewController: ViewController {
                 }
                 
                 var c_mutable = c
+                
                 c_mutable.remove(at: c.index(before: c.endIndex))
                 c_mutable.remove(at: c.startIndex)
                 var components = c_mutable.components(separatedBy: ",")
@@ -319,6 +322,8 @@ class LoginViewController: ViewController {
     @objc func retrieveArchivedMessages(username: String, password: String, author: String) {
         
         let request = "\(RequestHelper.prepareUrlFor(scriptName: "archiveQuery"))&author=\(author)&from=\(RequestHelper.timeStamp2017to2019)"
+        print("requesting: \(request)")
+        
         Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
             
             let realm = try! Realm()

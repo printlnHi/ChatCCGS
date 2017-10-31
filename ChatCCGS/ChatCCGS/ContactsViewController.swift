@@ -407,7 +407,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                     
                     let request = "\(RequestHelper.prepareUrlFor(scriptName: "CustomGroups/leaveGroup"))&group=\((cell?.textLabel?.text)!)"
                     
-                    print("leaving group: \(request)")
+                    print("requesting: \(request)")
                     
                     Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
                         debugPrint(response.result.value!)
@@ -444,7 +444,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                             
                             let studentID = field.text!
                             let request = "\(RequestHelper.prepareUrlFor(scriptName: "CustomGroups/addToGroup"))&group=\((cell?.textLabel?.text)!)&members=[\(studentID)]"
-                            print(request)
+                            print("requesting: \(request)")
                             
                             Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
                                 debugPrint(response.result.value!)
@@ -590,7 +590,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
 
     @objc func retrieveArchivedGroupMessages(groupID: String) {
         let request = "\(RequestHelper.prepareUrlFor(scriptName: "archiveGroupQuery"))&groupID=\(groupID)&from=\(RequestHelper.timeStamp2017to2019)"
-        print("retrieving archived messages: \(request)")
+        print("requesting: \(request)")
         
         Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
 
@@ -643,7 +643,8 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     @objc func retrieveArchiveCustomGroupMessages(groupID: String) {
 
         let request = "\(RequestHelper.prepareCustomUrlFor(scriptName: "archiveGroupQuery"))&groupID=\(groupID)&from=\(RequestHelper.timeStamp2017to2019)"
-        print("Request: " + request)
+        print("requesting: \(request)")
+        
         Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
             
             switch response.result.value! {

@@ -55,16 +55,15 @@ class NewChatViewController: ViewController, UITableViewDelegate, UITableViewDat
             
             
             let request = "\(RequestHelper.prepareCustomUrlFor(scriptName: "createGroup"))&name=\(RequestHelper.escapeStringForUrl(queryString: groupChat.name))&members=\(members)"
-            print()
-            print(request)
-            print()
+            print("requesting: \(request)")
+            
             Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
                 debugPrint(response.result.value!)
             }
             
             let realm = try! Realm()
             try! realm.write {
-                realm.delete(realm.objects(CustomGroupChat.self))
+                realm.add(groupChat)
             }
             LoginViewController.retrieveCustomGroups(studentID: RequestHelper.userUsername)
 
@@ -88,12 +87,14 @@ class NewChatViewController: ViewController, UITableViewDelegate, UITableViewDat
             selectedPeople.append(getRecentChats()[indexPath.row].person1!)
             let chat = getRecentChats()[indexPath.row]
             
-            cell?.textLabel?.text = (chat.person1?.name)! + " [SELECTED]"
+            cell?.textLabel?.text = (chat.person1?.name)!
+            cell?.imageView?.image = UIImage(named: "approval")
             cell?.tag = 1
         } else {
             selectedPeople.remove(at: getIndexFromSelected(of: (cell?.textLabel?.text!)!)!)
             let chat = getRecentChats()[indexPath.row]
             cell?.textLabel?.text = (chat.person1?.name)!
+            cell?.imageView?.image = nil
             cell?.tag = 0
             
         }
@@ -103,7 +104,7 @@ class NewChatViewController: ViewController, UITableViewDelegate, UITableViewDat
         print(selectedPeople)
         var x = 0
         for s in selectedPeople {
-            if student == s.name + " [SELECTED]" {
+            if student == s.name {
                 return x
             }
             x += 1

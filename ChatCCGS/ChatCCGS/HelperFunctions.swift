@@ -56,6 +56,43 @@ class RequestHelper{
         }
         return false;
     }
+    
+    static func sortMessagesByDateTime(messages: [Message]) -> [Message]{
+        return messages.sorted(by: {$0.dateStamp < $1.dateStamp})
+    }
+    
+    static func reformatDateTimeStampForDisplay(_ datetimeStamp: String) -> String {
+        let d = datetimeStamp.replacingOccurrences(of: "'", with: "")
+        var components = d.components(separatedBy: " ")
+        
+        if components.count == 2 {
+            components = [""] + components
+        }
+        let date = components[1]
+        let time = components[2]
+        
+        let dateComponents = date.components(separatedBy: "-")
+        let timeComponents = time.components(separatedBy: ":")
+
+        let goodTime = timeComponents[0] + ":" + timeComponents[1]
+        
+        let currentDate = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-d"
+        
+        
+        var returnString = ""
+        if formatter.string(from: currentDate) == date {
+            returnString = "Today at \(goodTime) \t"
+        } else {
+            returnString = "\(date) at \(goodTime)"
+        }
+        
+        return returnString
+        
+    }
+    
+    
     static let tartarusBaseUrl = "http://tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS"
     static let tartarusUsername = "ccgs"
     static let tartarusPassword = "1910"
@@ -66,42 +103,7 @@ class RequestHelper{
     static let timeStamp2017to2019 = "2017-01-01%2000:00:00&to=2019-01-01%2000:00:00"
     private static let dateFormatString = "yyyy-MM-d%20hh:mm:ss"
     
-    static func reformatDateTimeStampForDisplay(_ datetimeStamp: String) -> String {
-        let d = datetimeStamp.replacingOccurrences(of: "'", with: "")
-        var components = d.components(separatedBy: " ")
-        
-        if components.count == 2 {
-            components = [""] + components
-        }
-        
-        let date = components[1]
-        let time = components[2]
-        
-        let dateComponents = date.components(separatedBy: "-")
-        let timeComponents = time.components(separatedBy: ":")
-        print(dateComponents)
-        print(timeComponents)
-        let goodTime = timeComponents[0] + ":" + timeComponents[1]
-        
-        let currentDate = Date()
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-d"
-        
-        print(formatter.string(from: currentDate))
-        print(date)
-        
-        var returnString = ""
-        if formatter.string(from: currentDate) == date {
-            returnString = "Today at \(goodTime) \t"
-        } else {
-            returnString = "\(date) at \(goodTime)"
-        }
-        print("****")
-        //print(returnString.count)
-        
-        return returnString
-        
-    }
+    
 }
 
 class UIColours{

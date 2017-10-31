@@ -9,52 +9,6 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Settings-->
-        <scene sceneID="5kX-0l-1O3">
-            <objects>
-                <viewController id="QVN-NP-KB2" customClass="SettingsViewController" customModule="ChatCCGS" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="mhb-pt-m8U"/>
-                        <viewControllerLayoutGuide type="bottom" id="sx2-gC-SFM"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="wjl-qk-kz4">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Receive push notifications" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Kf-YJ-dPA">
-                                <rect key="frame" x="304" y="225" width="201" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Nvc-ma-7Gi">
-                                <rect key="frame" x="542" y="220" width="51" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <connections>
-                                    <action selector="ValueChanged:" destination="QVN-NP-KB2" eventType="valueChanged" id="XQ1-Th-hMp"/>
-                                </connections>
-                            </switch>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yAI-MI-DEP">
-                                <rect key="frame" x="300" y="317" width="55" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Log Out"/>
-                                <connections>
-                                    <action selector="logOut:" destination="QVN-NP-KB2" eventType="touchUpInside" id="qUP-4F-bn3"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Settings" id="v4t-YH-oxs"/>
-                    <connections>
-                        <outlet property="PushNotifications" destination="Nvc-ma-7Gi" id="Erl-4M-O1d"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="250-Gh-GYO" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-343" y="1624"/>
-        </scene>
         <!--Contacts-->
         <scene sceneID="vA4-Qf-JHC">
             <objects>
@@ -532,7 +486,6 @@
                         <segue destination="D58-mi-Qhl" kind="relationship" relationship="viewControllers" id="SzX-AV-9yi"/>
                         <segue destination="tMI-3L-Djw" kind="relationship" relationship="viewControllers" id="Jey-et-CJH"/>
                         <segue destination="S78-EW-eka" kind="relationship" relationship="viewControllers" id="Fa2-zj-0Sg"/>
-                        <segue destination="TdK-cw-kZT" kind="relationship" relationship="viewControllers" id="UPf-9E-7nq"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JsZ-JM-afR" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -569,9 +522,6 @@
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kdf-xn-TQ8">
                                 <rect key="frame" x="285" y="228" width="51" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <connections>
-                                    <action selector="ValueChanged:" destination="QVN-NP-KB2" eventType="valueChanged" id="1Ng-ph-FJX"/>
-                                </connections>
                             </switch>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Receive push notifications" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z0S-OE-dob">
                                 <rect key="frame" x="412" y="228" width="201" height="21"/>
@@ -633,25 +583,6 @@
             </objects>
             <point key="canvasLocation" x="-866.015625" y="-152.34375"/>
         </scene>
-        <!--Settings-->
-        <scene sceneID="9Pa-eM-1qH">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="TdK-cw-kZT" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Settings" image="SettingsIcon" id="OfT-de-jLx"/>
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="qQG-4E-tHP">
-                        <rect key="frame" x="0.0" y="20" width="1024" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="QVN-NP-KB2" kind="relationship" relationship="rootViewController" id="Pzt-2n-Vhb"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Q24-1V-WZo" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-741.796875" y="626.5625"/>
-        </scene>
         <!--Home-->
         <scene sceneID="qPb-4G-gqZ">
             <objects>
@@ -674,7 +605,6 @@
     </scenes>
     <resources>
         <image name="PlusIcon" width="22" height="22"/>
-        <image name="SettingsIcon" width="25" height="25"/>
         <image name="ccgs" width="78" height="135"/>
         <image name="home" width="30" height="30"/>
     </resources>

@@ -49,7 +49,6 @@
                     <navigationItem key="navigationItem" title="Settings" id="v4t-YH-oxs"/>
                     <connections>
                         <outlet property="PushNotifications" destination="Nvc-ma-7Gi" id="Erl-4M-O1d"/>
-                        <segue destination="MxE-OO-Co0" kind="show" identifier="logOut" id="wCF-q3-d4r"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="250-Gh-GYO" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -543,7 +542,7 @@
         <!--Home-->
         <scene sceneID="qsj-Pr-iwB">
             <objects>
-                <viewController id="v2R-XD-t9t" sceneMemberID="viewController">
+                <viewController id="v2R-XD-t9t" customClass="HomeViewController" customModule="ChatCCGS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="yUb-Wq-hmY"/>
                         <viewControllerLayoutGuide type="bottom" id="SiO-gM-AxR"/>
@@ -559,12 +558,38 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jwf-sC-coR">
+                                <rect key="frame" x="827" y="139" width="55" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Log Out"/>
+                                <connections>
+                                    <action selector="logOut:" destination="v2R-XD-t9t" eventType="touchUpInside" id="o5q-xq-30N"/>
+                                </connections>
+                            </button>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kdf-xn-TQ8">
+                                <rect key="frame" x="285" y="228" width="51" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="ValueChanged:" destination="QVN-NP-KB2" eventType="valueChanged" id="1Ng-ph-FJX"/>
+                                </connections>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Receive push notifications" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z0S-OE-dob">
+                                <rect key="frame" x="412" y="228" width="201" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Home" selectedImage="home" id="hvh-DZ-Jsn"/>
                     <navigationItem key="navigationItem" id="Fe5-CM-009"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="willRecievePushNotifications" destination="kdf-xn-TQ8" id="bRx-Di-tq5"/>
+                        <segue destination="MxE-OO-Co0" kind="show" identifier="logOut" id="e4r-L4-qxH"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x8X-xF-iwE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

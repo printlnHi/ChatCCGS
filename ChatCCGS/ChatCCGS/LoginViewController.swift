@@ -133,7 +133,7 @@ class LoginViewController: ViewController {
     
 
     @objc func setAPNSToken(){
-        let request = RequestHelper.prepareUrlFor(scriptName: "APNS/setToken")+"&token=\(RequestHelper.userAPNSToken)&enabled=\(RequestHelper.userPushNotificationPreferences)"
+        let request = RequestHelper.prepareUrlFor(scriptName: "setToken")+"&token=\(RequestHelper.userAPNSToken)&enabled=\(RequestHelper.userPushNotificationPreferences)"
         print(request)
         Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString{
             response in

@@ -26,6 +26,7 @@
 		C25AA29C1F44454A00C8D4E1 /* RealmSwift.framework in Sources */ = {isa = PBXBuildFile; fileRef = C25AA2951F44451E00C8D4E1 /* RealmSwift.framework */; };
 		C25AA29D1F44455400C8D4E1 /* Realm.framework in Resources */ = {isa = PBXBuildFile; fileRef = C25AA2941F44451D00C8D4E1 /* Realm.framework */; };
 		C25AA29E1F44455400C8D4E1 /* RealmSwift.framework in Resources */ = {isa = PBXBuildFile; fileRef = C25AA2951F44451E00C8D4E1 /* RealmSwift.framework */; };
+		C26507281FA8105C00FE9A55 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26507271FA8105C00FE9A55 /* HomeViewController.swift */; };
 		C2C489821F600F9800F13086 /* ClassGroupChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C489811F600F9800F13086 /* ClassGroupChatViewController.swift */; };
 		C2DA7CE41F4CFA66003EACB6 /* IndividualChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2DA7CE31F4CFA66003EACB6 /* IndividualChatViewController.swift */; };
 		C47407865D9B263B36963E13 /* Pods_ChatCCGS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F179C03F74D75E8178204B7 /* Pods_ChatCCGS.framework */; };
@@ -95,6 +96,7 @@
 		C24BE3761F5AB18700118104 /* GroupChatInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupChatInfoViewController.swift; sourceTree = "<group>"; };
 		C25AA2941F44451D00C8D4E1 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
 		C25AA2951F44451E00C8D4E1 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RealmSwift.framework; sourceTree = "<group>"; };
+		C26507271FA8105C00FE9A55 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		C2C489811F600F9800F13086 /* ClassGroupChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClassGroupChatViewController.swift; sourceTree = "<group>"; };
 		C2DA7CE31F4CFA66003EACB6 /* IndividualChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndividualChatViewController.swift; sourceTree = "<group>"; };
 		C91FC1651F4D4F8700929791 /* HelperFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelperFunctions.swift; sourceTree = "<group>"; };
@@ -179,6 +181,7 @@
 				83A47EA41F39533B00E4067D /* TableViewCell.swift */,
 				C2C489811F600F9800F13086 /* ClassGroupChatViewController.swift */,
 				C23C3C881F69332300140254 /* CustomGroupChatViewController.swift */,
+				C26507271FA8105C00FE9A55 /* HomeViewController.swift */,
 				83DFEECA1F301847006AEE78 /* Main.storyboard */,
 				83DFEECD1F301847006AEE78 /* Assets.xcassets */,
 				83DFEECF1F301847006AEE78 /* LaunchScreen.storyboard */,
@@ -428,6 +431,7 @@
 				C25AA29B1F44454A00C8D4E1 /* Realm.framework in Sources */,
 				C2DA7CE41F4CFA66003EACB6 /* IndividualChatViewController.swift in Sources */,
 				C25AA29C1F44454A00C8D4E1 /* RealmSwift.framework in Sources */,
+				C26507281FA8105C00FE9A55 /* HomeViewController.swift in Sources */,
 				83E781521F301D7000F2A0F0 /* RecentsViewController.swift in Sources */,
 				C24BE3771F5AB18700118104 /* GroupChatInfoViewController.swift in Sources */,
 				C24148161F495B8F00EDF401 /* ContactInfoViewController.swift in Sources */,

@@ -109,7 +109,7 @@ class LoginViewController: ViewController {
                 }
                 
         }
-        //setAPNSToken()
+        setAPNSToken()
         resetNotificationBadge()
     }
     
@@ -148,11 +148,10 @@ class LoginViewController: ViewController {
     @objc func retrieveAllStudents() {
         
         let students = List<Student>()
-        
         Alamofire.request("http://tartarus.ccgs.wa.edu.au/~1019912/ChatCCGSServerStuff/getStudents.py")
             .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
             .responseString { response in
-                
+                print("response:",response)
                 let data = response.result.value?.components(separatedBy: "\n")
                 
                 for s in data! {

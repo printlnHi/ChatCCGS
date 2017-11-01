@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HomeViewController: UIViewController {
+class HomeViewController: ViewController {
 
     @IBOutlet weak var willRecievePushNotifications: UISwitch!
     
@@ -27,6 +27,13 @@ class HomeViewController: UIViewController {
         self.performSegue(withIdentifier: "logOut", sender: nil)
     }
     
+    @IBAction func PushNotificationSwtichChanged(_ sender: Any) {
+        let enabled: Bool = willRecievePushNotifications.isOn
+        var enabledAsInt = 0
+        if (enabled){
+            enabledAsInt = 1
+        }
+    }
     /*
     // MARK: - Navigation
 

@@ -153,8 +153,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("recieved a foreground or background push notification")
         
     }
-    func application(_ application: UIApplication,
-                     didFailToRegisterForRemoteNotificationsWithError error: Error) {
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("Failed to register for push notifications: \(error)")
     }
 }

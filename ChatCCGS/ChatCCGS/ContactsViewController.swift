@@ -532,7 +532,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         }
         
         for customChat in customChats {
-            retrieveArchiveCustomGroupMessages(groupID: customChat.0.name)
+            retrieveArchiveCustomGroupMessages(groupID: customChat.0.ID)
         }
 
         

@@ -41,6 +41,7 @@ class GroupChat : Chat {
 }
 
 class CustomGroupChat : GroupChat {
+    @objc dynamic var ID: String = ""
     @objc func leaveChat() {}
     @objc func addMember() {}
 }
@@ -83,7 +84,7 @@ class ClassChatList : Object {
 
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
 
@@ -147,6 +148,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         RequestHelper.userAPNSToken = token
         //TODO: Send token to server
         print("Device Token for APNS: \(token)")
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        //Handle the notification
+        //This will get the text sent in your notification
+        let body = notification.request.content.body
+        
+        //This works for iphone 7 and above using haptic feedback
+        let feedbackGenerator = UINotificationFeedbackGenerator()
+        feedbackGenerator.notificationOccurred(.success)
+        
+        print("!!!!!!!!")
     }
     
     private func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [String : Any]){

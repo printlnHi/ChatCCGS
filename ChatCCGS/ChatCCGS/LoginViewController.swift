@@ -68,7 +68,7 @@ class LoginViewController: ViewController {
                 switch response.result.value! {
                     
                 case "100 Continue\n":
-                    //LoginViewController.retrieveCustomGroups(studentID: username)
+                    LoginViewController.retrieveCustomGroups(studentID: username)
                     
                     RequestHelper.userUsername = username
                     RequestHelper.userPassword = password
@@ -247,7 +247,8 @@ class LoginViewController: ViewController {
                 var components = c_mutable.components(separatedBy: ",")
                 
                 let group = CustomGroupChat()
-                group.name = components[0]
+                group.name = components[1].replacingOccurrences(of: "'", with: "")
+                group.ID = components[0]
                 
                 try! realm.write {
                     realm.add(group)

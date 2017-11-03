@@ -21,6 +21,7 @@ class CustomGroupChatViewController: ViewController, UITableViewDelegate, UITabl
     var messages = [(Message, Bool)]()
     
     override func viewDidLoad() {
+        print("In CustomGroupChatViewController")
         super.viewDidLoad()
         groupNamelbl.text = groupChat.name
         pullAllMessages()

@@ -40,16 +40,6 @@ class LoginViewController: ViewController {
     }
     
     
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
     @IBAction func login(_ sender: Any) {
         print("Login function called!")
         
@@ -263,8 +253,7 @@ class LoginViewController: ViewController {
     
     
     @objc func pullAllMessages(studentID: String, password: String) {
-        print()
-        print(RequestHelper.prepareUrlFor(scriptName: "pullMessage"))
+        
         Alamofire.request(RequestHelper.prepareUrlFor(scriptName: "pullMessage"))
             .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
             .responseString { response in
@@ -358,7 +347,7 @@ class LoginViewController: ViewController {
                     }
 
                 } else {
-                    print("DUPLICATE DETECTED")
+                    /// print("DUPLICATE DETECTED")
                 }
                 
                 

@@ -58,7 +58,7 @@ class NewChatViewController: ViewController, UITableViewDelegate, UITableViewDat
             print("requesting: \(request)")
             
             Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
-                debugPrint(response.result.value!)
+                
                 if response.result.value! == "100 Continue\n" {
                     let alert = UIAlertController(title: "Success!", message: "Group was created.", preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))

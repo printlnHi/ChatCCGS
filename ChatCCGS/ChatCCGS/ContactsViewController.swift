@@ -11,34 +11,38 @@ import Alamofire
 import RealmSwift
 
 class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
+    
+    // UI Variables
     @IBOutlet weak var GroupSegmentedControl: UISegmentedControl!
     @IBOutlet weak var TableView: UITableView!
     @IBOutlet weak var SearchBar: UISearchBar!
 
-
+    // Internal class variables
     var studentPos: Int? = 0
     @objc var currentStudent: Student = Student()
     @objc var chatSelected = GroupChat()
     var classPos: Int? = 0
+    @objc var shouldFilterResult =  false;
     @objc var customChatSelected = CustomGroupChat()
 
+    // Internal class variables: Pupils and GroupChats
     var pupils: List<Student> = List()
-    //var chats: List<GroupChat> = List()
     var chats = [(GroupChat, Bool)]()
     
     var filteredPupils: List<Student> = List()
-    //var filteredChats: List<GroupChat> = List()
     var filteredChats = [(GroupChat, Bool)]()
-    
     var customChats = [(CustomGroupChat, Bool)]()
 
-    @objc var shouldFilterResult =  false;
-
+    
+    //=====SEARCHING FUNCTIONS=====//
+    
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        
         var enteredText = searchBar.text
-        if enteredText == nil{
+        if enteredText == nil {
             enteredText = ""
         }
+        
         let escapedEnteredText = RequestHelper.escapeStringForSQL(queryString: enteredText!)
         let queryText = "%\(escapedEnteredText)%"
         let escapedQueryText = RequestHelper.escapeStringForUrl(queryString: queryText)
@@ -56,7 +60,8 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
             }
 
         } else {
-            //Chats are currently being searched
+            // Chats are currently being searched
+            
             if (enteredText==""){
                 resetSelectedList()
             } else{
@@ -71,7 +76,9 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     }
 
     private func performNonEmptyPupilQuery(alamofireRequestString : String){
+        
         print("(performNonEmptyPupilQuery) requesting \(alamofireRequestString)")
+        
         Alamofire.request(alamofireRequestString)
             .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
             .responseString { response in
@@ -100,7 +107,9 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     }
 
     private func performNonEmptyClassQuery(alamofireRequestString : String){
+        
         print("(performNonEmptyClassQuery) requesting \(alamofireRequestString)")
+        
         Alamofire.request(alamofireRequestString)
             .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
             .responseString { response in
@@ -137,7 +146,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     }
 
     public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String){
-        if (searchText==""){
+        if (searchText=="") {
             resetSelectedList()
         }
     }
@@ -175,12 +184,14 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
 
                 let alamofireRequestString = "\(RequestHelper.prepareUrlFor(scriptName: "getStudentsForClass"))&class=\(chatName)"
                 Alamofire.request(alamofireRequestString).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
+                    
                     let strResponse = response.result.value!
                     let firstIndex = strResponse.startIndex
                     let fourthIndex = strResponse.index(firstIndex, offsetBy: 3)
                     let code = strResponse[..<fourthIndex]
                     let chatNameCopy = chatName
-                    switch code{
+                    
+                    switch code {
                     case "400":
                         fallthrough
                     case "422":
@@ -214,6 +225,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
             resetFilteredChats()
         }
     }
+    
     private func resetFilteredPupils(){
         print("Resetting filtered pupils")
         self.filteredPupils = pupils
@@ -236,9 +248,6 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         }
 
         let ID: String = String(response[IDStartIndex..<IDEndIndex])
-
-
-
         let NameStartIndex = response.index(IDEndIndex, offsetBy:3)
         var NameEndIndex = response.index(IDEndIndex, offsetBy: 3)
 
@@ -260,13 +269,16 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
 
         var NameEndIndex = NameStartIndex
 
-        while (response[NameEndIndex] != "'" as Character){
+        while (response[NameEndIndex] != "'" as Character) {
             NameEndIndex = response.index(NameEndIndex, offsetBy: 1)
         }
 
         return String(response[NameStartIndex..<NameEndIndex])
 
     }
+    
+    //======TABLE SETUP FUNCIONS=====//
+    
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
         
         if (GroupSegmentedControl.selectedSegmentIndex==0){
@@ -280,8 +292,6 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
 
         let cell = RecentsTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ContactCell")
         let count = filteredChats.count
-        
-        
         cell.tag = indexPath.row
         
         if self.GroupSegmentedControl.selectedSegmentIndex == 0 {
@@ -310,23 +320,11 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
             }
         }
         
-        //cell.textLabel?.text = "\((self.GroupSegmentedControl.selectedSegmentIndex==0 ? "\(filteredPupils[indexPath.row].name) (\(filteredPupils[indexPath.row].ID))" : "\(filteredChats[indexPath.row].name)")) "
-
-        
-        /*
-            return cell
-        } else {
-            let group = getCustomGroups()[indexPath.row - count]
-            let cell = RecentsTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ConversationCell")
-            cell.textLabel?.text = group.name
-            return cell
-        }*/
         return cell
     }
 
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        
+
         if GroupSegmentedControl.selectedSegmentIndex == 1 {
             if indexPath.row == filteredChats.count {
                 return
@@ -339,43 +337,30 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
             }
         }
     }
-
-    @objc func isInRecents(studentID: String) -> Bool {
-        let realm = try! Realm()
-        if currentStudent.ID == studentID { return true }
-        let data = realm.objects(IndividualChat.self)
-        for d in data {
-            if d.person1?.ID == studentID {
-                return true
-            }
-        }
-        
-        return false
-    }
     
     public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        
-        // https://stackoverflow.com/questions/29808380/swift-insert-alert-box-with-text-input-and-store-text-input
+        // All actions for any tableView cell, varying on their contents
         
         if (GroupSegmentedControl.selectedSegmentIndex == 0) {
-
+            // Pupils
+            
             let getInfoAction = UITableViewRowAction(style: .default, title: "Info") { (action, index) in
-
+                // Get information
                 self.studentPos = indexPath.row
                 self.performSegue(withIdentifier: "getInfo", sender: nil)
-                
-
             }
 
             getInfoAction.backgroundColor = UIColor.blue
             
             if !(isInRecents(studentID: filteredPupils[indexPath.row].ID)) {
+                
                 let addToRecentsAction = UITableViewRowAction(style: .default, title: "Add to Recents") { (action, index) in
-                    
+                    // Add to recents
                     let realm = try! Realm()
                     let newChat = IndividualChat()
                     newChat.person1 = self.pupils[indexPath.row]
                     newChat.person2 = self.currentStudent
+                    
                     try! realm.write {
                         realm.add(newChat)
                     }
@@ -385,35 +370,34 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                 addToRecentsAction.backgroundColor = UIColor.green
                 
                 return[getInfoAction, addToRecentsAction]
+                
             } else {
+                // If the student is already in recents
                 return [getInfoAction]
             }
-                
-            
 
         } else {
+            // Groups
+            
             if indexPath.row < filteredChats.count {
-                let getInfoAction = UITableViewRowAction(style: .default, title: "Info") { (action, index) in
-                    self.classPos = indexPath.row
-                    self.performSegue(withIdentifier: "getClassChatInfo", sender: nil)
-                }
-                getInfoAction.backgroundColor = UIColor.blue
-
+                // Class Groups (Non-custom) No actions
                 return []
+                
             } else if indexPath.row > filteredChats.count {
+                
+                // Custom Groups
                 let leaveGroupAction = UITableViewRowAction(style: .default, title: "Leave Group") { (action, index) in
+                    // Leave Group
                     
                     let cell = tableView.cellForRow(at: indexPath)
                     print(indexPath.row - self.filteredChats.count - 1)
                     let chat = self.customChats[indexPath.row - self.filteredChats.count - 1].0
-                    //let chat = self.customChats[indexPath.row - self.filteredChats.count - 1]
-                
                     let request = "\(RequestHelper.prepareUrlFor(scriptName: "CustomGroups/leaveGroup"))&group=\(chat.ID)"
                     
                     print("requesting: \(request)")
                     
                     Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
-                        debugPrint(response.result.value!)
+                        
                         if response.result.value! == "100 Continue\n" {
                             let realm = try! Realm()
                             let results = realm.objects(CustomGroupChat.self)
@@ -425,12 +409,14 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                                     break
                                 }
                             }
+                            
                             if tbd != nil {
                                 try! realm.write {
                                     realm.delete(tbd!)
                                 }
                                 self.customChats = self.getCustomGroups()
                                 self.TableView.reloadData()
+                                
                             } else {
                                 print("Alamofire request failed")
                             }
@@ -440,21 +426,24 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                 }
                 
                 let addToGroupAction = UITableViewRowAction(style: .default, title: "Add to Group") { (action, index) in
-                    let cell = tableView.cellForRow(at: indexPath)
+                    // Add a new member to a custom group
+                    
                     let chat = self.customChats[indexPath.row - self.filteredChats.count - 1].0
                     let alert = UIAlertController(title: "Add to Group", message: "Please enter the ID of the student you would like to add", preferredStyle: .alert)
-                    
+
                     let confirmAction = UIAlertAction(title: "Add", style: .default) { (_) in
                         if let field = alert.textFields! [0] as? UITextField {
                             
                             let studentID = field.text!
                             let request = "\(RequestHelper.prepareUrlFor(scriptName: "CustomGroups/addToGroup"))&group=\(chat.ID)&members=[\(studentID)]"
+                            
                             print("requesting: \(request)")
                             
                             Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
-                                debugPrint(response.result.value!)
+                                
                                 var title = ""
                                 var message = ""
+                                
                                 if response.result.value! == "100 Continue\n" {
                                     title = "Success!"
                                     message = "\(studentID) was added to the group."
@@ -465,13 +454,13 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                                     title = "Failed."
                                     message = "That person is not a student."
                                 } else {}
+                                
                                 let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
                                 alert.addAction(UIAlertAction(title: "OK", style: .default) { (_) in })
                                 self.present(alert, animated: true, completion: nil)
+                                
                             }
-                            
-    
-                            
+
                         } else {}
                     }
                     
@@ -493,27 +482,36 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                 
                 return [leaveGroupAction, addToGroupAction]
             } else {
+                // If the cell's contents is CUSTOM GROUP CHATS
                 return []
             }
         }
     }
+    
+    
+    @IBAction func GroupSegmentChanged(_ sender: Any) {
+        // Switch from Pupils to Groups
+        TableView.reloadData()
+    }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Prepare for all segues to any exterior viewControllers
         
         if segue.identifier! == "getInfo" {
+            // Get the information on a student
             let destViewContrller: ContactInfoViewController = segue.destination as! ContactInfoViewController
             destViewContrller.user = String(describing: studentPos!)
+            
         } else if segue.identifier == "classChat" {
+            // Go to a class GroupChat
             let destViewController: ClassGroupChatViewController = segue.destination as! ClassGroupChatViewController
-
             destViewController.group = chatSelected
+            
         } else if segue.identifier == "customChat" {
+            // Go to a custom GroupChat
             let destViewController: CustomGroupChatViewController = segue.destination as! CustomGroupChatViewController
             destViewController.currentStudent = currentStudent
             destViewController.groupChat = customChatSelected
-        } else {
-            let destViewController: GroupChatInfoViewController = segue.destination as! GroupChatInfoViewController
-            destViewController.pos = String(describing: classPos!)
         }
     }
 
@@ -521,79 +519,35 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         print(sender.tag)
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        updatedStudents()
-        filteredPupils = pupils
 
-        updatedClassesForStudent()
-        filteredChats = chats
+    private func updatedStudents() {
+        // Update the pupils array
         
-        customChats = getCustomGroups()
-        
-        for c in chats {
-            retrieveArchivedGroupMessages(groupID: c.0.name)
-        }
-        
-        for customChat in customChats {
-            retrieveArchiveCustomGroupMessages(groupID: customChat.0.ID)
-        }
-
-        
-    }
-
-
-    private func updatedStudents(){
         let realm = try! Realm()
         pupils = (realm.objects(StudentList.self).first?.studentList)!
-
-
     }
 
-    private func updatedClassesForStudent(){
+    private func updatedClassesForStudent() {
+        // Update the chats array
+        
         let realm = try! Realm()
-        print(realm.objects(ClassChatList.self))
+        
         let results = (realm.objects(ClassChatList.self).first?.classChatList)!
         chats = [(GroupChat, Bool)]()
         
         for r in results {
             if classGroupChatHasUnreadMessages(r) {
-                print("HAPPY DAYS")
                 chats.append((r, true))
             } else {
                 chats.append((r, false))
             }
         }
         
-        // temp
-        //chats = (realm.objects(ClassChatList.self).first?.classChatList)!
-        //chats = something
-    }
-    
-    @objc func classGroupChatHasUnreadMessages(_ chat: GroupChat) -> Bool {
-        let realm = try! Realm()
-        let messages = realm.objects(Message.self)
-        
-        for m in messages {
-            let g = m.group.replacingOccurrences(of: "'", with: "").replacingOccurrences(of: " ", with: "")
-            if m.isUnreadMessage && g == chat.name {
-                return true
-            }
-        }
-        return false
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-    @IBAction func GroupSegmentChanged(_ sender: Any) {
-        TableView.reloadData()
     }
 
     @objc func retrieveArchivedGroupMessages(groupID: String) {
+        // Query the DB for all archived non-custom group messages and add to realm
+        
         let request = "\(RequestHelper.prepareUrlFor(scriptName: "archiveGroupQuery"))&groupID=\(groupID)&from=\(RequestHelper.timeStamp2017to2019)"
         print("requesting: \(request)")
         
@@ -606,8 +560,6 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                     break
                 default:
                     let realm = try! Realm()
-                    print("=====")
-                    debugPrint(response.result.value!)
                     
                     let data = response.result.value?.components(separatedBy: "\n")
                     var counter = (data?.count)! - 2
@@ -646,6 +598,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
     }
     
     @objc func retrieveArchiveCustomGroupMessages(groupID: String) {
+        // Query the DB for all archived custom group messages and add to realm
 
         let request = "\(RequestHelper.prepareCustomUrlFor(scriptName: "archiveGroupQuery"))&groupID=\(groupID)&from=\(RequestHelper.timeStamp2017to2019)"
         print("requesting: \(request)")
@@ -675,8 +628,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                     c_mutable.remove(at: c.index(before: c.endIndex))
                     c_mutable.remove(at: c.startIndex)
                     var components = c_mutable.components(separatedBy: ",")
-                    
-                    
+
                     let m = Message()
                     m.content = components[1]
                     m.dateStamp = components[2]
@@ -689,7 +641,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                             realm.add(m)
                         }
                     } else {
-                        print("DUPLICATE DETECTED!")
+                        //print("DUPLICATE DETECTED!")
                     }
                     
                     counter -= 1
@@ -698,8 +650,41 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
+    //=====HELPER FUNCTIONS=====//
+    
+    @objc func classGroupChatHasUnreadMessages(_ chat: GroupChat) -> Bool {
+        // Returns true if a class group chat has any unread messages, for icons
+        
+        let realm = try! Realm()
+        let messages = realm.objects(Message.self)
+        
+        for m in messages {
+            let g = m.group.replacingOccurrences(of: "'", with: "").replacingOccurrences(of: " ", with: "")
+            if m.isUnreadMessage && g == chat.name {
+                return true
+            }
+        }
+        
+        return false
+    }
+    
+    
+    @objc func isInRecents(studentID: String) -> Bool {
+        let realm = try! Realm()
+        if currentStudent.ID == studentID { return true }
+        let data = realm.objects(IndividualChat.self)
+        
+        for d in data {
+            if d.person1?.ID == studentID {
+                return true
+            }
+        }
+        
+        return false
+    }
 
     @objc func messageIsDuplicate(content: String, dateStamp: String) -> Bool {
+        // Returns true if a message is a duplicate of one being stored in Realm currently
         
         let realm = try! Realm()
         let messages = realm.objects(Message.self)
@@ -713,14 +698,13 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         return false
     }
     
-    
     func getCustomGroups() -> [(CustomGroupChat, Bool)] {
-        let realm = try! Realm()
+        // Get all custom groups from Realm
         
+        let realm = try! Realm()
         let data = realm.objects(CustomGroupChat.self)
         var groups = [(CustomGroupChat, Bool)]()
-        
-        
+
         for r in data {
             if customGroupChatHasUnreadMessages(r) {
                 groups.append((r, true))
@@ -730,10 +714,11 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         }
         
         return groups
-        
     }
     
     @objc func customGroupChatHasUnreadMessages(_ chat: CustomGroupChat) -> Bool {
+        // Returns true if a custom group has unread messages, for icons
+        
         let realm = try! Realm()
         let messages = realm.objects(Message.self)
         
@@ -746,6 +731,8 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         return false
     }
     
+    //====VIEW SETUP FUNCTIONS====//
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updatedClassesForStudent()
@@ -755,14 +742,33 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         TableView.reloadData()
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view.
+        // Retrieve all class gropus, custom groups and archived messages,
+        
+        updatedStudents()
+        filteredPupils = pupils
+        
+        updatedClassesForStudent()
+        filteredChats = chats
+        
+        customChats = getCustomGroups()
+        
+        for c in chats {
+            retrieveArchivedGroupMessages(groupID: c.0.name)
+        }
+        
+        for customChat in customChats {
+            retrieveArchiveCustomGroupMessages(groupID: customChat.0.ID)
+        }
+        
     }
-    */
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
 
 }

@@ -33,14 +33,16 @@ class CustomGroupChatViewController: UIViewController, UITableViewDelegate, UITa
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        let realm = try! Realm()
         return messages.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
+        
         let result = messages[indexPath.row]
         let message = result.0
         let isUnread = result.1
+        print(result)
         
         let cell = TableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "customGroupChatCell")
         //cell.textLabel?.text = "At " + message.dateStamp + ", " + message.author + " wrote: " + message.content
@@ -60,7 +62,7 @@ class CustomGroupChatViewController: UIViewController, UITableViewDelegate, UITa
         var recievedMessages = [(Message, Bool)]()
         
         for r in data {
-            if " '" + groupChat.name + "'" == r.group {
+            if " '" + groupChat.ID + "'" == r.group {
                 if r.isUnreadMessage {
                     recievedMessages.append((r, true))
                 } else {
@@ -82,7 +84,7 @@ class CustomGroupChatViewController: UIViewController, UITableViewDelegate, UITa
         let dateString = RequestHelper.formatCurrentDateTimeForRequest()
         
         let author = currentStudent.ID
-        let name = RequestHelper.escapeStringForUrl(queryString: groupChat.name)
+        let name = RequestHelper.escapeStringForUrl(queryString: groupChat.ID)
         
         let request = "\(RequestHelper.tartarusBaseUrl)/CustomGroups/pushGroupMessage.py?username=\(RequestHelper.userUsername)&password=\(RequestHelper.userPassword)&content=\(content)&group=\(name)&datestamp=\(dateString)"
         

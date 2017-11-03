@@ -404,8 +404,11 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                 let leaveGroupAction = UITableViewRowAction(style: .default, title: "Leave Group") { (action, index) in
                     
                     let cell = tableView.cellForRow(at: indexPath)
-                    
-                    let request = "\(RequestHelper.prepareUrlFor(scriptName: "CustomGroups/leaveGroup"))&group=\((cell?.textLabel?.text)!)"
+                    print(indexPath.row - self.filteredChats.count - 1)
+                    let chat = self.customChats[indexPath.row - self.filteredChats.count - 1].0
+                    //let chat = self.customChats[indexPath.row - self.filteredChats.count - 1]
+                
+                    let request = "\(RequestHelper.prepareUrlFor(scriptName: "CustomGroups/leaveGroup"))&group=\(chat.ID)"
                     
                     print("requesting: \(request)")
                     
@@ -426,6 +429,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                                 try! realm.write {
                                     realm.delete(tbd!)
                                 }
+                                self.customChats = self.getCustomGroups()
                                 self.TableView.reloadData()
                             } else {
                                 print("Alamofire request failed")
@@ -437,13 +441,14 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
                 
                 let addToGroupAction = UITableViewRowAction(style: .default, title: "Add to Group") { (action, index) in
                     let cell = tableView.cellForRow(at: indexPath)
+                    let chat = self.customChats[indexPath.row - self.filteredChats.count - 1].0
                     let alert = UIAlertController(title: "Add to Group", message: "Please enter the ID of the student you would like to add", preferredStyle: .alert)
                     
                     let confirmAction = UIAlertAction(title: "Add", style: .default) { (_) in
                         if let field = alert.textFields! [0] as? UITextField {
                             
                             let studentID = field.text!
-                            let request = "\(RequestHelper.prepareUrlFor(scriptName: "CustomGroups/addToGroup"))&group=\((cell?.textLabel?.text)!)&members=[\(studentID)]"
+                            let request = "\(RequestHelper.prepareUrlFor(scriptName: "CustomGroups/addToGroup"))&group=\(chat.ID)&members=[\(studentID)]"
                             print("requesting: \(request)")
                             
                             Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
@@ -717,7 +722,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         
         
         for r in data {
-            if classGroupChatHasUnreadMessages(r) {
+            if customGroupChatHasUnreadMessages(r) {
                 groups.append((r, true))
             } else {
                 groups.append((r, false))
@@ -726,6 +731,19 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         
         return groups
         
+    }
+    
+    @objc func customGroupChatHasUnreadMessages(_ chat: CustomGroupChat) -> Bool {
+        let realm = try! Realm()
+        let messages = realm.objects(Message.self)
+        
+        for m in messages {
+            let g = m.group.replacingOccurrences(of: "'", with: "").replacingOccurrences(of: " ", with: "")
+            if m.isUnreadMessage && g == chat.ID {
+                return true
+            }
+        }
+        return false
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -59,13 +59,22 @@ class NewChatViewController: ViewController, UITableViewDelegate, UITableViewDat
             
             Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
                 debugPrint(response.result.value!)
+                if response.result.value! == "100 Continue\n" {
+                    let alert = UIAlertController(title: "Success!", message: "Group was created.", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                } else {
+                    let alert = UIAlertController(title: "Failed.", message: "An error occured.", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                }
             }
             
             let realm = try! Realm()
             try! realm.write {
                 realm.add(groupChat)
             }
-            LoginViewController.retrieveCustomGroups(studentID: RequestHelper.userUsername)
+            //LoginViewController.retrieveCustomGroups(studentID: RequestHelper.userUsername)
 
         }
     }

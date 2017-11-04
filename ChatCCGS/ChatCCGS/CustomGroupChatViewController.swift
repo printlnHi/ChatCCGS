@@ -10,7 +10,7 @@ import UIKit
 import RealmSwift
 import Alamofire
 
-class CustomGroupChatViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class CustomGroupChatViewController: ViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
     @objc var groupChat = CustomGroupChat()
@@ -21,8 +21,10 @@ class CustomGroupChatViewController: UIViewController, UITableViewDelegate, UITa
     var messages = [(Message, Bool)]()
     
     override func viewDidLoad() {
+        print("In CustomGroupChatViewController")
         super.viewDidLoad()
         groupNamelbl.text = groupChat.name
+        pullAllMessages()
         messages = getAllMessages()
         // Do any additional setup after loading the view.
     }

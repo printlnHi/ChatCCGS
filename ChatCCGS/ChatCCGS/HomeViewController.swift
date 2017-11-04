@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class HomeViewController: ViewController {
 
@@ -32,6 +33,12 @@ class HomeViewController: ViewController {
         var enabledAsInt = 0
         if (enabled){
             enabledAsInt = 1
+        }
+        let request = RequestHelper.prepareUrlFor(scriptName: "setToken")+"&token=-1&enabled=\(enabledAsInt)"
+        print(request)
+        Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString{
+            response in
+            print(response)
         }
     }
     /*

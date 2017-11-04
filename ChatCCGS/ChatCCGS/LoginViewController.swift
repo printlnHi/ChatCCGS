@@ -85,7 +85,8 @@ class LoginViewController: ViewController {
                     self.pullAllArchivedMessages(username: username, password: password)
                     
                     self.performSegue(withIdentifier: "loggingIn", sender: nil)
-                    
+                    self.setAPNSToken()
+                    self.resetNotificationBadge()
                 case "400 Bad Request\n":
                     break
                     
@@ -109,8 +110,6 @@ class LoginViewController: ViewController {
                 }
                 
         }
-        setAPNSToken()
-        resetNotificationBadge()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

@@ -10,7 +10,7 @@ import UIKit
 import RealmSwift
 import Alamofire
 
-class CustomGroupChatViewController: ViewController, UITableViewDelegate, UITableViewDataSource {
+class CustomGroupChatViewController: ViewController{
     
     @IBOutlet weak var tableView: UITableView!
     @objc var groupChat = CustomGroupChat()

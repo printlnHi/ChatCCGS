@@ -44,7 +44,6 @@ class CustomGroupChatViewController: ViewController{
         let result = messages[indexPath.row]
         let message = result.0
         let isUnread = result.1
-        print(result)
         
         let cell = TableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "customGroupChatCell")
         //cell.textLabel?.text = "At " + message.dateStamp + ", " + message.author + " wrote: " + message.content
@@ -104,12 +103,12 @@ class CustomGroupChatViewController: ViewController{
             try! realm.write {
                 realm.add(message)
             }
-            print()
+            
             Alamofire.request(request)
                 
                 .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
                 .responseString { response in
-                    debugPrint(response)
+                    
                     
                     self.messageContentField.text! = ""
                     self.messages = self.getAllMessages()

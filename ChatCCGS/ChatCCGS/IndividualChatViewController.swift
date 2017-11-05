@@ -19,10 +19,13 @@ class IndividualChatViewController: UIViewController, UITableViewDataSource {
     @IBOutlet weak var messageContentField: UITextField!
     var messages = [(Message, Bool)]()
     
+    @objc var refreshTimer: Timer!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        messages = getAllMessages()
+        performMessageRefresh()
+        refreshTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(performMessageRefresh), userInfo: nil, repeats: true)
         // Do any additional setup after loading the view.
         
     }
@@ -32,6 +35,50 @@ class IndividualChatViewController: UIViewController, UITableViewDataSource {
         // Dispose of any resources that can be recreated.
     }
     
+    
+    @objc func performMessageRefresh(){
+        print("ish")
+        print(RequestHelper.prepareUrlFor(scriptName: "pullMessage"))
+        Alamofire.request(RequestHelper.prepareUrlFor(scriptName: "pullMessage"))
+            .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
+            .responseString { response in
+                print(response)
+                
+                let realm = try! Realm()
+                
+                let data = response.result.value?.components(separatedBy: "\n")
+                var counter = (data?.count)! - 2
+                
+                for c in data! {
+                    
+                    if counter == 0 {
+                        break
+                    }
+                    
+                    var c_mutable = c
+                    c_mutable.remove(at: c.index(before: c.endIndex))
+                    c_mutable.remove(at: c.startIndex)
+                    var components = c_mutable.components(separatedBy: ",")
+                    
+                    let m = Message()
+                    m.content = components[1]
+                    m.dateStamp = components[2]
+                    m.author = components[3]
+                    m.recipient = components[4]
+                    m.group = components[5]
+                    m.isUnreadMessage = true
+                    
+                    try! realm.write {
+                        print("writing \(m)")
+                        realm.add(m)
+                    }
+                    
+                    counter -= 1
+                }
+                self.messages = self.getAllMessages()
+                self.tableView.reloadData()
+        }
+    }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
         return messages.count
@@ -162,6 +209,9 @@ class IndividualChatViewController: UIViewController, UITableViewDataSource {
         print("segued")
     }
     
+    override func viewWillDisappear(_ animated: Bool){
+        refreshTimer.invalidate()
+    }
     
     func sendUnicodeAlert() {
         let alert = UIAlertController(title: "Message Failed to Send", message: "There was unicode in your message. You cannot send messages containing unicode.", preferredStyle: .alert)

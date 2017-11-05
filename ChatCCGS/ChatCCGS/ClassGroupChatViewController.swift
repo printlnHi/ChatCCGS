@@ -10,7 +10,7 @@ import UIKit
 import RealmSwift
 import Alamofire
 
-class ClassGroupChatViewController: ViewController, UITableViewDelegate, UITableViewDataSource{
+class ClassGroupChatViewController: GroupChatViewController, UITableViewDelegate, UITableViewDataSource{
 
     @objc var group = GroupChat()
     @objc var currentStudent = Student()

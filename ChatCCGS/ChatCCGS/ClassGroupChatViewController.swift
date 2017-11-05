@@ -12,19 +12,35 @@ import Alamofire
 
 class ClassGroupChatViewController: GroupChatViewController, UITableViewDelegate, UITableViewDataSource{
 
+    // Internal variables
     @objc var group = GroupChat()
     @objc var currentStudent = Student()
+    @objc var refreshTimer: Timer!
+    
+    // Outlets
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var messageContentField: UITextField!
     
-    @objc var refreshTimer: Timer!
+    //====VIEW SETUP FUNCTIONS====//
     
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        return messages.count
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        performMessageRefresh()
+        refreshTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(performMessageRefresh), userInfo: nil, repeats: true)
+        // Do any additional setup after loading the view.
     }
     
-    @objc func performMessageRefresh(){
-        print("ish")
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewWillDisappear(_ animated: Bool){
+        refreshTimer.invalidate()
+    }
+    
+    @objc func performMessageRefresh() {
         print(RequestHelper.prepareUrlFor(scriptName: "pullMessage"))
         Alamofire.request(RequestHelper.prepareUrlFor(scriptName: "pullMessage"))
             .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
@@ -67,6 +83,12 @@ class ClassGroupChatViewController: GroupChatViewController, UITableViewDelegate
         }
     }
     
+    //====TABLE VIEW SETUP====//
+    
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
+        return messages.count
+    }
+    
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let result = messages[indexPath.row]
@@ -74,30 +96,16 @@ class ClassGroupChatViewController: GroupChatViewController, UITableViewDelegate
         let isUnread = result.1
         
         let cell = RecentsTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ConversationCell")
-        //cell.textLabel?.text = "At " + message.dateStamp + ", " + message.author + " wrote: " + message.content
-        //var unread = ""
+
         if isUnread {
             cell.imageView!.image = UIImage(named: "chat")
         }
         
-        cell.textLabel?.text = message.author + " : " + RequestHelper.reformatDateTimeStampForDisplay(message.dateStamp) + "\t\t\t" + message.content //+ unread
-        
-        
+        cell.textLabel?.text = message.author + " : " + RequestHelper.reformatDateTimeStampForDisplay(message.dateStamp) + "\t\t\t" + message.content
+
         return cell
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        performMessageRefresh()
-        refreshTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(performMessageRefresh), userInfo: nil, repeats: true)
-        // Do any additional setup after loading the view.
-    }
-
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
     @objc func getMembers(for classGroupChat: GroupChat) {
         let request = "tartarus.ccgs.wa.edu.au/~1022309/cgibin/ChatCCGS/getStudentsForClass.py?username=\(RequestHelper.userUsername)&password=\(RequestHelper.userPassword)"
@@ -107,7 +115,6 @@ class ClassGroupChatViewController: GroupChatViewController, UITableViewDelegate
         Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password:RequestHelper.tartarusPassword).responseString { response in
             
         }
-        
     }
 
     func getAllGroupMessages() -> [(Message, Bool)] {
@@ -138,6 +145,8 @@ class ClassGroupChatViewController: GroupChatViewController, UITableViewDelegate
         
         return receievedMessages.reversed()
     }
+    
+    //====MESSAGE PUSHING FUNCTIONS====//
     
     @IBAction func pushMessage() {
         let content = messageContentField.text!.replacingOccurrences(of: " ", with: "%20", options: .literal, range: nil)
@@ -183,9 +192,7 @@ class ClassGroupChatViewController: GroupChatViewController, UITableViewDelegate
         self.present(alert, animated: true, completion: nil)
     }
     
-    override func viewWillDisappear(_ animated: Bool){
-        refreshTimer.invalidate()
-    }
+    
     /*
     // MARK: - Navigation
 

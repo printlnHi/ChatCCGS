@@ -31,7 +31,7 @@ class ViewController: UIViewController {
         Alamofire.request(RequestHelper.prepareUrlFor(scriptName: "pullMessage"))
             .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
             .responseString { response in
-                
+                print(response)
                 
                 let realm = try! Realm()
                 
@@ -58,6 +58,7 @@ class ViewController: UIViewController {
                     m.isUnreadMessage = true
                     
                     try! realm.write {
+                        print("writing \(m)")
                         realm.add(m)
                     }
                     

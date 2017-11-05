@@ -7,12 +7,14 @@
 //
 
 import UIKit
+import RealmSwift
+import Alamofire
 
 class GroupChatViewController: ViewController {
 
+    var messages = [(Message, Bool)]()
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
     }
 

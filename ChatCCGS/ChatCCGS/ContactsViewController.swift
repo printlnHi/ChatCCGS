@@ -651,7 +651,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         let data = realm.objects(IndividualChat.self)
         
         for d in data {
-            if d.person1?.ID == studentID {
+            if d.person1?.ID == studentID && d.person2?.ID == RequestHelper.userUsername {
                 return true
             }
         }

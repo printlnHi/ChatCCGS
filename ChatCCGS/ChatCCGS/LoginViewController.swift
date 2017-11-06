@@ -22,8 +22,8 @@ class LoginViewController: ViewController {
 
         passwordField.isSecureTextEntry = true
         // ### Code for testing
-        usernameField.text = "123"
-        passwordField.text = "password123"
+        //usernameField.text = "123"
+        //passwordField.text = "password123"
 
         // Do any additional setup after loading the view.
         self.retrieveAllStudents()

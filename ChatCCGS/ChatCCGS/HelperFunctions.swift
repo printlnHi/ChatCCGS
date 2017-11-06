@@ -12,14 +12,13 @@
 import Foundation
 import UIKit
 
-class RequestHelper{
-    static func escapeStringForUrl(queryString s: String) -> String{
-
+class RequestHelper {
+    
+    static func escapeStringForUrl(queryString s: String) -> String {
         return s.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
     }
 
-
-    static func escapeStringForSQL(queryString s: String) -> String{
+    static func escapeStringForSQL(queryString s: String) -> String {
         print("Used value from unfinished function!")
         let esc = s.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "%", with: "\\%").replacingOccurrences(of: "_", with: "\\_")
         return esc

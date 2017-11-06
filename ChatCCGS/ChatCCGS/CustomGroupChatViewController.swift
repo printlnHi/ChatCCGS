@@ -12,14 +12,18 @@ import Alamofire
 
 class CustomGroupChatViewController: GroupChatViewController, UITableViewDelegate, UITableViewDataSource{
     
-    @IBOutlet weak var tableView: UITableView!
+    // Internal variables
     @objc var groupChat = CustomGroupChat()
     @objc var currentStudent = Student()
+    @objc var refreshTimer: Timer!
     
+    // Outlets
     @IBOutlet weak var messageContentField: UITextField!
     @IBOutlet weak var groupNamelbl: UILabel!
+    @IBOutlet weak var tableView: UITableView!
     
-    @objc var refreshTimer: Timer!
+    //====VIEW SETUP FUNCTIONS====//
+    
     override func viewDidLoad() {
         print("In CustomGroupChatViewController")
         super.viewDidLoad()
@@ -35,53 +39,11 @@ class CustomGroupChatViewController: GroupChatViewController, UITableViewDelegat
         // Dispose of any resources that can be recreated.
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let realm = try! Realm()
-        return messages.count
+    override func viewWillDisappear(_ animated: Bool){
+        refreshTimer.invalidate()
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let result = messages[indexPath.row]
-        let message = result.0
-        let isUnread = result.1
-        
-        let cell = TableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "customGroupChatCell")
-        //cell.textLabel?.text = "At " + message.dateStamp + ", " + message.author + " wrote: " + message.content
-        
-        if isUnread {
-            cell.imageView!.image = UIImage(named: "chat")
-        }
-        cell.textLabel?.text = message.author + " : " + RequestHelper.reformatDateTimeStampForDisplay(message.dateStamp) + "\t\t\t" + message.content
-        
-        
-        return cell
-    }
-    
-    func getAllMessages() -> [(Message, Bool)] {
-        let realm = try! Realm()
-        let data = realm.objects(Message.self)
-        var recievedMessages = [(Message, Bool)]()
-        
-        for r in data {
-            if " '" + groupChat.ID + "'" == r.group {
-                if r.isUnreadMessage {
-                    recievedMessages.append((r, true))
-                } else {
-                    recievedMessages.append((r, false))
-                }
-                try! realm.write {
-                    r.isUnreadMessage = false
-                }
-                
-            }
-        }
-        
-        return recievedMessages.reversed()
-    }
-    
-    @objc func performMessageRefresh(){
-        print("ish")
+    @objc func performMessageRefresh() {
         print(RequestHelper.prepareUrlFor(scriptName: "pullMessage"))
         Alamofire.request(RequestHelper.prepareUrlFor(scriptName: "pullMessage"))
             .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
@@ -124,11 +86,36 @@ class CustomGroupChatViewController: GroupChatViewController, UITableViewDelegat
         }
     }
     
+    //====TABLE VIEW SETUP====//
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        let realm = try! Realm()
+        return messages.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let result = messages[indexPath.row]
+        let message = result.0
+        let isUnread = result.1
+        
+        let cell = TableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "customGroupChatCell")
+ 
+        if isUnread {
+            cell.imageView!.image = UIImage(named: "chat")
+        }
+        cell.textLabel?.text = message.author + " : " + RequestHelper.reformatDateTimeStampForDisplay(message.dateStamp) + "\t\t\t" + message.content
+        
+        
+        return cell
+    }
+    
+    //====MESSAGE PUSHING FUNCTIONS====//
+    
     @IBAction func pushMessage() {
+        
         let content = messageContentField.text!.replacingOccurrences(of: " ", with: "%20", options: .literal, range: nil)
-        
         let dateString = RequestHelper.formatCurrentDateTimeForRequest()
-        
         let author = currentStudent.ID
         let name = RequestHelper.escapeStringForUrl(queryString: groupChat.ID)
         
@@ -154,7 +141,6 @@ class CustomGroupChatViewController: GroupChatViewController, UITableViewDelegat
                 .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
                 .responseString { response in
                     
-                    
                     self.messageContentField.text! = ""
                     self.performMessageRefresh()
                     self.tableView.reloadData()
@@ -174,9 +160,29 @@ class CustomGroupChatViewController: GroupChatViewController, UITableViewDelegat
         self.present(alert, animated: true, completion: nil)
     }
     
-    override func viewWillDisappear(_ animated: Bool){
-        print("Invalidating")
-        refreshTimer.invalidate()
+
+    //====HELPER FUNCTIONS====//
+    
+    func getAllMessages() -> [(Message, Bool)] {
+        let realm = try! Realm()
+        let data = realm.objects(Message.self)
+        var recievedMessages = [(Message, Bool)]()
+        
+        for r in data {
+            if " '" + groupChat.ID + "'" == r.group {
+                if r.isUnreadMessage {
+                    recievedMessages.append((r, true))
+                } else {
+                    recievedMessages.append((r, false))
+                }
+                try! realm.write {
+                    r.isUnreadMessage = false
+                }
+                
+            }
+        }
+        
+        return recievedMessages.reversed()
     }
     /*
     // MARK: - Navigation

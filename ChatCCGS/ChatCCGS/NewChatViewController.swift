@@ -12,11 +12,14 @@ import Alamofire
 
 class NewChatViewController: ViewController, UITableViewDelegate, UITableViewDataSource {
     
+    // Internal variables
     @objc var currentStudent: Student = Student()
     @objc var selectedPeople = [Student]()
     
+    // Outlets
     @IBOutlet weak var groupName: UITextField!
     @IBOutlet weak var tableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         print("NewChatViewController laoded")
@@ -28,60 +31,57 @@ class NewChatViewController: ViewController, UITableViewDelegate, UITableViewDat
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     @IBAction func createNewGroupChat() {
+        // Creates a new custom group chat
         
-        if selectedPeople.count <= 1 {
-            alertNotValid()
-        } else {
-            let groupChat = CustomGroupChat()
-            groupChat.name = groupName.text!
-            
-            for i in selectedPeople {
-                groupChat.members.append(i)
+        let groupChat = CustomGroupChat()
+        groupChat.name = groupName.text!
+        
+        for i in selectedPeople {
+            groupChat.members.append(i)
+        }
+        
+        var members = "["
+        var count = groupChat.members.count
+        for i in groupChat.members {
+            if count != 1 {
+                members += i.ID + ","
+            } else {
+                members += i.ID
             }
+            count -= 1
+        }
+        members += "]"
+        
+        
+        let request = "\(RequestHelper.prepareCustomUrlFor(scriptName: "createGroup"))&name=\(RequestHelper.escapeStringForUrl(queryString: groupChat.name))&members=\(members)"
+        print("requesting: \(request)")
+        
+        Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
             
-            var members = "["
-            var count = groupChat.members.count
-            for i in groupChat.members {
-                if count != 1 {
-                    members += i.ID + ","
-                } else {
-                    members += i.ID
-                }
-                count -= 1
+            if response.result.value! == "100 Continue\n" {
+                let alert = UIAlertController(title: "Success!", message: "Group was created.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            } else {
+                let alert = UIAlertController(title: "Failed.", message: "An error occured.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
             }
-            members += "]"
-            
-            
-            let request = "\(RequestHelper.prepareCustomUrlFor(scriptName: "createGroup"))&name=\(RequestHelper.escapeStringForUrl(queryString: groupChat.name))&members=\(members)"
-            print("requesting: \(request)")
-            
-            Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
-                
-                if response.result.value! == "100 Continue\n" {
-                    let alert = UIAlertController(title: "Success!", message: "Group was created.", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                    self.present(alert, animated: true, completion: nil)
-                } else {
-                    let alert = UIAlertController(title: "Failed.", message: "An error occured.", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                    self.present(alert, animated: true, completion: nil)
-                }
-            }
-            
-            let realm = try! Realm()
-            try! realm.write {
-                realm.add(groupChat)
-            }
-            //LoginViewController.retrieveCustomGroups(studentID: RequestHelper.userUsername)
-
+        }
+        
+        let realm = try! Realm()
+        try! realm.write {
+            realm.add(groupChat)
         }
     }
     
     @objc func alertNotValid() {
         
     }
+    
+    //====TABLE VIEW SETUP====//
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
         return getRecentChats().count
@@ -90,7 +90,6 @@ class NewChatViewController: ViewController, UITableViewDelegate, UITableViewDat
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let cell = tableView.cellForRow(at: indexPath)
-
         
         if (cell?.tag)! == 0 {
             selectedPeople.append(getRecentChats()[indexPath.row].person1!)
@@ -109,6 +108,29 @@ class NewChatViewController: ViewController, UITableViewDelegate, UITableViewDat
         }
     }
     
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let chat = getRecentChats()[indexPath.row]
+        let cell = RecentsTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ConversationCell")
+        cell.textLabel?.text = chat.person1?.name
+        
+        return cell
+    }
+    
+    //====HELPER FUNCTIONS====//
+    
+    @objc func getRecentChats() -> [IndividualChat] {
+        let realm = try! Realm()
+        let results = realm.objects(IndividualChat.self)
+        var chats = [IndividualChat]()
+        for r in results {
+
+            if (r.person2?.ID)! == currentStudent.ID {
+                chats.append(r)
+            }
+        }
+        return chats
+    }
+    
     func getIndexFromSelected(of student: String) -> Int? {
         print(selectedPeople)
         var x = 0
@@ -119,33 +141,6 @@ class NewChatViewController: ViewController, UITableViewDelegate, UITableViewDat
             x += 1
         }
         return nil
-    }
-    
-    
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let chat = getRecentChats()[indexPath.row]
-        let cell = RecentsTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ConversationCell")
-        cell.textLabel?.text = chat.person1?.name
-        
-        return cell
-    }
-    
-    
-    @objc func getRecentChats() -> [IndividualChat] {
-        
-        let realm = try! Realm()
-        let results = realm.objects(IndividualChat.self)
-        var chats = [IndividualChat]()
-        for r in results {
-
-            if (r.person2?.ID)! == currentStudent.ID {
-                chats.append(r)
-            }
-        }
-        
-        
-        return chats
     }
     
     /*

@@ -40,56 +40,76 @@ class LoginViewController: ViewController {
     }
 
 
-    @IBAction func login(_ sender: Any) {
-        print("Login function called!")
+    
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Segue to the tab-bar controller
+        
+        let destTabController: UITabBarController = segue.destination as! UITabBarController
+
+        let destController1: ContactsViewController = destTabController.viewControllers![2].childViewControllers[0] as! ContactsViewController
+        destController1.currentStudent = studentLoggingIn!
+
+        let destController2: RecentsViewController = destTabController.viewControllers![1].childViewControllers[0] as! RecentsViewController
+        destController2.currentStudent = studentLoggingIn!
+
+        print("Student Logging In")
+
+    }
+
+    //====DB INTERACTION FUNCTIONS====//
+    
+    @IBAction func login(_ sender: Any) {
+        // Log in to the app
+        print("Login function called!")
+        
         let username = usernameField.text!
         let password = passwordField.text!
         RequestHelper.userUsername = username
         RequestHelper.userPassword = password
         let request = RequestHelper.prepareUrlFor(scriptName: "validate")
-
+        
         print("requesting: \(request)")
-
+        
         Alamofire.request(request)
             .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
             .responseString { response in
-
+                
                 switch response.result.value! {
-
+                    
                 case "100 Continue\n":
                     LoginViewController.retrieveCustomGroups(studentID: username)
-
+                    
                     RequestHelper.userUsername = username
                     RequestHelper.userPassword = password
-
+                    
                     self.retrieveClassesForStudent()
-
+                    
                     let myStudent = Student()
                     myStudent.ID = username
-
-
+                    
+                    
                     self.studentLoggingIn = myStudent
-
+                    
                     self.pullAllMessages()
                     self.pullAllArchivedMessages(username: username, password: password)
-
+                    
                     self.performSegue(withIdentifier: "loggingIn", sender: nil)
                     self.setAPNSToken()
                     self.resetNotificationBadge()
-
+                    
                 case "400 Bad Request\n":
                     break
-
+                    
                 case "401 Unauthorized\n":
                     let alert = UIAlertController(title:"Authentication Failed", message: "Your username or password was incorrect.", preferredStyle:.alert)
                     let action = UIAlertAction(title:"OK", style:.default, handler:nil)
-
+                    
                     self.passwordField.text! = ""
-
+                    
                     alert.addAction(action)
                     self.present(alert, animated: true, completion: nil)
-
+                    
                 case "Unprocessable Entity\n":
                     break
                 // tell the user
@@ -97,50 +117,34 @@ class LoginViewController: ViewController {
                     break
                 // not happy
                 default: break
-
+                    
                 }
-
         }
     }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let destTabController: UITabBarController = segue.destination as! UITabBarController
-
-
-        let destController1: ContactsViewController = destTabController.viewControllers![2].childViewControllers[0] as! ContactsViewController
-
-        destController1.currentStudent = studentLoggingIn!
-
-        let destController2: RecentsViewController = destTabController.viewControllers![1].childViewControllers[0] as! RecentsViewController
-        destController2.currentStudent = studentLoggingIn!
-
-        //let destController3: SettingsViewController = destTabController.viewControllers![3].childViewControllers[0] as! SettingsViewController
-        //destController3.currentStudent = studentLoggingIn!
-
-        print("Student Logging In")
-
-    }
-
-
-    @objc func setAPNSToken(){
+    
+    @objc func setAPNSToken() {
+        // Set the push-notification token for the app
+        
         let request = RequestHelper.prepareUrlFor(scriptName: "setToken")+"&token=\(RequestHelper.userAPNSToken)&enabled=\(RequestHelper.userPushNotificationPreferences)"
         print("requesting: \(request)")
+        
         Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString{
             response in
             print(response)
         }
     }
 
-    @objc func resetNotificationBadge(){
-
-    }
+    @objc func resetNotificationBadge(){}
 
     @objc func retrieveAllStudents() {
-
+        // Retrieve all students in the database
+        
         let students = List<Student>()
+        
         Alamofire.request("http://tartarus.ccgs.wa.edu.au/~1019912/ChatCCGSServerStuff/getStudents.py")
             .authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword)
             .responseString { response in
+                
                 print("response:",response)
                 let data = response.result.value?.components(separatedBy: "\n")
 
@@ -167,20 +171,18 @@ class LoginViewController: ViewController {
                     realm.delete(realm.objects(Message.self))
                 }
 
-
                 let studentList = StudentList()
                 studentList.studentList = students
 
                 try! realm.write {
                     realm.add(studentList)
                 }
-
         }
-
-
     }
 
     @objc func retrieveClassesForStudent() {
+        // Pulls all the classes/groups a student is enrolled in from the DB
+        
         let request = RequestHelper.prepareUrlFor(scriptName: "getClassesForStudent")
         print("requesting: \(request)")
 
@@ -214,6 +216,7 @@ class LoginViewController: ViewController {
     }
 
     static func retrieveCustomGroups(studentID: String) {
+        // Pulls all the custom groups a student is in from the DB
 
         let request = RequestHelper.prepareUrlFor(scriptName: "CustomGroups/getGroupsForStudent")
         print("requesting: \(request)")

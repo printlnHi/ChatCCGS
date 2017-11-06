@@ -12,61 +12,38 @@ import RealmSwift
 import Realm
 import UserNotifications
 
+//====OBJECT DEFINITIONS====/
+
 class Chat : Object {
-    
-    @objc func getMessages() {}
-    @objc func sendMessage() {}
-    @objc func muteChat() {}
-    @objc func deleteMessage() {}
-    @objc func hideChat() {}
-    @objc func getName() -> String{ return ""}
     @objc dynamic var hasUnreadMessages: Bool = false
 }
 
 class IndividualChat : Chat {
+    
     @objc dynamic var person1: Student? = Student()
     @objc dynamic var person2: Student? = Student()
     @objc dynamic var person1IsBlocked = false
-    override func getName() -> String{
-        return person2!.name
-    }
+
 }
 
 class GroupChat : Chat {
     @objc dynamic var name: String = ""
     var members = List<Student>()
-    override func getName() -> String{
-        return name
-    }
 }
 
 class CustomGroupChat : GroupChat {
     @objc dynamic var ID: String = ""
-    @objc func leaveChat() {}
-    @objc func addMember() {}
 }
 
 class Message : Object {
+    
     @objc dynamic var dateStamp = ""
     @objc dynamic var author = ""
     @objc dynamic var recipient = ""
     @objc dynamic var group = ""
     @objc dynamic var content = ""
     @objc dynamic var isUnreadMessage = false
-}
-
-class TextMessage : Message {
-    @objc var message = ""
-}
-
-/*
-class ImageMessage : Message {
-    var image: UIImage? = nil
-    func getUIImage() {}
-}*/
-
-class FileMessage: Message {
-    @objc func getDownloadLink() {}
+    
 }
 
 class Student : Object {
@@ -82,6 +59,16 @@ class ClassChatList : Object {
     var classChatList = List<GroupChat>()
 }
 
+/* UNUSED DEFIINITIONS
+ class TextMessage : Message {
+    @objc var message = ""
+}
+
+class FileMessage: Message {
+    @objc func getDownloadLink() {}
+}*/
+
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -91,6 +78,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
         registerForPushNotifications()
         print("setting applicationIconBadgeNumber to 0")
         UIApplication.shared.applicationIconBadgeNumber = 0

@@ -13,12 +13,17 @@ import RealmSwift
 
 class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDataSource {
     
+    // Internal variables
     @objc var currentStudent: Student = Student()
     @objc var chatSelected: IndividualChat = IndividualChat()
     var chats = [(IndividualChat, Bool)]()
     
+    // Outlets
     @IBOutlet weak var tableView: UITableView!
 
+    
+    //====TABLE VIEW SETUP====//
+    
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
         return chats.count //+ getCustomGroups().count + 1
     }
@@ -56,6 +61,7 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
             let realm = try! Realm()
             let results = realm.objects(IndividualChat.self)
             var tbd: IndividualChat? = nil
+            
             for r in results {
                 let chat = self.chats[indexPath.row].0
                 if (r.person2?.ID)! == self.currentStudent.ID && (r.person1?.name)! == chat.person1?.name {
@@ -79,10 +85,12 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
             print("requesting: \(request)")
             
             Alamofire.request(request).authenticate(user: RequestHelper.tartarusUsername, password: RequestHelper.tartarusPassword).responseString { response in
-                debugPrint(response.result.value!)
+                
                 if response.result.value! == "100 Continue\n" {
+                    
                     let realm = try! Realm()
                     let results = realm.objects(IndividualChat.self)
+                    
                     for r in results {
                         let chat = self.chats[indexPath.row].0
                         if (r.person2?.ID)! == self.currentStudent.ID && (r.person1?.name)! == chat.person1?.name {
@@ -108,6 +116,7 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
                 if response.result.value! == "100 Continue\n" {
                     let realm = try! Realm()
                     let results = realm.objects(IndividualChat.self)
+                    
                     for r in results {
                         let chat = self.chats[indexPath.row].0
                         if (r.person2?.ID)! == self.currentStudent.ID && (r.person1?.name)! == chat.person1?.name {
@@ -133,6 +142,8 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
         }
         
     }
+    
+    //====HELPER FUNCTIONS====//
     
     func getRecentChats() -> [(IndividualChat, Bool)] {
         
@@ -167,6 +178,7 @@ class RecentsViewController: ViewController, UITableViewDelegate, UITableViewDat
         return false
     }
     
+    //====VIEW FUNCTIONS====//
     
     override func viewDidLoad() {
         super.viewDidLoad()

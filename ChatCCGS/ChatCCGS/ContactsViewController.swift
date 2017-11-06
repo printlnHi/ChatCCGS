@@ -488,32 +488,6 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
-    
-    @IBAction func GroupSegmentChanged(_ sender: Any) {
-        // Switch from Pupils to Groups
-        TableView.reloadData()
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Prepare for all segues to any exterior viewControllers
-        
-        if segue.identifier! == "getInfo" {
-            // Get the information on a student
-            let destViewContrller: ContactInfoViewController = segue.destination as! ContactInfoViewController
-            destViewContrller.user = String(describing: studentPos!)
-            
-        } else if segue.identifier == "classChat" {
-            // Go to a class GroupChat
-            let destViewController: ClassGroupChatViewController = segue.destination as! ClassGroupChatViewController
-            destViewController.group = chatSelected
-            
-        } else if segue.identifier == "customChat" {
-            // Go to a custom GroupChat
-            let destViewController: CustomGroupChatViewController = segue.destination as! CustomGroupChatViewController
-            destViewController.currentStudent = currentStudent
-            destViewController.groupChat = customChatSelected
-        }
-    }
 
     private func getInfoOnContact(sender: UITableViewCell) {
         print(sender.tag)
@@ -544,6 +518,8 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         }
         
     }
+    
+    //====ARCHIVED MESSAGE PULLING FUNCTIONS====//
 
     @objc func retrieveArchivedGroupMessages(groupID: String) {
         // Query the DB for all archived non-custom group messages and add to realm
@@ -675,7 +651,7 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
         let data = realm.objects(IndividualChat.self)
         
         for d in data {
-            if d.person1?.ID == studentID {
+            if d.person1?.ID == studentID && d.person2?.ID == RequestHelper.userUsername {
                 return true
             }
         }
@@ -763,6 +739,32 @@ class ContactsViewController: ViewController, UITableViewDelegate, UITableViewDa
             retrieveArchiveCustomGroupMessages(groupID: customChat.0.ID)
         }
         
+    }
+    
+    @IBAction func GroupSegmentChanged(_ sender: Any) {
+        // Switch from Pupils to Groups
+        TableView.reloadData()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Prepare for all segues to any exterior viewControllers
+        
+        if segue.identifier! == "getInfo" {
+            // Get the information on a student
+            let destViewContrller: ContactInfoViewController = segue.destination as! ContactInfoViewController
+            destViewContrller.user = String(describing: studentPos!)
+            
+        } else if segue.identifier == "classChat" {
+            // Go to a class GroupChat
+            let destViewController: ClassGroupChatViewController = segue.destination as! ClassGroupChatViewController
+            destViewController.group = chatSelected
+            
+        } else if segue.identifier == "customChat" {
+            // Go to a custom GroupChat
+            let destViewController: CustomGroupChatViewController = segue.destination as! CustomGroupChatViewController
+            destViewController.currentStudent = currentStudent
+            destViewController.groupChat = customChatSelected
+        }
     }
     
     override func didReceiveMemoryWarning() {

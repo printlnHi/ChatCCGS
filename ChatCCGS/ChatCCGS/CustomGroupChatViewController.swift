@@ -25,7 +25,7 @@ class CustomGroupChatViewController: GroupChatViewController, UITableViewDelegat
         super.viewDidLoad()
         groupNamelbl.text = groupChat.name
         performMessageRefresh()
-        refreshTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(performMessageRefresh), userInfo: nil, repeats: true)
+        refreshTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(performMessageRefresh), userInfo: nil, repeats: true)
         
         // Do any additional setup after loading the view.
     }
@@ -175,6 +175,7 @@ class CustomGroupChatViewController: GroupChatViewController, UITableViewDelegat
     }
     
     override func viewWillDisappear(_ animated: Bool){
+        print("Invalidating")
         refreshTimer.invalidate()
     }
     /*

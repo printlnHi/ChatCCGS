@@ -89,7 +89,7 @@ class ClassGroupChatViewController: GroupChatViewController, UITableViewDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         performMessageRefresh()
-        refreshTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(performMessageRefresh), userInfo: nil, repeats: true)
+        refreshTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(performMessageRefresh), userInfo: nil, repeats: true)
         // Do any additional setup after loading the view.
     }
 
@@ -184,6 +184,7 @@ class ClassGroupChatViewController: GroupChatViewController, UITableViewDelegate
     }
     
     override func viewWillDisappear(_ animated: Bool){
+        print("Invalidating")
         refreshTimer.invalidate()
     }
     /*
